@@ -14,8 +14,8 @@ const geistMono = localFont({
 })
 
 export const metadata: Metadata = {
-    title: 'Jutge.org API Doc',
-    description: 'Jutge.org API v2 documentation',
+    title: 'Jutge.org API Documentation',
+    description: 'Jutge.org API documentation',
 }
 
 export default function RootLayout({
