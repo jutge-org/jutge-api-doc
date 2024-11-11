@@ -11,7 +11,6 @@ import {
 import { Separator } from '@/components/ui/separator'
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
 import { Package, SquareFunction, Type } from 'lucide-react'
-import { Module } from 'module'
 
 export default async function Page() {
     const response = await fetch('http://localhost:8008/api/dir')
