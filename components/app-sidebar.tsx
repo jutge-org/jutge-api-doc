@@ -34,31 +34,38 @@ type Props = React.ComponentProps<typeof Sidebar> & {
     dir: any
 }
 
-function moduleItems(dir: any, items: any[], path: string) {
-    const endpoints = dir.endpoints.map((endpoint: any) => ({
-        title: endpoint.name,
-        url: '#',
-        icon: SquareFunction,
-        isActive: false,
-    }))
-
-    const models = dir.models.map((model: any) => ({
-        title: model[0],
-        url: '#',
-        icon: Type,
-        isActive: false,
-    }))
-
-    items.push({
-        title: path + dir.name,
-        url: '#',
-        icon: Package,
-        isActive: false,
-        items: models.concat(endpoints),
+function models(mod: any) {
+    return mod.models.map((model: any) => {
+        return {
+            title: model[0],
+            url: '#',
+            icon: Type,
+            isActive: false,
+        }
     })
-    for (const mod of dir.modules) {
-        moduleItems(mod, items, path + dir.name + '.')
-    }
+}
+
+function endpoints(mod: any) {
+    return mod.endpoints.map((endpoint: any) => {
+        return {
+            title: endpoint.name,
+            url: '#',
+            icon: SquareFunction,
+            isActive: false,
+        }
+    })
+}
+
+function modules(mod: any) {
+    return mod.modules.map((mod: any) => {
+        return {
+            title: mod.name,
+            url: '#',
+            icon: Package,
+            isActive: false,
+            items: models(mod).concat(endpoints(mod)).concat(modules(mod)),
+        }
+    })
 }
 
 export function AppSidebar({ ...props }: Props) {
@@ -66,11 +73,6 @@ export function AppSidebar({ ...props }: Props) {
         name: 'guest',
         email: 'guest@example.com',
         avatar: '/avatars/shadcn.jpg',
-    }
-
-    const dirItems: any[] = []
-    for (const mod of props.dir.modules) {
-        moduleItems(mod, dirItems, '')
     }
 
     const clientsItems: any[] = [
@@ -97,11 +99,11 @@ export function AppSidebar({ ...props }: Props) {
     const data = {
         user,
         dirMenu: {
-            title: 'Directory',
-            items: dirItems,
+            title: 'API Directory',
+            items: modules(props.dir),
         },
         clientsMenu: {
-            title: 'Clients',
+            title: 'API Clients',
             items: clientsItems,
         },
         navSecondary: [
