@@ -15,24 +15,25 @@ import {
     SidebarMenuSubItem,
 } from '@/components/ui/sidebar'
 
-export function NavMain({
-    menu,
-}: {
-    menu: {
-        title: string
-        items: {
-            title: string
-            url: string
-            icon: LucideIcon
-            isActive?: boolean
-            items?: {
-                title: string
-                url: string
-                icon: LucideIcon
-            }[]
-        }[]
-    }
-}) {
+type Item = {
+    title: string
+    url: string
+    icon: LucideIcon
+    isActive?: boolean
+    items?: Item[]
+}
+
+type Menu = {
+    title: string
+    items: Item[]
+}
+
+type Props = {
+    menu: Menu
+}
+
+export function NavMain(props: Props) {
+    const { menu } = props
     return (
         <SidebarGroup>
             <SidebarGroupLabel>{menu.title}</SidebarGroupLabel>
