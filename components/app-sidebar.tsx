@@ -12,10 +12,19 @@ import {
     SidebarMenuItem,
     SidebarMenuSub,
 } from '@/components/ui/sidebar'
-import { ChevronRight, Package, SquareChevronRight, SquareFunction, Type } from 'lucide-react'
+import {
+    ChevronRight,
+    Cog,
+    List,
+    Package,
+    SquareChevronRight,
+    SquareFunction,
+    Type,
+} from 'lucide-react'
 import Image from 'next/image'
 import * as React from 'react'
 import { NavUser } from './nav-user'
+import Link from 'next/link'
 
 type Item = {
     name: string
@@ -26,6 +35,12 @@ type Item = {
 }
 
 type Items = Item[]
+
+type ApiRawItem = {
+    name: string
+    href: string
+    icon?: string
+}
 
 type Module = any
 
@@ -97,6 +112,11 @@ export function AppSidebar({ ...props }: AppSidebarProps) {
         avatar: '/avatars/shadcn.jpg',
     }
 
+    const apiRaw = [
+        { name: 'Directory', href: '/api/dir' },
+        { name: 'Run', href: '/api/run' },
+    ]
+
     return (
         <Sidebar {...props}>
             <Header />
@@ -104,6 +124,7 @@ export function AppSidebar({ ...props }: AppSidebarProps) {
             <SidebarContent>
                 <Clients clients={clients} />
                 <Directory tree={tree} />
+                <ApiRaw apiRaw={apiRaw} />
             </SidebarContent>
 
             <SidebarFooter>
@@ -146,6 +167,28 @@ function Clients({ clients }: { clients: Items }) {
                             <SidebarMenuButton>
                                 <SquareChevronRight />
                                 {item.name}
+                            </SidebarMenuButton>
+                        </SidebarMenuItem>
+                    ))}
+                </SidebarMenu>
+            </SidebarGroupContent>
+        </SidebarGroup>
+    )
+}
+
+function ApiRaw({ apiRaw: items }: { apiRaw: ApiRawItem[] }) {
+    return (
+        <SidebarGroup>
+            <SidebarGroupLabel>API Raw</SidebarGroupLabel>
+            <SidebarGroupContent>
+                <SidebarMenu>
+                    {items.map((item, index) => (
+                        <SidebarMenuItem key={index}>
+                            <SidebarMenuButton>
+                                <Cog />
+                                <a target="_blank" href={item.href}>
+                                    {item.name}
+                                </a>
                             </SidebarMenuButton>
                         </SidebarMenuItem>
                     ))}
