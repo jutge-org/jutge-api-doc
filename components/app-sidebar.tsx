@@ -38,7 +38,7 @@ type Items = Item[]
 
 type ApiRawItem = {
     name: string
-    href: string
+    url: string
     icon?: string
 }
 
@@ -87,19 +87,13 @@ export function AppSidebar({ ...props }: AppSidebarProps) {
         {
             name: 'TypeScript',
             type: 'client',
-            url: '#',
+            url: '/api/clients/typescript',
             isActive: false,
         },
         {
             name: 'Python',
             type: 'client',
-            url: '#',
-            isActive: false,
-        },
-        {
-            name: 'Shell',
-            type: 'client',
-            url: '#',
+            url: '/api/clients/python',
             isActive: false,
         },
     ]
@@ -113,8 +107,8 @@ export function AppSidebar({ ...props }: AppSidebarProps) {
     }
 
     const apiRaw = [
-        { name: 'Directory', href: '/api/dir' },
-        { name: 'Run', href: '/api/run' },
+        { name: 'Directory', url: '/api/dir' },
+        { name: 'Run', url: '/api/run' },
     ]
 
     return (
@@ -166,7 +160,9 @@ function Clients({ clients }: { clients: Items }) {
                         <SidebarMenuItem key={index}>
                             <SidebarMenuButton>
                                 <SquareChevronRight />
-                                {item.name}
+                                <a target="_blank" href={item.url}>
+                                    {item.name}
+                                </a>
                             </SidebarMenuButton>
                         </SidebarMenuItem>
                     ))}
@@ -186,7 +182,7 @@ function ApiRaw({ apiRaw: items }: { apiRaw: ApiRawItem[] }) {
                         <SidebarMenuItem key={index}>
                             <SidebarMenuButton>
                                 <Cog />
-                                <a target="_blank" href={item.href}>
+                                <a target="_blank" href={item.url}>
                                     {item.name}
                                 </a>
                             </SidebarMenuButton>

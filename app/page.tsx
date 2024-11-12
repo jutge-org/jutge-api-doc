@@ -11,9 +11,10 @@ import {
 import { Separator } from '@/components/ui/separator'
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
 import { Package, SquareFunction, Type } from 'lucide-react'
+import { jutgeApiAddress } from '@/lib/utilities'
 
 export default async function Page() {
-    const response = await fetch('http://localhost:8008/api/dir')
+    const response = await fetch(`${jutgeApiAddress()}/api/dir`)
     const dir = await response.json()
 
     return (
