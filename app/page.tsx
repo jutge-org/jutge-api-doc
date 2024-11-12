@@ -1,3 +1,4 @@
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import YAML from 'yaml'
 import { AppSidebar } from '@/components/app-sidebar'
 import {
@@ -91,29 +92,33 @@ function Module({ mod, path }: any) {
 function Model({ model }: any) {
     const [name, data] = model
     return (
-        <div className="p-4">
-            <h2 className="font-semibold flex gap-2">
+        <Collapsible className="p-4">
+            <CollapsibleTrigger className="font-semibold flex gap-2">
                 <Type />
                 {name}
-            </h2>
-            <pre className="text-xs pl-2 pt-2">{YAML.stringify(data, null, 4)}</pre>
-        </div>
+            </CollapsibleTrigger>
+            <CollapsibleContent>
+                <pre className="text-xs pl-2 pt-2">{YAML.stringify(data, null, 4)}</pre>
+            </CollapsibleContent>
+        </Collapsible>
     )
 }
 
 function Endpoint({ endpoint }: any) {
     return (
-        <div className="p-4">
-            <h2 className="font-semibold flex gap-2">
+        <Collapsible className="p-4">
+            <CollapsibleTrigger className="font-semibold flex gap-2">
                 <SquareFunction />
                 {endpoint.name}
-            </h2>
-            <p>{endpoint.summary}</p>
-            <p>{endpoint.description}</p>
-            <h3>Input</h3>
-            <pre className="text-xs pl-2 py-2">{YAML.stringify(endpoint.input, null, 4)}</pre>
-            <h3>Output</h3>
-            <pre className="text-xs pl-2 py-2">{YAML.stringify(endpoint.output, null, 4)}</pre>
-        </div>
+            </CollapsibleTrigger>
+            <CollapsibleContent>
+                <p>{endpoint.summary}</p>
+                <p>{endpoint.description}</p>
+                <h3>Input</h3>
+                <pre className="text-xs pl-2 py-2">{YAML.stringify(endpoint.input, null, 4)}</pre>
+                <h3>Output</h3>
+                <pre className="text-xs pl-2 py-2">{YAML.stringify(endpoint.output, null, 4)}</pre>
+            </CollapsibleContent>
+        </Collapsible>
     )
 }
