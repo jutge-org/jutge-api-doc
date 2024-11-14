@@ -35,6 +35,13 @@ export default async function TypeView({ className, name, input, spath }: TypeVi
         </div>
     )
 
+    const _Array = ({ items }: { items: any }) => (
+        <div className="flex flex-row items-baseline gap-2">
+            <span className="text-gray-900">Array of</span>
+            <TypeView input={items} spath={spath} />
+        </div>
+    )
+
     const _Object = ({ properties }: { properties: Record<string, any> }) => (
         <div className="border px-3 p-1 rounded bg-white">
             <div className="flex flex-col gap-0.5">
@@ -60,7 +67,11 @@ export default async function TypeView({ className, name, input, spath }: TypeVi
     } else if (input.type === 'object') {
         if (input.properties) {
             body = <_Object properties={input.properties} />
+        } else if (input.patternProperties) {
+            body = <_Object properties={input.patternProperties} />
         }
+    } else if (input.type === 'array') {
+        body = <_Array items={input.items} />
     } else {
         body = <_BasicType type={input.type} />
     }
