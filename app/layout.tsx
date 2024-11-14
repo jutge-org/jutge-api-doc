@@ -1,6 +1,11 @@
+import { AppSidebar } from '@/components/app-sidebar'
+import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar'
+import { getApiDir } from '@/lib/api-dir'
+import { modules } from '@/lib/tree'
 import type { Metadata } from 'next'
 import localFont from 'next/font/local'
 import './globals.css'
+import Header from './Header'
 
 const geistSans = localFont({
     src: './fonts/GeistVF.woff',
@@ -18,15 +23,24 @@ export const metadata: Metadata = {
     description: 'Jutge.org API documentation',
 }
 
-export default function RootLayout({
+export default async function RootLayout({
     children,
 }: Readonly<{
     children: React.ReactNode
 }>) {
+    const dir = await getApiDir()
+    const tree = modules(dir)
+
     return (
         <html lang="en">
             <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-                {children}
+                <SidebarProvider>
+                    <AppSidebar tree={tree} />
+                    <SidebarInset>
+                        <Header />
+                        {children}
+                    </SidebarInset>
+                </SidebarProvider>
             </body>
         </html>
     )

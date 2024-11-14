@@ -1,15 +1,4 @@
-import { AppSidebar } from '@/components/app-sidebar'
-import {
-    Breadcrumb,
-    BreadcrumbItem,
-    BreadcrumbLink,
-    BreadcrumbList,
-    BreadcrumbPage,
-    BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb'
-import { Separator } from '@/components/ui/separator'
-import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
-import { modules } from '@/lib/tree'
+import { getApiDir } from '@/lib/api-dir'
 import { jutgeApiAddress } from '@/lib/utilities'
 import { cn } from '@/lib/utils'
 import { Package, SquareFunction, Type } from 'lucide-react'
@@ -17,44 +6,8 @@ import Link from 'next/link'
 import YAML from 'yaml'
 
 export default async function Page() {
-    const response = await fetch(`${jutgeApiAddress()}/api/dir`)
-    const dir = await response.json()
-    const tree = modules(dir)
+    const dir = await getApiDir()
 
-    return (
-        <SidebarProvider>
-            <AppSidebar tree={tree} />
-            <SidebarInset>
-                <Header />
-                <Main dir={dir} />
-            </SidebarInset>
-        </SidebarProvider>
-    )
-}
-
-function Header() {
-    return (
-        <header className="flex h-16 shrink-0 items-center gap-2">
-            <div className="flex items-center gap-2 px-4">
-                <SidebarTrigger className="-ml-1" />
-                <Separator orientation="vertical" className="mr-2 h-4" />
-                <Breadcrumb>
-                    <BreadcrumbList>
-                        <BreadcrumbItem className="hidden md:block">
-                            <BreadcrumbLink href="#">Index</BreadcrumbLink>
-                        </BreadcrumbItem>
-                        <BreadcrumbSeparator className="hidden md:block" />
-                        <BreadcrumbItem>
-                            <BreadcrumbPage>Welcome</BreadcrumbPage>
-                        </BreadcrumbItem>
-                    </BreadcrumbList>
-                </Breadcrumb>
-            </div>
-        </header>
-    )
-}
-
-function Main({ dir }: any) {
     return (
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
             <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min p-4">
@@ -65,7 +18,7 @@ function Main({ dir }: any) {
 }
 
 function Module({ mod, path }: any) {
-    const header =
+    const _Header = () =>
         path.length === 0 ? null : (
             <h1 className="pt-1 pl-1 pb-4 flex gap-2 rounded-xl font-semibold">
                 <Package />
@@ -73,26 +26,34 @@ function Module({ mod, path }: any) {
             </h1>
         )
 
-    const models = mod.models.map((model: any) => (
-        <Model key={crypto.randomUUID()} model={model} path={path} />
-    ))
+    const _Models = () =>
+        mod.models.length > 0 && (
+            <div className="px-8 pb-12 flex flex-col gap-8">
+                {mod.models.map((model: any) => (
+                    <Model key={crypto.randomUUID()} model={model} path={path} />
+                ))}
+            </div>
+        )
 
-    const endpoints = mod.endpoints.map((endpoint: any) => (
-        <Endpoint key={endpoint.name} endpoint={endpoint} path={path} />
-    ))
+    const _Endpoints = () =>
+        _Endpoints.length > 0 && (
+            <div className="px-8 pb-12 flex flex-col gap-8">
+                {mod.endpoints.map((endpoint: any) => (
+                    <Endpoint key={endpoint.name} endpoint={endpoint} path={path} />
+                ))}
+            </div>
+        )
 
-    const submodules = mod.modules.map((submod: any) => (
+    const _Submodules = () => mod.modules.map((submod: any) => (
         <Module key={submod.name} mod={submod} path={path.concat(submod.name)} />
     ))
 
     return (
         <div id={path}>
-            {header}
-            {models.length > 0 && <div className="px-8 pb-12 flex flex-col gap-8">{models}</div>}
-            {endpoints.length > 0 && (
-                <div className="px-8 pb-12 flex flex-col gap-8">{endpoints}</div>
-            )}
-            {submodules}
+            <_Header />
+            <_Models />
+            <_Endpoints />
+            <_Submodules />
         </div>
     )
 }
