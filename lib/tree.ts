@@ -41,7 +41,7 @@ export function modules(mod: Module, parentPath: string[] = []): Items {
             url: `#${path.join('.')}`,
             type: 'module',
             isActive: false,
-            items: [...models(submod, path), ...endpoints(submod, path), ...modules(submod, path)],
+            items: [...endpoints(submod, path), ...models(submod, path), ...modules(submod, path)],
         }
     })
 }
