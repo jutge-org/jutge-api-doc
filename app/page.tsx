@@ -12,14 +12,16 @@ import { Separator } from '@/components/ui/separator'
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
 import { Package, SquareFunction, Type } from 'lucide-react'
 import { jutgeApiAddress } from '@/lib/utilities'
+import { modules } from '@/lib/tree'
 
 export default async function Page() {
     const response = await fetch(`${jutgeApiAddress()}/api/dir`)
     const dir = await response.json()
+    const tree = modules(dir)
 
     return (
         <SidebarProvider>
-            <AppSidebar dir={dir} />
+            <AppSidebar tree={tree} />
             <SidebarInset>
                 <Header />
                 <Main dir={dir} />
@@ -69,10 +71,12 @@ function Module({ mod, path }: any) {
             </h1>
         )
 
-    const models = mod.models.map((model: any) => <Model key={model.name} model={model} />)
+    const models = mod.models.map((model: any) => (
+        <Model key={model.name} model={model} path={path} />
+    ))
 
     const endpoints = mod.endpoints.map((endpoint: any) => (
-        <Endpoint key={endpoint.name} endpoint={endpoint} />
+        <Endpoint key={endpoint.name} endpoint={endpoint} path={path} />
     ))
 
     const submodules = mod.modules.map((submod: any) => (
@@ -80,7 +84,7 @@ function Module({ mod, path }: any) {
     ))
 
     return (
-        <div className="">
+        <div id={path}>
             {header}
             <div className="pl-8">{models}</div>
             <div className="pl-8">{endpoints}</div>
@@ -89,10 +93,10 @@ function Module({ mod, path }: any) {
     )
 }
 
-function Model({ model }: any) {
+function Model({ model, path }: any) {
     const [name, data] = model
     return (
-        <div className="p-4">
+        <div className="p-4" id={`${path.join(".")}.${name}`}>
             <h2 className="font-semibold flex gap-2">
                 <Type />
                 {name}
@@ -102,9 +106,9 @@ function Model({ model }: any) {
     )
 }
 
-function Endpoint({ endpoint }: any) {
+function Endpoint({ endpoint, path }: any) {
     return (
-        <div className="p-4">
+        <div className="p-4" id={`${path.join(".")}.${endpoint.name}`}>
             <h2 className="font-semibold flex gap-2">
                 <SquareFunction />
                 {endpoint.name}
