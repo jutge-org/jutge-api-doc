@@ -1,40 +1,32 @@
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import {
-    Sidebar,
-    SidebarContent,
-    SidebarFooter,
-    SidebarGroup,
-    SidebarGroupContent,
-    SidebarGroupLabel,
-    SidebarHeader,
-    SidebarMenu,
-    SidebarMenuButton,
-    SidebarMenuItem,
-    SidebarMenuSub,
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem
 } from '@/components/ui/sidebar'
+import { Item, Items, type Tree } from '@/lib/tree'
 import {
-    ChevronRight,
-    Cog,
-    List,
-    Package,
-    SquareChevronRight,
-    SquareFunction,
-    Type,
+  ChevronDown,
+  Cog,
+  Package,
+  SquareChevronRight,
+  SquareFunction,
+  Type
 } from 'lucide-react'
 import Image from 'next/image'
+import Link from 'next/link'
 import * as React from 'react'
 import { NavUser } from './nav-user'
-import Link from 'next/link'
-
-type Item = {
-    name: string
-    url: string
-    type: string
-    isActive?: boolean
-    items?: Item[]
-}
-
-type Items = Item[]
 
 type ApiRawItem = {
     name: string
@@ -42,75 +34,38 @@ type ApiRawItem = {
     icon?: string
 }
 
-type Module = any
-
-function models(mod: Module): Items {
-    return mod.models.map((model: any) => {
-        return {
-            name: model[0],
-            url: '#',
-            type: 'model',
-            isActive: false,
-        }
-    })
-}
-
-function endpoints(mod: Module): Items {
-    return mod.endpoints.map((endpoint: any) => {
-        return {
-            name: endpoint.name,
-            url: '#',
-            type: 'endpoint',
-            isActive: false,
-        }
-    })
-}
-
-function modules(mod: Module): Items {
-    return mod.modules.map((mod: any) => {
-        return {
-            name: mod.name,
-            url: '#',
-            type: 'module',
-            isActive: false,
-            items: models(mod).concat(endpoints(mod)).concat(modules(mod)),
-        }
-    })
-}
-
 type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
-    dir: Module
+    tree: Tree
 }
+
+const clients: Items = [
+    {
+        name: 'TypeScript',
+        type: 'client',
+        url: '/api/clients/typescript',
+        isActive: false,
+    },
+    {
+        name: 'Python',
+        type: 'client',
+        url: '/api/clients/python',
+        isActive: false,
+    },
+]
+
+const user = {
+    name: 'guest',
+    email: 'guest@example.com',
+    avatar: '/avatars/shadcn.jpg',
+}
+
+const apiRaw = [
+    { name: 'Directory', url: '/api/dir' },
+    { name: 'Run', url: '/api/run' },
+]
 
 export function AppSidebar({ ...props }: AppSidebarProps) {
-    const clients: Items = [
-        {
-            name: 'TypeScript',
-            type: 'client',
-            url: '/api/clients/typescript',
-            isActive: false,
-        },
-        {
-            name: 'Python',
-            type: 'client',
-            url: '/api/clients/python',
-            isActive: false,
-        },
-    ]
-
-    const tree = modules(props.dir)
-
-    const user = {
-        name: 'guest',
-        email: 'guest@example.com',
-        avatar: '/avatars/shadcn.jpg',
-    }
-
-    const apiRaw = [
-        { name: 'Directory', url: '/api/dir' },
-        { name: 'Run', url: '/api/run' },
-    ]
-
+    const { tree } = props
     return (
         <Sidebar {...props}>
             <Header />
@@ -134,7 +89,7 @@ function Header() {
             <SidebarMenu>
                 <SidebarMenuItem>
                     <SidebarMenuButton size="lg" asChild>
-                        <a href="#">
+                        <Link href="#">
                             <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
                                 <Image src="/jutge.png" width={64} height={64} alt="" />
                             </div>
@@ -142,7 +97,7 @@ function Header() {
                                 <span className="truncate font-semibold">API Documentation</span>
                                 <span className="truncate text-xs">Jutge.org</span>
                             </div>
-                        </a>
+                        </Link>
                     </SidebarMenuButton>
                 </SidebarMenuItem>
             </SidebarMenu>
@@ -158,12 +113,12 @@ function Clients({ clients }: { clients: Items }) {
                 <SidebarMenu>
                     {clients.map((item, index) => (
                         <SidebarMenuItem key={index}>
-                            <SidebarMenuButton>
-                                <SquareChevronRight />
-                                <a target="_blank" href={item.url}>
+                            <Link download="client" href={item.url}>
+                                <SidebarMenuButton>
+                                    <SquareChevronRight />
                                     {item.name}
-                                </a>
-                            </SidebarMenuButton>
+                                </SidebarMenuButton>
+                            </Link>
                         </SidebarMenuItem>
                     ))}
                 </SidebarMenu>
@@ -180,12 +135,12 @@ function ApiRaw({ apiRaw: items }: { apiRaw: ApiRawItem[] }) {
                 <SidebarMenu>
                     {items.map((item, index) => (
                         <SidebarMenuItem key={index}>
-                            <SidebarMenuButton>
-                                <Cog />
-                                <a target="_blank" href={item.url}>
+                            <Link target="_blank" href={item.url}>
+                                <SidebarMenuButton>
+                                    <Cog />
                                     {item.name}
-                                </a>
-                            </SidebarMenuButton>
+                                </SidebarMenuButton>
+                            </Link>
                         </SidebarMenuItem>
                     ))}
                 </SidebarMenu>
@@ -212,47 +167,52 @@ function Directory({ tree: treeDir }: { tree: Items }) {
 function Tree({ item }: { item: Item }) {
     if (item.type === 'model') {
         return (
-            <SidebarMenuButton isActive={false} className="data-[active=true]:bg-transparent">
-                <Type />
-                {item.name}
-            </SidebarMenuButton>
+            <SidebarMenuSubItem>
+                <Link href={item.url}>
+                    <SidebarMenuSubButton>
+                        <Type />
+                        {item.name}
+                    </SidebarMenuSubButton>
+                </Link>
+            </SidebarMenuSubItem>
         )
     }
 
     if (item.type === 'endpoint') {
         return (
-            <SidebarMenuButton isActive={false} className="data-[active=true]:bg-transparent">
-                <SquareFunction />
-                {item.name}
-            </SidebarMenuButton>
+            <SidebarMenuSubItem>
+                <Link href={item.url}>
+                    <SidebarMenuSubButton>
+                        <SquareFunction />
+                        {item.name}
+                    </SidebarMenuSubButton>
+                </Link>
+            </SidebarMenuSubItem>
         )
     }
 
     if (item.type === 'module') {
         return (
-            <SidebarMenuItem>
-                <Collapsible
-                    className="group/collapsible [&[data-state=open]>button>svg:first-child]:rotate-90"
-                    defaultOpen={item.name === 'components' || item.name === 'ui'}
-                >
-                    <CollapsibleTrigger asChild>
-                        <SidebarMenuButton>
-                            <ChevronRight className="transition-transform" />
+            <Collapsible className="group/collapsible [&[data-state=open]>button>button>svg:first-child]:rotate-90">
+                <SidebarMenuSubItem>
+                    <CollapsibleTrigger className="w-full">
+                        <SidebarMenuSubButton>
                             <Package />
                             {item.name}
-                        </SidebarMenuButton>
+                            <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
+                        </SidebarMenuSubButton>
                     </CollapsibleTrigger>
-                    {item.items ? (
-                        <CollapsibleContent>
-                            <SidebarMenuSub>
+                    <CollapsibleContent>
+                        {item.items && (
+                            <SidebarMenuSub className="pr-0 mr-0">
                                 {item.items.map((subItem: any, index: number) => (
                                     <Tree key={index} item={subItem} />
                                 ))}
                             </SidebarMenuSub>
-                        </CollapsibleContent>
-                    ) : null}
-                </Collapsible>
-            </SidebarMenuItem>
+                        )}
+                    </CollapsibleContent>
+                </SidebarMenuSubItem>
+            </Collapsible>
         )
     }
 

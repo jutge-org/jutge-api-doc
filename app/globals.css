@@ -91,4 +91,8 @@ body {
     body {
         @apply bg-background text-foreground;
     }
+
+    .debug {
+        @apply border-red-500 border-2;
+    }
 }
