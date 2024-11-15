@@ -1,27 +1,28 @@
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarMenuSub,
-  SidebarMenuSubButton,
-  SidebarMenuSubItem
+    Sidebar,
+    SidebarContent,
+    SidebarFooter,
+    SidebarGroup,
+    SidebarGroupContent,
+    SidebarGroupLabel,
+    SidebarHeader,
+    SidebarMenu,
+    SidebarMenuButton,
+    SidebarMenuItem,
+    SidebarMenuSub,
+    SidebarMenuSubButton,
+    SidebarMenuSubItem,
 } from '@/components/ui/sidebar'
-import { Item, Items, type Tree } from '@/lib/tree'
+import { Item, type Tree } from '@/lib/tree'
 import {
-  ChevronDown,
-  Cog,
-  Package,
-  SquareChevronRight,
-  SquareFunction,
-  Type
+    ChevronDown,
+    Cog,
+    KeyRound,
+    Package,
+    SquareChevronRight,
+    SquareFunction,
+    Type,
 } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -38,16 +39,18 @@ type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
     tree: Tree
 }
 
-const clients: Items = [
+const clients: Item[] = [
     {
         name: 'TypeScript',
         type: 'client',
+        auth: false,
         url: '/api/clients/typescript',
         isActive: false,
     },
     {
         name: 'Python',
         type: 'client',
+        auth: false,
         url: '/api/clients/python',
         isActive: false,
     },
@@ -105,7 +108,7 @@ function Header() {
     )
 }
 
-function Clients({ clients }: { clients: Items }) {
+function Clients({ clients }: { clients: Item[] }) {
     return (
         <SidebarGroup>
             <SidebarGroupLabel>API Clients</SidebarGroupLabel>
@@ -149,7 +152,7 @@ function ApiRaw({ apiRaw: items }: { apiRaw: ApiRawItem[] }) {
     )
 }
 
-function Directory({ tree: treeDir }: { tree: Items }) {
+function Directory({ tree: treeDir }: { tree: Item[] }) {
     return (
         <SidebarGroup>
             <SidebarGroupLabel>API Directory</SidebarGroupLabel>
@@ -168,12 +171,10 @@ function Tree({ item }: { item: Item }) {
     if (item.type === 'model') {
         return (
             <SidebarMenuSubItem>
-                <Link href={item.url}>
-                    <SidebarMenuSubButton>
-                        <Type />
-                        {item.name}
-                    </SidebarMenuSubButton>
-                </Link>
+                <SidebarMenuSubButton href={item.url}>
+                    <Type />
+                    {item.name}
+                </SidebarMenuSubButton>
             </SidebarMenuSubItem>
         )
     }
@@ -181,12 +182,11 @@ function Tree({ item }: { item: Item }) {
     if (item.type === 'endpoint') {
         return (
             <SidebarMenuSubItem>
-                <Link href={item.url}>
-                    <SidebarMenuSubButton>
-                        <SquareFunction />
-                        {item.name}
-                    </SidebarMenuSubButton>
-                </Link>
+                <SidebarMenuSubButton href={item.url}>
+                    <SquareFunction />
+                    <span>{item.name}</span>
+                    <div>{item.auth && <KeyRound size={12} />}</div>
+                </SidebarMenuSubButton>
             </SidebarMenuSubItem>
         )
     }
