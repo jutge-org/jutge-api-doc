@@ -49,7 +49,7 @@ export default async function TypeView({ className, name, input, spath, models }
                         </div>
                         <h3 className="font-semibold mb-2 font-mono">{name}</h3>
                         <TypeView input={schema} spath={spath} models={models} />
-                        <h4 className="uppercase font-normal text-xs mt-2 mb-2 text-gray-600">
+                        <h4 className="uppercase font-normal text-xs mt-3 mb-1 text-gray-600">
                             Example
                         </h4>
                         <pre className="text-xs bg-gray-100 px-2 py-1">
@@ -114,8 +114,8 @@ export default async function TypeView({ className, name, input, spath, models }
         body = <_BasicType type={input.type} />
     }
     return (
-        <div className={cn('flex flex-row gap-3 text-sm items-baseline', className)}>
-            {name && <h4 className="min-w-[4em] text-gray-700">{name}</h4>}
+        <div className={cn('flex flex-row text-sm items-baseline', className)}>
+            {name && <div className="min-w-[3.5em] text-gray-600 italic text-xs">{name}</div>}
             {body}
         </div>
     )

@@ -1,10 +1,9 @@
+import EndpointBackgroundFlash from '@/components/endpoint-background-flash'
 import TypeView from '@/components/type-view'
-import { Collapsible, CollapsibleContent } from '@/components/ui/collapsible'
 import { Label } from '@/components/ui/label'
-import { ApiDir, getApiDir, makeExample } from '@/lib/api-dir'
+import { ApiDir, ApiEndpointDir, getApiDir } from '@/lib/api-dir'
 import { cn } from '@/lib/utils'
-import { CollapsibleTrigger } from '@radix-ui/react-collapsible'
-import { ChevronRight, Package, SquareFunction, Type } from 'lucide-react'
+import { KeyRound, Package, SquareFunction } from 'lucide-react'
 
 export default async function Page() {
     const dir = await getApiDir()
@@ -41,7 +40,7 @@ function Module({ mod, path, level }: ModuleProps) {
             {endpoints.length > 0 && (
                 <div className={cn('pb-6 pt-2 flex flex-col gap-5', level > 0 ? 'px-4' : 'px-8')}>
                     <Label className="uppercase text-gray-600">Endpoints</Label>
-                    {endpoints.map((endpoint: any) => (
+                    {endpoints.map((endpoint) => (
                         <Endpoint
                             key={endpoint.name}
                             endpoint={endpoint}
@@ -80,6 +79,37 @@ function Module({ mod, path, level }: ModuleProps) {
     )
 }
 
+type EndpointProps = {
+    endpoint: ApiEndpointDir
+    spath: string
+    models: [string, ApiDir][]
+}
+function Endpoint({ endpoint, spath, models }: EndpointProps) {
+    return (
+        <EndpointBackgroundFlash id={`${spath}.${endpoint.name}`}>
+            <h2 className="font-semibold flex flex-row gap-2 items-center mb-0">
+                <SquareFunction className="w-6 h-6" />
+                <code className="mt-0.5">{endpoint.name}</code>
+                {endpoint.actor && <KeyRound size={15} className="-ml-1" />}
+                <span className="font-normal">
+                    <span className="text-gray-400">&mdash;</span>
+                    <span className="ml-2 text-sm">{endpoint.summary}</span>
+                </span>
+            </h2>
+            {endpoint.description && (
+                <div className="pb-3 pl-8 text-xs text-gray-700 max-w-[45em]">
+                    <p>{endpoint.description}</p>
+                </div>
+            )}
+            <div className="flex flex-col mt-0 pl-8">
+                <TypeView name="input" input={endpoint.input} spath={spath} models={models} />
+                <TypeView name="output" input={endpoint.output} spath={spath} models={models} />
+            </div>
+        </EndpointBackgroundFlash>
+    )
+}
+
+/*
 type ModelProps = {
     model: [string, ApiDir]
     spath: string
@@ -104,33 +134,4 @@ function Model({ model, spath, models }: ModelProps) {
         </Collapsible>
     )
 }
-
-type EndpointProps = {
-    endpoint: any
-    spath: string
-    models: [string, ApiDir][]
-}
-function Endpoint({ endpoint, spath, models }: EndpointProps) {
-    return (
-        <div id={`${spath}.${endpoint.name}`}>
-            <h2 className="font-semibold flex flex-row gap-2 items-center mb-0">
-                <SquareFunction className="w-6 h-6" />
-                <code className="mt-0.5">{endpoint.name}</code>
-                <span className="font-normal">
-                    <span className="text-gray-400">&mdash;</span>
-                    <span className="ml-2 text-sm">{endpoint.summary}</span>
-                </span>
-            </h2>
-            {endpoint.description && (
-                <div className="pb-3 pl-8 text-xs text-gray-700 max-w-[45em]">
-                    <p>{endpoint.description}</p>
-                </div>
-            )}
-            <div className="flex flex-col mt-0 pl-8">
-                <TypeView name="input" input={endpoint.input} spath={spath} models={models} />
-                <TypeView name="output" input={endpoint.output} spath={spath} models={models} />
-            </div>
-            
-        </div>
-    )
-}
+*/
