@@ -1,5 +1,6 @@
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
+import React from 'react'
 import YAML from 'yaml'
 
 type TypeViewProps = {
@@ -27,10 +28,10 @@ export default async function TypeView({ className, name, input, spath }: TypeVi
         <div className="flex flex-row items-center gap-2">
             <TypeView input={types[0]} spath={spath} />
             {types.slice(1).map((type) => (
-                <>
+                <React.Fragment key={type.type}>
                     <div className="h-4 border border-blue-200"></div>
                     <TypeView key={type.type} input={type} spath={spath} />
-                </>
+                </React.Fragment>
             ))}
         </div>
     )

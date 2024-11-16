@@ -14,7 +14,7 @@ import {
     SidebarMenuSubButton,
     SidebarMenuSubItem,
 } from '@/components/ui/sidebar'
-import { Item, type Tree } from '@/lib/tree'
+import { Item, type Tree } from '@/lib/api-dir'
 import {
     ChevronDown,
     Cog,
