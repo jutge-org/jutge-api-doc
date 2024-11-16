@@ -7,7 +7,7 @@ export type ApiInfo = {
 export type ApiModuleDir = {
     name: string
     description?: string
-    models: [string, any][]
+    models: [string, ApiDir][]
     endpoints: ApiEndpointDir[]
     modules: ApiModuleDir[]
 }
@@ -75,7 +75,7 @@ export function modules(mod: ApiDir, parentPath: string[] = []): Item[] {
             type: 'module',
             auth: submod.actor,
             isActive: false,
-            items: [...endpoints(submod, path), ...models(submod, path), ...modules(submod, path)],
+            items: [...endpoints(submod, path), ...modules(submod, path)],
         }
     })
 }
@@ -84,7 +84,7 @@ export type Tree = ReturnType<typeof modules>
 
 // Examples as in Scalar
 
-export function makeExample(schema: any, models: any): any {
+export function makeExample(schema: ApiDir, models: any): any {
     //
 
     function findSchema(name: string): any {
@@ -143,15 +143,4 @@ export function makeExample(schema: any, models: any): any {
     }
 
     return make(schema)
-}
-
-async function main() {
-    const dir = await getApiDir()
-    const models = dir.modules[1].models
-    for (const model of models) {
-        const [name, schema] = model
-        //    if (name != 'TCredentialsOut') continue
-        console.log(makeExample(schema, models))
-        console.log('------------------')
-    }
 }

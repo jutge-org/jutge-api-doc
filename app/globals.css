@@ -92,8 +92,11 @@ body {
         @apply bg-background text-foreground;
     }
 
-    .debug {
+    .debug, .debug-1 {
         @apply border-red-500 border-2;
+    }
+    .debug-1 {
+        @apply border;
     }
     h1, h2, h3, h4, h5 {
         @apply font-bold;

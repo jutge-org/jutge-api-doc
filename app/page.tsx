@@ -1,7 +1,7 @@
 import TypeView from '@/components/type-view'
 import { Collapsible, CollapsibleContent } from '@/components/ui/collapsible'
 import { Label } from '@/components/ui/label'
-import { ApiDir, getApiDir } from '@/lib/api-dir'
+import { ApiDir, getApiDir, makeExample } from '@/lib/api-dir'
 import { cn } from '@/lib/utils'
 import { CollapsibleTrigger } from '@radix-ui/react-collapsible'
 import { ChevronRight, Package, SquareFunction, Type } from 'lucide-react'
@@ -39,24 +39,34 @@ function Module({ mod, path, level }: ModuleProps) {
             )}
 
             {endpoints.length > 0 && (
-                <div className={cn("pb-6 pt-2 flex flex-col gap-4", level > 0 ? "px-4" : "px-8")}>
-                    <Label className="uppercase text-gray-600">Methods</Label>
+                <div className={cn('pb-6 pt-2 flex flex-col gap-5', level > 0 ? 'px-4' : 'px-8')}>
+                    <Label className="uppercase text-gray-600">Endpoints</Label>
                     {endpoints.map((endpoint: any) => (
-                        <Endpoint key={endpoint.name} endpoint={endpoint} spath={spath} />
+                        <Endpoint
+                            key={endpoint.name}
+                            endpoint={endpoint}
+                            spath={spath}
+                            models={models}
+                        />
                     ))}
                 </div>
             )}
 
-            {models.length > 0 && (
-                <div className={cn("pb-4 flex flex-col gap-4", level > 0 ? "px-4" : "px-8")}>
+            {/* {models.length > 0 && (
+                <div className={cn('pb-4 flex flex-col gap-4', level > 0 ? 'px-4' : 'px-8')}>
                     <Label className="uppercase text-gray-600">Types</Label>
-                    {models.map((model: any) => (
-                        <Model key={crypto.randomUUID()} model={model} spath={spath} />
+                    {models.map((model) => (
+                        <Model
+                            key={crypto.randomUUID()}
+                            model={model}
+                            spath={spath}
+                            models={models}
+                        />
                     ))}
                 </div>
-            )}
+            )} */}
 
-            <div className={cn("flex flex-col gap-4", level > 0 ? "pl-0" : "")}>
+            <div className={cn('flex flex-col gap-4', level > 0 ? 'pl-0' : '')}>
                 {modules.map((submod: any) => (
                     <Module
                         key={submod.name}
@@ -70,7 +80,12 @@ function Module({ mod, path, level }: ModuleProps) {
     )
 }
 
-function Model({ model, spath }: any) {
+type ModelProps = {
+    model: [string, ApiDir]
+    spath: string
+    models: [string, ApiDir][]
+}
+function Model({ model, spath, models }: ModelProps) {
     const [name, data] = model
     return (
         <Collapsible className="[&[data-state=open]>div>button>svg]:rotate-90">
@@ -83,17 +98,22 @@ function Model({ model, spath }: any) {
                     </h2>
                 </CollapsibleTrigger>
                 <CollapsibleContent>
-                    <TypeView input={data} spath={spath} className="pb-4" />
+                    <TypeView input={data} spath={spath} className="pb-4" models={models} />
                 </CollapsibleContent>
             </div>
         </Collapsible>
     )
 }
 
-function Endpoint({ endpoint, spath }: any) {
+type EndpointProps = {
+    endpoint: any
+    spath: string
+    models: [string, ApiDir][]
+}
+function Endpoint({ endpoint, spath, models }: EndpointProps) {
     return (
         <div id={`${spath}.${endpoint.name}`}>
-            <h2 className="font-semibold flex flex-row gap-2 items-center mb-2">
+            <h2 className="font-semibold flex flex-row gap-2 items-center mb-0">
                 <SquareFunction className="w-6 h-6" />
                 <code className="mt-0.5">{endpoint.name}</code>
                 <span className="font-normal">
@@ -102,14 +122,15 @@ function Endpoint({ endpoint, spath }: any) {
                 </span>
             </h2>
             {endpoint.description && (
-                <div className="pb-3 pl-8 text-sm max-w-[45em]">
+                <div className="pb-3 pl-8 text-xs text-gray-700 max-w-[45em]">
                     <p>{endpoint.description}</p>
                 </div>
             )}
-            <div className="flex flex-col gap-1 mt-1 pl-8">
-                <TypeView name="input" input={endpoint.input} spath={spath} />
-                <TypeView name="output" input={endpoint.output} spath={spath} />
+            <div className="flex flex-col mt-0 pl-8">
+                <TypeView name="input" input={endpoint.input} spath={spath} models={models} />
+                <TypeView name="output" input={endpoint.output} spath={spath} models={models} />
             </div>
+            
         </div>
     )
 }
