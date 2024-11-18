@@ -26,13 +26,13 @@ export default async function TypeView({ className, name, input, spath, models }
         </div>
     )
 
-    const _Reference = ({ name }: { name: string }) => {
+    const _Reference = ({ refName }: { refName: string }) => {
         const link = (
-            <Link href={`#${spath}.${name}`} className="text-blue-900 text-[0.9em] font-semibold">
+            <div className="text-blue-900 text-[0.9em] font-semibold cursor-pointer">
                 <code>{input.$ref}</code>
-            </Link>
+            </div>
         )
-        const model = models.find(([name]) => name === name)
+        const model = models.find(([n]) => n === refName)
         if (model === undefined) {
             return link
         }
@@ -47,7 +47,7 @@ export default async function TypeView({ className, name, input, spath, models }
                                 <path d="M 0 10 L 15 2 L 30 10" fill="white" stroke="black" />
                             </svg>
                         </div>
-                        <h3 className="font-semibold mb-2 font-mono">{name}</h3>
+                        <h3 className="font-semibold mb-2 font-mono">{refName}</h3>
                         <TypeView input={schema} spath={spath} models={models} />
                         <h4 className="uppercase font-normal text-xs mt-3 mb-1 text-gray-600">
                             Example
@@ -99,7 +99,7 @@ export default async function TypeView({ className, name, input, spath, models }
     }
 
     if (input.$ref) {
-        body = <_Reference name={input.$ref} />
+        body = <_Reference refName={input.$ref} />
     } else if (input.anyOf) {
         body = <_AnyOf types={input.anyOf} />
     } else if (input.type === 'object') {
