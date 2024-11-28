@@ -110,30 +110,3 @@ function Endpoint({ endpoint, spath, models }: EndpointProps) {
         </EndpointBackgroundFlash>
     )
 }
-
-/*
-type ModelProps = {
-    model: [string, ApiDir]
-    spath: string
-    models: [string, ApiDir][]
-}
-function Model({ model, spath, models }: ModelProps) {
-    const [name, data] = model
-    return (
-        <Collapsible className="[&[data-state=open]>div>button>svg]:rotate-90">
-            <div id={`${spath}.${name}`}>
-                <CollapsibleTrigger className="flex flex-row gap-1.5 items-center">
-                    <ChevronRight className="ml-auto size-4 transition-transform text-gray-500 mb-0.5" />
-                    <h2 className="font-semibold flex gap-2">
-                        <Type className="w-5 h-5" />
-                        <code className="text-blue-900">{name}</code>
-                    </h2>
-                </CollapsibleTrigger>
-                <CollapsibleContent>
-                    <TypeView input={data} spath={spath} className="pb-4" models={models} />
-                </CollapsibleContent>
-            </div>
-        </Collapsible>
-    )
-}
-*/
