@@ -15,15 +15,7 @@ import {
     SidebarMenuSubItem,
 } from '@/components/ui/sidebar'
 import { Item, type Tree } from '@/lib/api-dir'
-import {
-    ChevronDown,
-    Cog,
-    KeyRound,
-    Package,
-    SquareChevronRight,
-    SquareFunction,
-    Type,
-} from 'lucide-react'
+import { ChevronDown, Cog, Package, SquareChevronRight, SquareFunction, Type } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import * as React from 'react'
@@ -43,14 +35,12 @@ const clients: Item[] = [
     {
         name: 'TypeScript',
         type: 'client',
-        auth: false,
         url: '/api/clients/typescript',
         isActive: false,
     },
     {
         name: 'Python',
         type: 'client',
-        auth: false,
         url: '/api/clients/python',
         isActive: false,
     },
@@ -185,7 +175,6 @@ function Tree({ item }: { item: Item }) {
                 <SidebarMenuSubButton href={item.url}>
                     <SquareFunction />
                     <span>{item.name}</span>
-                    <div>{item.auth && <KeyRound size={12} />}</div>
                 </SidebarMenuSubButton>
             </SidebarMenuSubItem>
         )
