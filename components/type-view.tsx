@@ -65,10 +65,10 @@ export default async function TypeView({ className, name, input, spath, models }
     const _AnyOf = ({ types }: { types: any[] }) => (
         <div className="flex flex-row items-center gap-1">
             <TypeView input={types[0]} spath={spath} models={models} />
-            {types.slice(1).map((type) => (
-                <React.Fragment key={type.type}>
+            {types.slice(1).map((type, i) => (
+                <React.Fragment key={`${type.type}${i}`}>
                     <span className="italic text-xs text-gray-600">or</span>
-                    <TypeView key={type.type} input={type} spath={spath} models={models} />
+                    <TypeView input={type} spath={spath} models={models} />
                 </React.Fragment>
             ))}
         </div>
@@ -84,8 +84,8 @@ export default async function TypeView({ className, name, input, spath, models }
     const _Object = ({ properties }: { properties: Record<string, any> }) => (
         <div className="border px-3 p-1 pb-2 mr-4 rounded bg-white">
             <div className="flex flex-col">
-                {Object.entries(properties).map(([name, type]) => (
-                    <div key={name} className="flex flex-row gap-3 items-baseline p-0 h-[1.4em]">
+                {Object.entries(properties).map(([name, type], i) => (
+                    <div key={`${name}${i}`} className="flex flex-row gap-3 items-baseline p-0 h-[1.4em]">
                         <code className="text-[0.9em]">{name}</code>
                         <span className="text-gray-300 h-[1.4em]">&ndash;</span>
                         <TypeView input={type} spath={spath} models={models} />
