@@ -21,7 +21,7 @@ export default async function TypeView({ className, name, input, spath, models }
                 'text-[0.9em] h-[1.3em] px-1 flex flex-col justify-center items-center',
             )}
         >
-            <span className="">{type}</span>
+            {type}
         </div>
     )
 
@@ -42,7 +42,7 @@ export default async function TypeView({ className, name, input, spath, models }
                     {link}
                 </HoverCardTrigger>
                 {model && (
-                    <HoverCardContent className="p-4 border-black w-[22em] relative">
+                    <HoverCardContent className="p-4 border-black relative flex flex-col w-auto min-w-[22em]">
                         <div className="absolute -top-2.5 h-2.5 left-0 right-0 flex flex-row justify-center">
                             <svg viewBox="0 0 30 10">
                                 <path d="M 0 10 L 15 2 L 30 10" fill="white" stroke="black" />
@@ -82,16 +82,17 @@ export default async function TypeView({ className, name, input, spath, models }
     )
 
     const _Object = ({ properties }: { properties: Record<string, any> }) => (
-        <div className="border px-3 p-1 pb-2 mr-4 rounded bg-white">
-            <div className="flex flex-col">
-                {Object.entries(properties).map(([name, type], i) => (
-                    <div key={`${name}${i}`} className="flex flex-row gap-3 items-baseline p-0 h-[1.4em]">
-                        <code className="text-[0.9em]">{name}</code>
-                        <span className="text-gray-300 h-[1.4em]">&ndash;</span>
-                        <TypeView input={type} spath={spath} models={models} />
-                    </div>
-                ))}
-            </div>
+        <div className="border px-3 p-1 pb-2 mr-4 rounded bg-white flex flex-col">
+            {Object.entries(properties).map(([name, type], i) => (
+                <div
+                    key={`${name}${i}`}
+                    className="flex flex-row gap-3 items-baseline p-0 h-[1.4em]"
+                >
+                    <code className="text-[0.9em]">{name}</code>
+                    <span className="text-gray-300 h-[1.4em]">&ndash;</span>
+                    <TypeView input={type} spath={spath} models={models} />
+                </div>
+            ))}
         </div>
     )
 
