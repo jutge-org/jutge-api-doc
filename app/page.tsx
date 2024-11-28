@@ -1,26 +1,27 @@
 import EndpointBackgroundFlash from '@/components/endpoint-background-flash'
 import TypeView from '@/components/type-view'
 import { Label } from '@/components/ui/label'
-import { ApiDir, ApiEndpointDir, getApiDir } from '@/lib/api-dir'
+import { ApiDir, ApiEndpoint, ApiModel, ApiModule, getApiDir } from '@/lib/api-dir'
 import { cn } from '@/lib/utils'
 import { KeyRound, Package, SquareFunction } from 'lucide-react'
 
 export default async function Page() {
-    const dir = await getApiDir()
+    const { models, root } = await getApiDir()
     return (
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-            <Module mod={dir} path={[]} level={0} />
+            <Module models={models} module={root} path={[]} level={0} />
         </div>
     )
 }
 
 type ModuleProps = {
-    mod: ApiDir
+    models: Map<string, ApiModel>
+    module: ApiModule
     path: string[]
     level: number
 }
-function Module({ mod, path, level }: ModuleProps) {
-    const { endpoints, modules, models } = mod
+function Module({ models, module, path, level }: ModuleProps) {
+    const { endpoints, submodules } = module
     const spath = path.join('.')
 
     return (
@@ -42,10 +43,10 @@ function Module({ mod, path, level }: ModuleProps) {
                     <Label className="uppercase text-gray-600">Endpoints</Label>
                     {endpoints.map((endpoint) => (
                         <Endpoint
+                            models={models}
                             key={endpoint.name}
                             endpoint={endpoint}
                             spath={spath}
-                            models={models}
                         />
                     ))}
                 </div>
@@ -66,11 +67,12 @@ function Module({ mod, path, level }: ModuleProps) {
             )} */}
 
             <div className={cn('flex flex-col gap-4', level > 0 ? 'pl-0' : '')}>
-                {modules.map((submod: any) => (
+                {submodules.map((submodule: any) => (
                     <Module
-                        key={submod.name}
-                        mod={submod}
-                        path={path.concat(submod.name)}
+                        models={models}
+                        key={submodule.name}
+                        module={submodule}
+                        path={path.concat(submodule.name)}
                         level={level + 1}
                     />
                 ))}
@@ -80,9 +82,9 @@ function Module({ mod, path, level }: ModuleProps) {
 }
 
 type EndpointProps = {
-    endpoint: ApiEndpointDir
+    endpoint: ApiEndpoint
     spath: string
-    models: [string, ApiDir][]
+    models: Map<string, ApiModel>
 }
 function Endpoint({ endpoint, spath, models }: EndpointProps) {
     return (

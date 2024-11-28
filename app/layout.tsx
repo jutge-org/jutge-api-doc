@@ -29,7 +29,7 @@ export default async function RootLayout({
     children: React.ReactNode
 }>) {
     const dir = await getApiDir()
-    const tree = modules(dir)
+    const tree = modules(dir.root)
 
     return (
         <html lang="en">

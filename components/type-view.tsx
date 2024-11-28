@@ -1,7 +1,6 @@
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card'
-import { ApiDir, makeExample } from '@/lib/api-dir'
+import { ApiModel, makeExample } from '@/lib/api-dir'
 import { cn } from '@/lib/utils'
-import Link from 'next/link'
 import React from 'react'
 import YAML from 'yaml'
 
@@ -10,7 +9,7 @@ type TypeViewProps = {
     name?: string
     input: any
     spath: string
-    models: [string, ApiDir][]
+    models: Map<string, ApiModel>
 }
 export default async function TypeView({ className, name, input, spath, models }: TypeViewProps) {
     let body = <pre className="text-xs pl-2 pt-2">{YAML.stringify(input, null, 4)}</pre>
@@ -32,14 +31,16 @@ export default async function TypeView({ className, name, input, spath, models }
                 <code>{input.$ref}</code>
             </div>
         )
-        const model = models.find(([n]) => n === refName)
+        const model = models.get(refName)
         if (model === undefined) {
+            console.log(`Model not found: ${refName}`)
             return link
         }
-        const [_, schema] = model
         return (
-            <HoverCard openDelay={0} closeDelay={0} >
-                <HoverCardTrigger asChild className="data-[state=open]:bg-blue-100 rounded px-1.5">{link}</HoverCardTrigger>
+            <HoverCard openDelay={0} closeDelay={0}>
+                <HoverCardTrigger asChild className="data-[state=open]:bg-blue-100 rounded px-1.5">
+                    {link}
+                </HoverCardTrigger>
                 {model && (
                     <HoverCardContent className="p-4 border-black w-[22em] relative">
                         <div className="absolute -top-2.5 h-2.5 left-0 right-0 flex flex-row justify-center">
@@ -48,12 +49,12 @@ export default async function TypeView({ className, name, input, spath, models }
                             </svg>
                         </div>
                         <h3 className="font-semibold mb-2 font-mono">{refName}</h3>
-                        <TypeView input={schema} spath={spath} models={models} />
+                        <TypeView input={model} spath={spath} models={models} />
                         <h4 className="uppercase font-normal text-xs mt-3 mb-1 text-gray-600">
                             Example
                         </h4>
                         <pre className="text-xs bg-gray-100 px-2 py-1">
-                            {JSON.stringify(makeExample(schema, models), null, 2)}
+                            {JSON.stringify(makeExample(model, models), null, 2)}
                         </pre>
                     </HoverCardContent>
                 )}
