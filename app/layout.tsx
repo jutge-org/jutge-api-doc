@@ -1,7 +1,7 @@
 import { AppSidebar } from '@/components/app-sidebar'
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar'
 import { getApiDir } from '@/lib/api-dir'
-import { modules } from '@/lib/tree'
+import { modules } from '@/lib/api-dir'
 import type { Metadata } from 'next'
 import localFont from 'next/font/local'
 import './globals.css'
@@ -29,7 +29,7 @@ export default async function RootLayout({
     children: React.ReactNode
 }>) {
     const dir = await getApiDir()
-    const tree = modules(dir)
+    const tree = modules(dir.root)
 
     return (
         <html lang="en">

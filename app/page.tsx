@@ -1,27 +1,27 @@
+import EndpointBackgroundFlash from '@/components/endpoint-background-flash'
 import TypeView from '@/components/type-view'
-import { Collapsible, CollapsibleContent } from '@/components/ui/collapsible'
 import { Label } from '@/components/ui/label'
-import { ApiDir, getApiDir } from '@/lib/api-dir'
+import { ApiDir, ApiEndpoint, ApiModel, ApiModule, getApiDir } from '@/lib/api-dir'
 import { cn } from '@/lib/utils'
-import { CollapsibleTrigger } from '@radix-ui/react-collapsible'
-import { ChevronRight, Package, SquareFunction, Type } from 'lucide-react'
+import { KeyRound, Package, SquareFunction } from 'lucide-react'
 
 export default async function Page() {
-    const dir = await getApiDir()
+    const { models, root } = await getApiDir()
     return (
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-            <Module mod={dir} path={[]} level={0} />
+            <Module models={models} module={root} path={[]} level={0} />
         </div>
     )
 }
 
 type ModuleProps = {
-    mod: ApiDir
+    models: Map<string, ApiModel>
+    module: ApiModule
     path: string[]
     level: number
 }
-function Module({ mod, path, level }: ModuleProps) {
-    const { endpoints, modules, models } = mod
+function Module({ models, module, path, level }: ModuleProps) {
+    const { endpoints, submodules } = module
     const spath = path.join('.')
 
     return (
@@ -39,29 +39,40 @@ function Module({ mod, path, level }: ModuleProps) {
             )}
 
             {endpoints.length > 0 && (
-                <div className={cn("pb-6 pt-2 flex flex-col gap-4", level > 0 ? "px-4" : "px-8")}>
-                    <Label className="uppercase text-gray-600">Methods</Label>
-                    {endpoints.map((endpoint: any) => (
-                        <Endpoint key={endpoint.name} endpoint={endpoint} spath={spath} />
+                <div className={cn('pb-6 pt-2 flex flex-col gap-5', level > 0 ? 'px-4' : 'px-8')}>
+                    <Label className="uppercase text-gray-600">Endpoints</Label>
+                    {endpoints.map((endpoint) => (
+                        <Endpoint
+                            models={models}
+                            key={endpoint.name}
+                            endpoint={endpoint}
+                            spath={spath}
+                        />
                     ))}
                 </div>
             )}
 
-            {models.length > 0 && (
-                <div className={cn("pb-4 flex flex-col gap-4", level > 0 ? "px-4" : "px-8")}>
+            {/* {models.length > 0 && (
+                <div className={cn('pb-4 flex flex-col gap-4', level > 0 ? 'px-4' : 'px-8')}>
                     <Label className="uppercase text-gray-600">Types</Label>
-                    {models.map((model: any) => (
-                        <Model key={crypto.randomUUID()} model={model} spath={spath} />
+                    {models.map((model) => (
+                        <Model
+                            key={crypto.randomUUID()}
+                            model={model}
+                            spath={spath}
+                            models={models}
+                        />
                     ))}
                 </div>
-            )}
+            )} */}
 
-            <div className={cn("flex flex-col gap-4", level > 0 ? "pl-0" : "")}>
-                {modules.map((submod: any) => (
+            <div className={cn('flex flex-col gap-4', level > 0 ? 'pl-0' : '')}>
+                {submodules.map((submodule: any) => (
                     <Module
-                        key={submod.name}
-                        mod={submod}
-                        path={path.concat(submod.name)}
+                        models={models}
+                        key={submodule.name}
+                        module={submodule}
+                        path={path.concat(submodule.name)}
                         level={level + 1}
                     />
                 ))}
@@ -70,7 +81,43 @@ function Module({ mod, path, level }: ModuleProps) {
     )
 }
 
-function Model({ model, spath }: any) {
+type EndpointProps = {
+    endpoint: ApiEndpoint
+    spath: string
+    models: Map<string, ApiModel>
+}
+function Endpoint({ endpoint, spath, models }: EndpointProps) {
+    return (
+        <EndpointBackgroundFlash id={`${spath}.${endpoint.name}`}>
+            <h2 className="font-semibold flex flex-row gap-2 items-center mb-0">
+                <SquareFunction className="w-6 h-6" />
+                <code className="mt-0.5">{endpoint.name}</code>
+                {endpoint.actor && <KeyRound size={15} className="-ml-1" />}
+                <span className="font-normal">
+                    <span className="text-gray-400">&mdash;</span>
+                    <span className="ml-2 text-sm">{endpoint.summary}</span>
+                </span>
+            </h2>
+            {endpoint.description && (
+                <div className="pb-3 pl-8 text-xs text-gray-700 max-w-[45em]">
+                    <p>{endpoint.description}</p>
+                </div>
+            )}
+            <div className="flex flex-col mt-0 pl-8">
+                <TypeView name="input" input={endpoint.input} spath={spath} models={models} />
+                <TypeView name="output" input={endpoint.output} spath={spath} models={models} />
+            </div>
+        </EndpointBackgroundFlash>
+    )
+}
+
+/*
+type ModelProps = {
+    model: [string, ApiDir]
+    spath: string
+    models: [string, ApiDir][]
+}
+function Model({ model, spath, models }: ModelProps) {
     const [name, data] = model
     return (
         <Collapsible className="[&[data-state=open]>div>button>svg]:rotate-90">
@@ -83,33 +130,10 @@ function Model({ model, spath }: any) {
                     </h2>
                 </CollapsibleTrigger>
                 <CollapsibleContent>
-                    <TypeView input={data} spath={spath} className="pb-4" />
+                    <TypeView input={data} spath={spath} className="pb-4" models={models} />
                 </CollapsibleContent>
             </div>
         </Collapsible>
     )
 }
-
-function Endpoint({ endpoint, spath }: any) {
-    return (
-        <div id={`${spath}.${endpoint.name}`}>
-            <h2 className="font-semibold flex flex-row gap-2 items-center mb-2">
-                <SquareFunction className="w-6 h-6" />
-                <code className="mt-0.5">{endpoint.name}</code>
-                <span className="font-normal">
-                    <span className="text-gray-400">&mdash;</span>
-                    <span className="ml-2 text-sm">{endpoint.summary}</span>
-                </span>
-            </h2>
-            {endpoint.description && (
-                <div className="pb-3 pl-8 text-sm max-w-[45em]">
-                    <p>{endpoint.description}</p>
-                </div>
-            )}
-            <div className="flex flex-col gap-1 mt-1 pl-8">
-                <TypeView name="input" input={endpoint.input} spath={spath} />
-                <TypeView name="output" input={endpoint.output} spath={spath} />
-            </div>
-        </div>
-    )
-}
+*/
