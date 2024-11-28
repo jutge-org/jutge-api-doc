@@ -1,3 +1,5 @@
+import env from "@/lib/env"
+
 export type ApiInfo = {
     name: string
     description: string
@@ -38,7 +40,7 @@ export type ApiDir = {
 }
 
 export async function getApiDir(): Promise<ApiDir> {
-    const response = await fetch(`${process.env.JUTGE_API_ADDRESS}/api/dir`)
+    const response = await fetch(`${env.JUTGE_API_URL}/api/dir`)
     const result = await response.json()
     return {
         info: result.info,
