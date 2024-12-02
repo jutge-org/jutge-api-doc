@@ -1,4 +1,4 @@
-import env from "@/lib/env"
+import env from '@/lib/env'
 
 export type ApiInfo = {
     name: string
@@ -21,7 +21,7 @@ export type ApiEndpoint = {
     name: string
     summary?: string
     description?: string
-    actor: boolean
+    actor?: string
     input: any
     output: any
 }
@@ -55,7 +55,7 @@ export type Item = {
     name: string
     url: string
     type: string
-    auth: boolean
+    actor?: string
     isActive?: boolean
     items?: Item[]
 }
@@ -67,7 +67,6 @@ export function models(mod: ApiDir, path: string[]): Item[] {
             name: name,
             url: `#${path.join('.')}.${name}`,
             type: 'model',
-            auth: false,
             isActive: false,
         })
     }
@@ -80,7 +79,7 @@ export function endpoints(mod: ApiModule, path: string[]): Item[] {
             name: endpoint.name,
             url: `#${path.join('.')}.${endpoint.name}`,
             type: 'endpoint',
-            auth: endpoint.actor,
+            actor: endpoint.actor,
             isActive: false,
         }
     })

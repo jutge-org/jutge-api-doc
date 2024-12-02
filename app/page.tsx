@@ -1,9 +1,9 @@
 import EndpointBackgroundFlash from '@/components/endpoint-background-flash'
 import TypeView from '@/components/type-view'
-import { Label } from '@/components/ui/label'
-import { ApiDir, ApiEndpoint, ApiModel, ApiModule, getApiDir } from '@/lib/api-dir'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+import { ApiEndpoint, ApiModel, ApiModule, getApiDir } from '@/lib/api-dir'
 import { cn } from '@/lib/utils'
-import { KeyRound, Package, SquareFunction } from 'lucide-react'
+import { GraduationCap, Package, Shield, SquareFunction, User } from 'lucide-react'
 
 export default async function Page() {
     const { models, root } = await getApiDir()
@@ -25,12 +25,12 @@ function Module({ models, module, path, level }: ModuleProps) {
     const spath = path.join('.')
 
     return (
-        <div id={spath} className={cn(level > 0 ? 'bg-gray-50 p-4 rounded-xl' : '')}>
+        <div id={spath} className={cn(level > 0 ? 'bg-zinc-50 p-4 rounded-xl' : '')}>
             {path.length > 0 && (
                 <h1
                     className={cn(
                         'mb-4 flex gap-2 font-semibold ',
-                        level === 1 ? 'border-b pb-1 text-[1.35em]' : 'mb-6',
+                        level === 1 ? 'border-b pb-3 text-[1.35em]' : 'mb-6',
                     )}
                 >
                     <Package className={cn(level === 1 ? 'w-8 h-8' : '')} />
@@ -40,7 +40,7 @@ function Module({ models, module, path, level }: ModuleProps) {
 
             {endpoints.length > 0 && (
                 <div className={cn('pb-6 pt-2 flex flex-col gap-5', level > 0 ? 'px-4' : 'px-8')}>
-                    <Label className="uppercase text-gray-600">Endpoints</Label>
+                    {/*<Label className="uppercase text-gray-600">Endpoints</Label>*/}
                     {endpoints.map((endpoint) => (
                         <Endpoint
                             models={models}
@@ -92,7 +92,7 @@ function Endpoint({ endpoint, spath, models }: EndpointProps) {
             <h2 className="font-semibold flex flex-row gap-2 items-center mb-0">
                 <SquareFunction className="w-6 h-6" />
                 <code className="mt-0.5">{endpoint.name}</code>
-                {endpoint.actor && <KeyRound size={15} className="-ml-1" />}
+                {actor2icon(endpoint.actor)}
                 <span className="font-normal">
                     <span className="text-gray-400">&mdash;</span>
                     <span className="ml-2 text-sm">{endpoint.summary}</span>
@@ -108,5 +108,31 @@ function Endpoint({ endpoint, spath, models }: EndpointProps) {
                 <TypeView name="output" input={endpoint.output} spath={spath} models={models} />
             </div>
         </EndpointBackgroundFlash>
+    )
+}
+
+function actor2icon(actor: string | undefined) {
+    let icon, text
+    if (actor === 'anyActor') {
+        icon = <User size={15} className="-ml-1 text-gray-400" />
+        text = 'With and without credentials'
+    } else if (actor === 'userActor') {
+        icon = <User size={15} className="-ml-1  text-gray-400" />
+        text = 'user credentials required'
+    } else if (actor === 'instructorActor') {
+        icon = <GraduationCap size={15} className="-ml-1  text-gray-400" />
+        text = 'instructor credentials required'
+    } else if (actor === 'adminActor') {
+        icon = <Shield size={15} className="-ml-1  text-gray-400" />
+        text = 'admin credentials required'
+    } else {
+        return <></>
+    }
+
+    return (
+        <Tooltip>
+            <TooltipTrigger>{icon}</TooltipTrigger>
+            <TooltipContent>{text}</TooltipContent>
+        </Tooltip>
     )
 }
