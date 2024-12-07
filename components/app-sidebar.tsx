@@ -33,6 +33,12 @@ type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
 
 const clients: Item[] = [
     {
+        name: 'FakeHome',
+        type: 'client',
+        url: '/home',
+        isActive: false,
+    },
+    {
         name: 'Python',
         type: 'client',
         url: '/python',
