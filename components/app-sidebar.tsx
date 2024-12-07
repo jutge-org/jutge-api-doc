@@ -33,15 +33,33 @@ type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
 
 const clients: Item[] = [
     {
-        name: 'TypeScript',
+        name: 'FakeHome',
         type: 'client',
-        url: '/api/clients/typescript',
+        url: '/home',
         isActive: false,
     },
     {
         name: 'Python',
         type: 'client',
-        url: '/api/clients/python',
+        url: '/python',
+        isActive: false,
+    },
+    {
+        name: 'TypeScript',
+        type: 'client',
+        url: '/typescript',
+        isActive: false,
+    },
+    {
+        name: 'JavaScript',
+        type: 'client',
+        url: '/javascript',
+        isActive: false,
+    },
+    {
+        name: 'PHP',
+        type: 'client',
+        url: '/php',
         isActive: false,
     },
 ]
@@ -82,7 +100,7 @@ function Header() {
             <SidebarMenu>
                 <SidebarMenuItem>
                     <SidebarMenuButton size="lg" asChild>
-                        <Link href="#">
+                        <Link href="/">
                             <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
                                 <Image src="/jutge.png" width={64} height={64} alt="" />
                             </div>
