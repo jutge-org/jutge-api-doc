@@ -1,5 +1,5 @@
-import type { NextConfig } from 'next'
 import env from '@/lib/env'
+import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
     async rewrites() {
@@ -7,6 +7,10 @@ const nextConfig: NextConfig = {
             {
                 source: '/api/:path*',
                 destination: `${env.JUTGE_API_URL}/api/:path*`,
+            },
+            {
+                source: '/packs/:path*',
+                destination: `${env.JUTGE_API_URL}/packs/:path*`,
             },
         ]
     },
