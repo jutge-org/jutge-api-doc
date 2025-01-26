@@ -106,6 +106,16 @@ function Endpoint({ endpoint, spath, models }: EndpointProps) {
             <div className="flex flex-col mt-0 pl-8">
                 <TypeView name="input" input={endpoint.input} spath={spath} models={models} />
                 <TypeView name="output" input={endpoint.output} spath={spath} models={models} />
+                {endpoint.ifiles !== 'none' && (
+                    <div className="text-xs italic text-gray-700">
+                        input files: <b>{endpoint.ifiles}</b>
+                    </div>
+                )}
+                {endpoint.ofiles !== 'none' && (
+                    <div className="text-xs italic text-gray-700">
+                        output files: <b>{endpoint.ofiles}</b>
+                    </div>
+                )}
             </div>
         </EndpointBackgroundFlash>
     )

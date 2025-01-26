@@ -24,6 +24,8 @@ export type ApiEndpoint = {
     actor?: string
     input: any
     output: any
+    ifiles: string
+    ofiles: string
 }
 
 export type ApiModule = {
