@@ -1,4 +1,3 @@
-
 /**
  * This file has been automatically generated at 2025-01-18T09:24:21.504Z
  *
@@ -8,63 +7,63 @@
  * Description: Jutge API
  */
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
+// /* eslint-disable @typescript-eslint/no-explicit-any */
+// /* eslint-disable @typescript-eslint/no-unused-vars */
 
 // Models
 
 export type CredentialsIn = {
-    email: string,
+    email: string
     password: string
 }
 
 export type CredentialsOut = {
-    token: string,
-    expiration: string | string | string | number,
+    token: string
+    expiration: string | string | string | number
     user_uid: string
 }
 
 export type Time = {
-    full_time: string,
-    int_timestamp: number,
-    float_timestamp: number,
-    time: string,
+    full_time: string
+    int_timestamp: number
+    float_timestamp: number
+    time: string
     date: string
 }
 
 export type HomepageStats = {
-    users: number,
-    problems: number,
+    users: number
+    problems: number
     submissions: number
 }
 
 export type Language = {
-    language_id: string,
-    eng_name: string,
+    language_id: string
+    eng_name: string
     own_name: string
 }
 
 export type Languages = Record<string, Language>
 
 export type Country = {
-    country_id: string,
+    country_id: string
     eng_name: string
 }
 
 export type Countries = Record<string, Country>
 
 export type Compiler = {
-    compiler_id: string,
-    name: string,
-    language: string,
-    extension: string,
-    description: string | null,
-    version: string | null,
-    flags1: string | null,
-    flags2: string | null,
-    type: string | null,
-    warning: string | null,
-    status: string | null,
+    compiler_id: string
+    name: string
+    language: string
+    extension: string
+    description: string | null
+    version: string | null
+    flags1: string | null
+    flags2: string | null
+    type: string | null
+    warning: string | null
+    status: string | null
     notes: string | null
 }
 
@@ -77,8 +76,8 @@ export type Driver = {
 export type Drivers = Record<string, Driver>
 
 export type Verdict = {
-    verdict_id: string,
-    name: string,
+    verdict_id: string
+    name: string
     description: string
 }
 
@@ -91,127 +90,127 @@ export type Proglang = {
 export type Proglangs = Record<string, Proglang>
 
 export type Tables = {
-    languages: Languages,
-    countries: Countries,
-    compilers: Compilers,
-    drivers: Drivers,
-    verdicts: Verdicts,
+    languages: Languages
+    countries: Countries
+    compilers: Compilers
+    drivers: Drivers
+    verdicts: Verdicts
     proglangs: Proglangs
 }
 
 export type BriefAbstractProblem = {
-    problem_nm: string,
-    author: string | null,
-    author_email: string | null,
-    public: number | null,
-    official: number | null,
-    compilers: string | null,
-    driver_id: string | null,
-    type: string | null,
+    problem_nm: string
+    author: string | null
+    author_email: string | null
+    public: number | null
+    official: number | null
+    compilers: string | null
+    driver_id: string | null
+    type: string | null
     deprecation: string | null
 }
 
 export type BriefProblem = {
-    problem_id: string,
-    problem_nm: string,
-    language_id: string,
-    title: string,
-    original_language_id: string,
-    translator: string | null,
-    translator_email: string | null,
+    problem_id: string
+    problem_nm: string
+    language_id: string
+    title: string
+    original_language_id: string
+    translator: string | null
+    translator_email: string | null
     checked: number | null
 }
 
 export type BriefProblemDict = Record<string, BriefProblem>
 
 export type AbstractProblem = {
-    problem_nm: string,
-    author: string | null,
-    author_email: string | null,
-    public: number | null,
-    official: number | null,
-    compilers: string | null,
-    driver_id: string | null,
-    type: string | null,
-    deprecation: string | null,
+    problem_nm: string
+    author: string | null
+    author_email: string | null
+    public: number | null
+    official: number | null
+    compilers: string | null
+    driver_id: string | null
+    type: string | null
+    deprecation: string | null
     problems: BriefProblemDict
 }
 
 export type Problem = {
-    problem_id: string,
-    problem_nm: string,
-    language_id: string,
-    title: string,
-    original_language_id: string,
-    translator: string | null,
-    translator_email: string | null,
-    checked: number | null,
+    problem_id: string
+    problem_nm: string
+    language_id: string
+    title: string
+    original_language_id: string
+    translator: string | null
+    translator_email: string | null
+    checked: number | null
     abstract_problem: BriefAbstractProblem
 }
 
 export type AbstractProblems = Record<string, AbstractProblem>
 
 export type AbstractProblemExtras = {
-    compilers_with_ac: string[],
+    compilers_with_ac: string[]
     proglangs_with_ac: string[]
 }
 
 export type ProblemExtras = {
-    compilers_with_ac: string[],
-    proglangs_with_ac: string[],
-    official_solution_checks: Record<string, boolean>,
+    compilers_with_ac: string[]
+    proglangs_with_ac: string[]
+    official_solution_checks: Record<string, boolean>
     handler: any
 }
 
 export type Testcase = {
-    name: string,
-    input_b64: string,
+    name: string
+    input_b64: string
     correct_b64: string
 }
 
 export type Testcases = Testcase[]
 
 export type AllKeys = {
-    problems: string[],
-    enrolled_courses: string[],
-    available_courses: string[],
+    problems: string[]
+    enrolled_courses: string[]
+    available_courses: string[]
     lists: string[]
 }
 
 export type Profile = {
-    user_uid: string,
-    email: string,
-    name: string,
-    username: string | null,
-    nickname: string | null,
-    webpage: string | null,
-    description: string | null,
-    affiliation: string | null,
-    birth_year: number,
-    max_subsxhour: number,
-    max_subsxday: number,
-    administrator: number,
-    instructor: number,
-    parent_email: string | null,
-    country_id: string | null,
-    timezone_id: string,
-    compiler_id: string | null,
+    user_uid: string
+    email: string
+    name: string
+    username: string | null
+    nickname: string | null
+    webpage: string | null
+    description: string | null
+    affiliation: string | null
+    birth_year: number
+    max_subsxhour: number
+    max_subsxday: number
+    administrator: number
+    instructor: number
+    parent_email: string | null
+    country_id: string | null
+    timezone_id: string
+    compiler_id: string | null
     language_id: string | null
 }
 
 export type NewProfile = {
-    name: string,
-    birth_year: number,
-    nickname: string,
-    webpage: string,
-    affiliation: string,
-    description: string,
-    country_id: string,
+    name: string
+    birth_year: number
+    nickname: string
+    webpage: string
+    affiliation: string
+    description: string
+    country_id: string
     timezone_id: string
 }
 
 export type PasswordUpdate = {
-    oldPassword: string,
+    oldPassword: string
     newPassword: string
 }
 
@@ -224,7 +223,7 @@ export type TypeB = {
 }
 
 export type DateValue = {
-    date: number,
+    date: number
     value: number
 }
 
@@ -233,31 +232,31 @@ export type HeatmapCalendar = DateValue[]
 export type Distribution = Record<string, number>
 
 export type Distributions = {
-    verdicts: Distribution,
-    compilers: Distribution,
-    proglangs: Distribution,
-    submissions_by_hour: Distribution,
+    verdicts: Distribution
+    compilers: Distribution
+    proglangs: Distribution
+    submissions_by_hour: Distribution
     submissions_by_weekday: Distribution
 }
 
 export type DashboardStats = Record<string, number | string>
 
 export type Dashboard = {
-    stats: DashboardStats,
-    heatmap: HeatmapCalendar,
+    stats: DashboardStats
+    heatmap: HeatmapCalendar
     distributions: Distributions
 }
 
 export type Submission = {
-    problem_id: string,
-    submission_id: string,
-    compiler_id: string,
-    annotation: string | null,
-    state: string,
-    time_in: string | string | string | number,
-    veredict: string | null,
-    veredict_info: string | null,
-    veredict_publics: string | null,
+    problem_id: string
+    submission_id: string
+    compiler_id: string
+    annotation: string | null
+    state: string
+    time_in: string | string | string | number
+    veredict: string | null
+    veredict_info: string | null
+    veredict_publics: string | null
     ok_publics_but_wrong: number
 }
 
@@ -272,103 +271,103 @@ export type SubmissionPostOut = {
 }
 
 export type PublicProfile = {
-    email: string,
-    name: string,
+    email: string
+    name: string
     username: string | null
 }
 
 export type BriefCourse = {
-    course_nm: string,
-    title: string | null,
-    description: string | null,
-    annotation: string | null,
-    public: number,
+    course_nm: string
+    title: string | null
+    description: string | null
+    annotation: string | null
+    public: number
     official: number
 }
 
 export type BriefCourses = Record<string, BriefCourse>
 
 export type Course = {
-    course_nm: string,
-    title: string | null,
-    description: string | null,
-    annotation: string | null,
-    public: number,
-    official: number,
-    owner: PublicProfile,
+    course_nm: string
+    title: string | null
+    description: string | null
+    annotation: string | null
+    public: number
+    official: number
+    owner: PublicProfile
     lists: string[]
 }
 
 export type ListItem = {
-    problem_nm: string | null,
+    problem_nm: string | null
     description: string | null
 }
 
 export type ListItems = ListItem[]
 
 export type BriefList = {
-    list_nm: string,
-    title: string | null,
-    description: string | null,
-    annotation: string | null,
-    public: number,
+    list_nm: string
+    title: string | null
+    description: string | null
+    annotation: string | null
+    public: number
     official: number
 }
 
 export type BriefLists = Record<string, BriefList>
 
 export type List = {
-    list_nm: string,
-    title: string | null,
-    description: string | null,
-    annotation: string | null,
-    public: number,
-    official: number,
-    items: ListItems,
+    list_nm: string
+    title: string | null
+    description: string | null
+    annotation: string | null
+    public: number
+    official: number
+    items: ListItems
     owner: PublicProfile
 }
 
 export type AbstractStatus = {
-    problem_nm: string,
-    nb_submissions: number,
-    nb_pending_submissions: number,
-    nb_accepted_submissions: number,
-    nb_rejected_submissions: number,
-    nb_scored_submissions: number,
+    problem_nm: string
+    nb_submissions: number
+    nb_pending_submissions: number
+    nb_accepted_submissions: number
+    nb_rejected_submissions: number
+    nb_scored_submissions: number
     status: string
 }
 
 export type AbstractStatuses = Record<string, AbstractStatus>
 
 export type Status = {
-    problem_id: string,
-    problem_nm: string,
-    nb_submissions: number,
-    nb_pending_submissions: number,
-    nb_accepted_submissions: number,
-    nb_rejected_submissions: number,
-    nb_scored_submissions: number,
+    problem_id: string
+    problem_nm: string
+    nb_submissions: number
+    nb_pending_submissions: number
+    nb_accepted_submissions: number
+    nb_rejected_submissions: number
+    nb_scored_submissions: number
     status: string
 }
 
 export type Award = {
-    award_id: string,
-    time: string | string | string | number,
-    type: string,
-    icon: string,
-    title: string,
-    info: string,
-    youtube: string | null,
+    award_id: string
+    time: string | string | string | number
+    type: string
+    icon: string
+    title: string
+    info: string
+    youtube: string | null
     submission: Submission | null
 }
 
 export type BriefAward = {
-    award_id: string,
-    time: string | string | string | number,
-    type: string,
-    icon: string,
-    title: string,
-    info: string,
+    award_id: string
+    time: string | string | string | number
+    type: string
+    icon: string
+    title: string
+    info: string
     youtube: string | null
 }
 
@@ -377,317 +376,317 @@ export type BriefAwards = Record<string, BriefAward>
 export type TagsDict = Record<string, string[]>
 
 export type Document = {
-    document_nm: string,
-    title: string,
+    document_nm: string
+    title: string
     description: string
 }
 
 export type Documents = Document[]
 
 export type InstructorList = {
-    list_nm: string,
-    title: string,
-    description: string,
-    annotation: string,
-    official: number,
+    list_nm: string
+    title: string
+    description: string
+    annotation: string
+    official: number
     public: number
 }
 
 export type InstructorLists = InstructorList[]
 
 export type InstructorListItem = {
-    problem_nm: string | null,
+    problem_nm: string | null
     description: string | null
 }
 
 export type InstructorListItems = InstructorListItem[]
 
 export type InstructorListWithItems = {
-    list_nm: string,
-    title: string,
-    description: string,
-    annotation: string,
-    official: number,
-    public: number,
+    list_nm: string
+    title: string
+    description: string
+    annotation: string
+    official: number
+    public: number
     items: InstructorListItems
 }
 
 export type InstructorCourse = {
-    course_nm: string,
-    title: string,
-    description: string,
-    annotation: string,
-    official: number,
+    course_nm: string
+    title: string
+    description: string
+    annotation: string
+    official: number
     public: number
 }
 
 export type InstructorCourses = InstructorCourse[]
 
 export type CourseMembers = {
-    invited: string[],
-    enrolled: string[],
+    invited: string[]
+    enrolled: string[]
     pending: string[]
 }
 
 export type InstructorCourseWithItems = {
-    course_nm: string,
-    title: string,
-    description: string,
-    annotation: string,
-    official: number,
-    public: number,
-    lists: string[],
-    students: CourseMembers,
+    course_nm: string
+    title: string
+    description: string
+    annotation: string
+    official: number
+    public: number
+    lists: string[]
+    students: CourseMembers
     tutors: CourseMembers
 }
 
 export type InstructorExam = {
-    exam_nm: string,
-    title: string,
-    place: string | null,
-    description: string | null,
-    code: string | null,
-    time_start: string | string | string | number | null,
-    exp_time_start: string | string | string | number,
-    running_time: number,
-    visible_submissions: number,
-    started_by: string | null,
-    contest: number,
-    instructions: string | null,
-    avatars: string | null,
+    exam_nm: string
+    title: string
+    place: string | null
+    description: string | null
+    code: string | null
+    time_start: string | string | string | number | null
+    exp_time_start: string | string | string | number
+    running_time: number
+    visible_submissions: number
+    started_by: string | null
+    contest: number
+    instructions: string | null
+    avatars: string | null
     anonymous: number
 }
 
 export type InstructorExams = InstructorExam[]
 
 export type InstructorExamCourse = {
-    title: string,
-    description: string,
-    course_nm: string,
+    title: string
+    description: string
+    course_nm: string
     annotation: string
 }
 
 export type InstructorExamDocument = {
-    document_nm: string,
-    title: string,
+    document_nm: string
+    title: string
     description: string
 }
 
 export type InstructorExamDocuments = InstructorExamDocument[]
 
 export type InstructorExamProblem = {
-    problem_nm: string,
-    weight: number | null,
-    icon: string | null,
+    problem_nm: string
+    weight: number | null
+    icon: string | null
     caption: string | null
 }
 
 export type InstructorExamProblems = InstructorExamProblem[]
 
 export type InstructorExamStudent = {
-    email: string,
-    name: string,
-    code: string | null,
-    restricted: number,
-    annotation: string | null,
-    result: string | null,
-    finished: number,
-    banned: number,
-    reason_ban: string | null,
-    inc: number | null,
-    reason_inc: string | null,
-    taken_exam: number,
-    emergency_password: string | null,
+    email: string
+    name: string
+    code: string | null
+    restricted: number
+    annotation: string | null
+    result: string | null
+    finished: number
+    banned: number
+    reason_ban: string | null
+    inc: number | null
+    reason_inc: string | null
+    taken_exam: number
+    emergency_password: string | null
     invited: number
 }
 
 export type InstructorExamStudents = InstructorExamStudent[]
 
 export type InstructorExamWithItems = {
-    exam_nm: string,
-    title: string,
-    place: string | null,
-    description: string | null,
-    code: string | null,
-    time_start: string | string | string | number | null,
-    exp_time_start: string | string | string | number,
-    running_time: number,
-    visible_submissions: number,
-    started_by: string | null,
-    contest: number,
-    instructions: string | null,
-    avatars: string | null,
-    anonymous: number,
-    course: InstructorExamCourse,
-    documents: InstructorExamDocuments,
-    problems: InstructorExamProblems,
+    exam_nm: string
+    title: string
+    place: string | null
+    description: string | null
+    code: string | null
+    time_start: string | string | string | number | null
+    exp_time_start: string | string | string | number
+    running_time: number
+    visible_submissions: number
+    started_by: string | null
+    contest: number
+    instructions: string | null
+    avatars: string | null
+    anonymous: number
+    course: InstructorExamCourse
+    documents: InstructorExamDocuments
+    problems: InstructorExamProblems
     students: InstructorExamStudents
 }
 
 export type InstructorExamCreation = {
-    exam_nm: string,
-    course_nm: string,
-    title: string,
-    place: string,
-    description: string,
-    instructions: string,
-    exp_time_start: string,
-    running_time: number,
+    exam_nm: string
+    course_nm: string
+    title: string
+    place: string
+    description: string
+    instructions: string
+    exp_time_start: string
+    running_time: number
     contest: number
 }
 
 export type InstructorExamStudentPost = {
-    email: string,
-    invited: number,
-    restricted: number,
-    code: string,
-    emergency_password: string,
+    email: string
+    invited: number
+    restricted: number
+    code: string
+    emergency_password: string
     annotation: string
 }
 
 export type InstructorExamStudentsPost = InstructorExamStudentPost[]
 
 export type InstructorExamSubmissionsOptions = {
-    problems: string,
-    include_source: boolean,
-    include_pdf: boolean,
-    include_metadata: boolean,
+    problems: string
+    include_source: boolean
+    include_pdf: boolean
+    include_metadata: boolean
     only_last: boolean
 }
 
 export type Pack = {
-    message: string,
+    message: string
     href: string
 }
 
 export type SubmissionQuery = {
-    email: string,
-    problem_nm: string,
-    problem_id: string,
-    time: string | string | string | number,
-    ip: string,
+    email: string
+    problem_nm: string
+    problem_id: string
+    time: string | string | string | number
+    ip: string
     verdict: string
 }
 
 export type SubmissionsQuery = SubmissionQuery[]
 
 export type InstructorEntry = {
-    username: string,
-    name: string,
+    username: string
+    name: string
     email: string
 }
 
 export type InstructorEntries = InstructorEntry[]
 
 export type UserCreation = {
-    email: string,
-    name: string,
-    username: string,
-    password: string,
-    administrator: number,
+    email: string
+    name: string
+    username: string
+    password: string
+    administrator: number
     instructor: number
 }
 
 export type FreeDiskSpace = {
-    disk: string,
-    filesystem: string,
-    size: string,
-    used: string,
-    available: string,
-    use: string,
+    disk: string
+    filesystem: string
+    size: string
+    used: string
+    available: string
+    use: string
     mounted: string
 }
 
 export type RecentConnectedUsers = {
-    latest_hour: number,
-    latest_day: number,
-    latest_week: number,
-    latest_month: number,
+    latest_hour: number
+    latest_day: number
+    latest_week: number
+    latest_month: number
     latest_year: number
 }
 
 export type RecentSubmissions = {
-    latest_01_minutes: number,
-    latest_05_minutes: number,
-    latest_15_minutes: number,
+    latest_01_minutes: number
+    latest_05_minutes: number
+    latest_15_minutes: number
     latest_60_minutes: number
 }
 
 export type RecentLoadAverages = {
-    latest_01_minutes: number,
-    latest_05_minutes: number,
+    latest_01_minutes: number
+    latest_05_minutes: number
     latest_15_minutes: number
 }
 
 export type SubmissionsHistograms = {
-    latest_hour: number[],
+    latest_hour: number[]
     latest_day: number[]
 }
 
 export type Zombies = {
-    ies: number,
+    ies: number
     pendings: number
 }
 
 export type AdminDashboard = {
-    free_disk_space: Record<string, FreeDiskSpace | null>,
-    recent_load_averages: RecentLoadAverages,
-    recent_connected_users: RecentConnectedUsers,
-    recent_submissions: RecentSubmissions,
-    submissions_histograms: SubmissionsHistograms,
+    free_disk_space: Record<string, FreeDiskSpace | null>
+    recent_load_averages: RecentLoadAverages
+    recent_connected_users: RecentConnectedUsers
+    recent_submissions: RecentSubmissions
+    submissions_histograms: SubmissionsHistograms
     zombies: Zombies
 }
 
 export type UpcomingExam = {
-    exam_nm: string,
-    title: string,
-    username: string,
-    email: string,
-    exp_time_start: string | string | string | number,
-    running_time: number,
-    students: number,
+    exam_nm: string
+    title: string
+    username: string
+    email: string
+    exp_time_start: string | string | string | number
+    running_time: number
+    students: number
     name: string
 }
 
 export type UpcomingExams = UpcomingExam[]
 
 export type SubmissionQueueItem = {
-    submission_uid: string,
-    submission_id: string,
-    problem_id: string,
-    compiler_id: string,
-    time_in: string | string | string | number,
-    exam_id: string | null,
-    veredict: string | null,
-    user_id: string,
-    user__name: string,
+    submission_uid: string
+    submission_id: string
+    problem_id: string
+    compiler_id: string
+    time_in: string | string | string | number
+    exam_id: string | null
+    veredict: string | null
+    user_id: string
+    user__name: string
     problem__title: string
 }
 
 export type SubmissionQueueItems = SubmissionQueueItem[]
 
 export type UserRankingEntry = {
-    user_id: string,
-    nickname: string | null,
-    email: string,
-    name: string,
+    user_id: string
+    nickname: string | null
+    email: string
+    name: string
     problems: number
 }
 
 export type UserRanking = UserRankingEntry[]
 
 export type DateRange = {
-    start: string,
+    start: string
     end: string
 }
 
 export type TwoFloats = {
-    a: number,
+    a: number
     b: number
 }
 
 export type TwoInts = {
-    a: number,
+    a: number
     b: number
 }
 
@@ -696,9 +695,9 @@ export type Name = {
 }
 
 export type SomeType = {
-    a: string,
-    b: number,
-    c: boolean | null,
+    a: string
+    b: number
+    c: boolean | null
     d: boolean | null
 }
 
@@ -859,7 +858,6 @@ export class JutgeApiClient {
         this.check = new Module_check(this)
         this.playground = new Module_playground(this)
     }
-
 }
 
 /**
@@ -868,12 +866,10 @@ export class JutgeApiClient {
  *
  */
 class Module_auth {
-
     private readonly root: JutgeApiClient
 
     constructor(root: JutgeApiClient) {
         this.root = root
-
     }
 
     /**
@@ -883,7 +879,7 @@ class Module_auth {
      * No warnings
      *
      */
-    async login(data: CredentialsIn) : Promise<CredentialsOut> {
+    async login(data: CredentialsIn): Promise<CredentialsOut> {
         const [output, ofiles] = await this.root.execute('auth.login', data)
         return output
     }
@@ -895,11 +891,10 @@ class Module_auth {
      * No warnings
      *
      */
-    async logout() : Promise<void> {
+    async logout(): Promise<void> {
         const [output, ofiles] = await this.root.execute('auth.logout', null)
         return output
     }
-
 }
 
 /**
@@ -908,12 +903,10 @@ class Module_auth {
  *
  */
 class Module_misc {
-
     private readonly root: JutgeApiClient
 
     constructor(root: JutgeApiClient) {
         this.root = root
-
     }
 
     /**
@@ -923,7 +916,7 @@ class Module_misc {
      * No warnings
      *
      */
-    async getFortune() : Promise<string> {
+    async getFortune(): Promise<string> {
         const [output, ofiles] = await this.root.execute('misc.getFortune', null)
         return output
     }
@@ -935,7 +928,7 @@ class Module_misc {
      * No warnings
      *
      */
-    async getTime() : Promise<Time> {
+    async getTime(): Promise<Time> {
         const [output, ofiles] = await this.root.execute('misc.getTime', null)
         return output
     }
@@ -947,7 +940,7 @@ class Module_misc {
      * No warnings
      *
      */
-    async getHomepageStats() : Promise<HomepageStats> {
+    async getHomepageStats(): Promise<HomepageStats> {
         const [output, ofiles] = await this.root.execute('misc.getHomepageStats', null)
         return output
     }
@@ -959,11 +952,10 @@ class Module_misc {
      * No warnings
      *
      */
-    async getLogo() : Promise<Download> {
+    async getLogo(): Promise<Download> {
         const [output, ofiles] = await this.root.execute('misc.getLogo', null)
         return ofiles[0]
     }
-
 }
 
 /**
@@ -972,12 +964,10 @@ class Module_misc {
  *
  */
 class Module_tables {
-
     private readonly root: JutgeApiClient
 
     constructor(root: JutgeApiClient) {
         this.root = root
-
     }
 
     /**
@@ -987,7 +977,7 @@ class Module_tables {
      * No warnings
      * Returns all languages as a dictionary of objects, indexed by id.
      */
-    async getLanguages() : Promise<Languages> {
+    async getLanguages(): Promise<Languages> {
         const [output, ofiles] = await this.root.execute('tables.getLanguages', null)
         return output
     }
@@ -999,7 +989,7 @@ class Module_tables {
      * No warnings
      * Returns all countries as a dictionary of objects, indexed by id.
      */
-    async getCountries() : Promise<Countries> {
+    async getCountries(): Promise<Countries> {
         const [output, ofiles] = await this.root.execute('tables.getCountries', null)
         return output
     }
@@ -1011,7 +1001,7 @@ class Module_tables {
      * No warnings
      * Returns all compilers as a dictionary of objects, indexed by id.
      */
-    async getCompilers() : Promise<Compilers> {
+    async getCompilers(): Promise<Compilers> {
         const [output, ofiles] = await this.root.execute('tables.getCompilers', null)
         return output
     }
@@ -1023,7 +1013,7 @@ class Module_tables {
      * No warnings
      * Returns all drivers as a dictionary of objects, indexed by id.
      */
-    async getDrivers() : Promise<Drivers> {
+    async getDrivers(): Promise<Drivers> {
         const [output, ofiles] = await this.root.execute('tables.getDrivers', null)
         return output
     }
@@ -1035,7 +1025,7 @@ class Module_tables {
      * No warnings
      * Returns all verdicts as a dictionary of objects, indexed by id.
      */
-    async getVerdicts() : Promise<Verdicts> {
+    async getVerdicts(): Promise<Verdicts> {
         const [output, ofiles] = await this.root.execute('tables.getVerdicts', null)
         return output
     }
@@ -1047,7 +1037,7 @@ class Module_tables {
      * No warnings
      * Returns all proglangs as a dictionary of objects, indexed by id.
      */
-    async getProglangs() : Promise<Proglangs> {
+    async getProglangs(): Promise<Proglangs> {
         const [output, ofiles] = await this.root.execute('tables.getProglangs', null)
         return output
     }
@@ -1059,11 +1049,10 @@ class Module_tables {
      * No warnings
      * Returns all compilers, countries, drivers, languages, proglangs, and verdicts in a single request. This data does not change often, so you should only request it once per session.
      */
-    async getAll() : Promise<Tables> {
+    async getAll(): Promise<Tables> {
         const [output, ofiles] = await this.root.execute('tables.getAll', null)
         return output
     }
-
 }
 
 /**
@@ -1078,12 +1067,10 @@ Available problems depend on the actor issuing the request. For example, non aut
  *
  */
 class Module_problems {
-
     private readonly root: JutgeApiClient
 
     constructor(root: JutgeApiClient) {
         this.root = root
-
     }
 
     /**
@@ -1093,7 +1080,7 @@ class Module_problems {
      * No warnings
      * Includes problems.
      */
-    async getAllAbstractProblems() : Promise<AbstractProblems> {
+    async getAllAbstractProblems(): Promise<AbstractProblems> {
         const [output, ofiles] = await this.root.execute('problems.getAllAbstractProblems', null)
         return output
     }
@@ -1105,8 +1092,11 @@ class Module_problems {
      * No warnings
      * Includes problems.
      */
-    async getAbstractProblems(problem_nms: string) : Promise<AbstractProblems> {
-        const [output, ofiles] = await this.root.execute('problems.getAbstractProblems', problem_nms)
+    async getAbstractProblems(problem_nms: string): Promise<AbstractProblems> {
+        const [output, ofiles] = await this.root.execute(
+            'problems.getAbstractProblems',
+            problem_nms,
+        )
         return output
     }
 
@@ -1117,8 +1107,11 @@ class Module_problems {
      * No warnings
      * Includes problems.
      */
-    async getAbstractProblemsInList(list_key: string) : Promise<AbstractProblems> {
-        const [output, ofiles] = await this.root.execute('problems.getAbstractProblemsInList', list_key)
+    async getAbstractProblemsInList(list_key: string): Promise<AbstractProblems> {
+        const [output, ofiles] = await this.root.execute(
+            'problems.getAbstractProblemsInList',
+            list_key,
+        )
         return output
     }
 
@@ -1129,7 +1122,7 @@ class Module_problems {
      * No warnings
      * Includes owner and problems
      */
-    async getAbstractProblem(problem_nm: string) : Promise<AbstractProblem> {
+    async getAbstractProblem(problem_nm: string): Promise<AbstractProblem> {
         const [output, ofiles] = await this.root.execute('problems.getAbstractProblem', problem_nm)
         return output
     }
@@ -1141,8 +1134,11 @@ class Module_problems {
      * No warnings
      * Includes accepted compilers and accepted proglangs
      */
-    async getAbstractProblemExtras(problem_nm: string) : Promise<AbstractProblemExtras> {
-        const [output, ofiles] = await this.root.execute('problems.getAbstractProblemExtras', problem_nm)
+    async getAbstractProblemExtras(problem_nm: string): Promise<AbstractProblemExtras> {
+        const [output, ofiles] = await this.root.execute(
+            'problems.getAbstractProblemExtras',
+            problem_nm,
+        )
         return output
     }
 
@@ -1153,7 +1149,7 @@ class Module_problems {
      * No warnings
      * Includes abstract problem, which includes owner
      */
-    async getProblem(problem_id: string) : Promise<Problem> {
+    async getProblem(problem_id: string): Promise<Problem> {
         const [output, ofiles] = await this.root.execute('problems.getProblem', problem_id)
         return output
     }
@@ -1165,7 +1161,7 @@ class Module_problems {
      * No warnings
      * Includes accepted compilers, accepted proglangs, official solutions checks and handler specifications
      */
-    async getProblemExtras(problem_id: string) : Promise<ProblemExtras> {
+    async getProblemExtras(problem_id: string): Promise<ProblemExtras> {
         const [output, ofiles] = await this.root.execute('problems.getProblemExtras', problem_id)
         return output
     }
@@ -1177,7 +1173,7 @@ class Module_problems {
      * No warnings
      *
      */
-    async getSampleTestcases(problem_id: string) : Promise<Testcases> {
+    async getSampleTestcases(problem_id: string): Promise<Testcases> {
         const [output, ofiles] = await this.root.execute('problems.getSampleTestcases', problem_id)
         return output
     }
@@ -1189,7 +1185,7 @@ class Module_problems {
      * No warnings
      * Public testcases are like sample testcases, but are not meant to be show in the problem statatement, because of their long length.
      */
-    async getPublicTestcases(problem_id: string) : Promise<Testcases> {
+    async getPublicTestcases(problem_id: string): Promise<Testcases> {
         const [output, ofiles] = await this.root.execute('problems.getPublicTestcases', problem_id)
         return output
     }
@@ -1201,7 +1197,7 @@ class Module_problems {
      * No warnings
      * Currently, this is suboptimal, but I already know how to improve it.
      */
-    async getHtmlStatement(problem_id: string) : Promise<string> {
+    async getHtmlStatement(problem_id: string): Promise<string> {
         const [output, ofiles] = await this.root.execute('problems.getHtmlStatement', problem_id)
         return output
     }
@@ -1213,7 +1209,7 @@ class Module_problems {
      * No warnings
      *
      */
-    async getTextStatement(problem_id: string) : Promise<string> {
+    async getTextStatement(problem_id: string): Promise<string> {
         const [output, ofiles] = await this.root.execute('problems.getTextStatement', problem_id)
         return output
     }
@@ -1225,8 +1221,11 @@ class Module_problems {
      * No warnings
      *
      */
-    async getMarkdownStatement(problem_id: string) : Promise<string> {
-        const [output, ofiles] = await this.root.execute('problems.getMarkdownStatement', problem_id)
+    async getMarkdownStatement(problem_id: string): Promise<string> {
+        const [output, ofiles] = await this.root.execute(
+            'problems.getMarkdownStatement',
+            problem_id,
+        )
         return output
     }
 
@@ -1237,7 +1236,7 @@ class Module_problems {
      * No warnings
      *
      */
-    async getPdfStatement(problem_id: string) : Promise<Download> {
+    async getPdfStatement(problem_id: string): Promise<Download> {
         const [output, ofiles] = await this.root.execute('problems.getPdfStatement', problem_id)
         return ofiles[0]
     }
@@ -1249,11 +1248,10 @@ class Module_problems {
      * No warnings
      *
      */
-    async getZipStatement(problem_id: string) : Promise<Download> {
+    async getZipStatement(problem_id: string): Promise<Download> {
         const [output, ofiles] = await this.root.execute('problems.getZipStatement', problem_id)
         return ofiles[0]
     }
-
 }
 
 /**
@@ -1262,7 +1260,6 @@ class Module_problems {
  *
  */
 class Module_student {
-
     private readonly root: JutgeApiClient
 
     readonly keys: Module_student_keys
@@ -1285,7 +1282,6 @@ class Module_student {
         this.statuses = new Module_student_statuses(root)
         this.awards = new Module_student_awards(root)
     }
-
 }
 
 /**
@@ -1294,12 +1290,10 @@ class Module_student {
  *
  */
 class Module_student_keys {
-
     private readonly root: JutgeApiClient
 
     constructor(root: JutgeApiClient) {
         this.root = root
-
     }
 
     /**
@@ -1309,7 +1303,7 @@ class Module_student_keys {
      * No warnings
      *
      */
-    async getAll() : Promise<AllKeys> {
+    async getAll(): Promise<AllKeys> {
         const [output, ofiles] = await this.root.execute('student.keys.getAll', null)
         return output
     }
@@ -1321,7 +1315,7 @@ class Module_student_keys {
      * No warnings
      *
      */
-    async getProblems() : Promise<string[]> {
+    async getProblems(): Promise<string[]> {
         const [output, ofiles] = await this.root.execute('student.keys.getProblems', null)
         return output
     }
@@ -1333,7 +1327,7 @@ class Module_student_keys {
      * No warnings
      *
      */
-    async getEnrolledCourses() : Promise<string[]> {
+    async getEnrolledCourses(): Promise<string[]> {
         const [output, ofiles] = await this.root.execute('student.keys.getEnrolledCourses', null)
         return output
     }
@@ -1345,7 +1339,7 @@ class Module_student_keys {
      * No warnings
      *
      */
-    async getAvailableCourses() : Promise<string[]> {
+    async getAvailableCourses(): Promise<string[]> {
         const [output, ofiles] = await this.root.execute('student.keys.getAvailableCourses', null)
         return output
     }
@@ -1357,11 +1351,10 @@ class Module_student_keys {
      * No warnings
      *
      */
-    async getLists() : Promise<string[]> {
+    async getLists(): Promise<string[]> {
         const [output, ofiles] = await this.root.execute('student.keys.getLists', null)
         return output
     }
-
 }
 
 /**
@@ -1370,12 +1363,10 @@ class Module_student_keys {
  *
  */
 class Module_student_profile {
-
     private readonly root: JutgeApiClient
 
     constructor(root: JutgeApiClient) {
         this.root = root
-
     }
 
     /**
@@ -1385,7 +1376,7 @@ class Module_student_profile {
      * No warnings
      *
      */
-    async get() : Promise<Profile> {
+    async get(): Promise<Profile> {
         const [output, ofiles] = await this.root.execute('student.profile.get', null)
         return output
     }
@@ -1397,7 +1388,7 @@ class Module_student_profile {
      * No warnings
      *
      */
-    async update(data: NewProfile) : Promise<void> {
+    async update(data: NewProfile): Promise<void> {
         const [output, ofiles] = await this.root.execute('student.profile.update', data)
         return output
     }
@@ -1409,7 +1400,7 @@ class Module_student_profile {
      * No warnings
      *
      */
-    async getAvatar() : Promise<Download> {
+    async getAvatar(): Promise<Download> {
         const [output, ofiles] = await this.root.execute('student.profile.getAvatar', null)
         return ofiles[0]
     }
@@ -1421,7 +1412,7 @@ class Module_student_profile {
      * No warnings
      *
      */
-    async setAvatar(ifile: File) : Promise<void> {
+    async setAvatar(ifile: File): Promise<void> {
         const [output, ofiles] = await this.root.execute('student.profile.setAvatar', null, [ifile])
         return output
     }
@@ -1433,11 +1424,10 @@ class Module_student_profile {
      * No warnings
      * Receives the old password and the new one, and changes the password if the old one is correct
      */
-    async changePassword(data: PasswordUpdate) : Promise<void> {
+    async changePassword(data: PasswordUpdate): Promise<void> {
         const [output, ofiles] = await this.root.execute('student.profile.changePassword', data)
         return output
     }
-
 }
 
 /**
@@ -1446,12 +1436,10 @@ class Module_student_profile {
  *
  */
 class Module_student_dashboard {
-
     private readonly root: JutgeApiClient
 
     constructor(root: JutgeApiClient) {
         this.root = root
-
     }
 
     /**
@@ -1461,8 +1449,11 @@ class Module_student_dashboard {
      * No warnings
      *
      */
-    async getAllDistributions() : Promise<Distributions> {
-        const [output, ofiles] = await this.root.execute('student.dashboard.getAllDistributions', null)
+    async getAllDistributions(): Promise<Distributions> {
+        const [output, ofiles] = await this.root.execute(
+            'student.dashboard.getAllDistributions',
+            null,
+        )
         return output
     }
 
@@ -1473,8 +1464,11 @@ class Module_student_dashboard {
      * No warnings
      *
      */
-    async getCompilersDistribution() : Promise<Distribution> {
-        const [output, ofiles] = await this.root.execute('student.dashboard.getCompilersDistribution', null)
+    async getCompilersDistribution(): Promise<Distribution> {
+        const [output, ofiles] = await this.root.execute(
+            'student.dashboard.getCompilersDistribution',
+            null,
+        )
         return output
     }
 
@@ -1485,7 +1479,7 @@ class Module_student_dashboard {
      * No warnings
      *
      */
-    async getDashboard() : Promise<Dashboard> {
+    async getDashboard(): Promise<Dashboard> {
         const [output, ofiles] = await this.root.execute('student.dashboard.getDashboard', null)
         return output
     }
@@ -1497,8 +1491,11 @@ class Module_student_dashboard {
      * No warnings
      *
      */
-    async getHeatmapCalendar() : Promise<HeatmapCalendar> {
-        const [output, ofiles] = await this.root.execute('student.dashboard.getHeatmapCalendar', null)
+    async getHeatmapCalendar(): Promise<HeatmapCalendar> {
+        const [output, ofiles] = await this.root.execute(
+            'student.dashboard.getHeatmapCalendar',
+            null,
+        )
         return output
     }
 
@@ -1509,8 +1506,11 @@ class Module_student_dashboard {
      * No warnings
      *
      */
-    async getProglangsDistribution() : Promise<Distribution> {
-        const [output, ofiles] = await this.root.execute('student.dashboard.getProglangsDistribution', null)
+    async getProglangsDistribution(): Promise<Distribution> {
+        const [output, ofiles] = await this.root.execute(
+            'student.dashboard.getProglangsDistribution',
+            null,
+        )
         return output
     }
 
@@ -1521,7 +1521,7 @@ class Module_student_dashboard {
      * No warnings
      *
      */
-    async getStats() : Promise<DashboardStats> {
+    async getStats(): Promise<DashboardStats> {
         const [output, ofiles] = await this.root.execute('student.dashboard.getStats', null)
         return output
     }
@@ -1533,8 +1533,11 @@ class Module_student_dashboard {
      * No warnings
      *
      */
-    async getSubmissionsByHour() : Promise<Distribution> {
-        const [output, ofiles] = await this.root.execute('student.dashboard.getSubmissionsByHour', null)
+    async getSubmissionsByHour(): Promise<Distribution> {
+        const [output, ofiles] = await this.root.execute(
+            'student.dashboard.getSubmissionsByHour',
+            null,
+        )
         return output
     }
 
@@ -1545,8 +1548,11 @@ class Module_student_dashboard {
      * No warnings
      *
      */
-    async getSubmissionsByWeekDay() : Promise<Distribution> {
-        const [output, ofiles] = await this.root.execute('student.dashboard.getSubmissionsByWeekDay', null)
+    async getSubmissionsByWeekDay(): Promise<Distribution> {
+        const [output, ofiles] = await this.root.execute(
+            'student.dashboard.getSubmissionsByWeekDay',
+            null,
+        )
         return output
     }
 
@@ -1557,11 +1563,13 @@ class Module_student_dashboard {
      * No warnings
      *
      */
-    async getVerdictsDistribution() : Promise<Distribution> {
-        const [output, ofiles] = await this.root.execute('student.dashboard.getVerdictsDistribution', null)
+    async getVerdictsDistribution(): Promise<Distribution> {
+        const [output, ofiles] = await this.root.execute(
+            'student.dashboard.getVerdictsDistribution',
+            null,
+        )
         return output
     }
-
 }
 
 /**
@@ -1570,12 +1578,10 @@ class Module_student_dashboard {
  *
  */
 class Module_student_submissions {
-
     private readonly root: JutgeApiClient
 
     constructor(root: JutgeApiClient) {
         this.root = root
-
     }
 
     /**
@@ -1585,7 +1591,7 @@ class Module_student_submissions {
      * No warnings
      * Flat array of submissions in chronological order.
      */
-    async getAll() : Promise<Submissions> {
+    async getAll(): Promise<Submissions> {
         const [output, ofiles] = await this.root.execute('student.submissions.getAll', null)
         return output
     }
@@ -1597,8 +1603,11 @@ class Module_student_submissions {
      * No warnings
      * Grouped by problem.
      */
-    async getForAbstractProblem(problem_nm: string) : Promise<DictDictSubmissions> {
-        const [output, ofiles] = await this.root.execute('student.submissions.getForAbstractProblem', problem_nm)
+    async getForAbstractProblem(problem_nm: string): Promise<DictDictSubmissions> {
+        const [output, ofiles] = await this.root.execute(
+            'student.submissions.getForAbstractProblem',
+            problem_nm,
+        )
         return output
     }
 
@@ -1609,8 +1618,11 @@ class Module_student_submissions {
      * No warnings
      *
      */
-    async getForProblem(problem_id: string) : Promise<DictSubmissions> {
-        const [output, ofiles] = await this.root.execute('student.submissions.getForProblem', problem_id)
+    async getForProblem(problem_id: string): Promise<DictSubmissions> {
+        const [output, ofiles] = await this.root.execute(
+            'student.submissions.getForProblem',
+            problem_id,
+        )
         return output
     }
 
@@ -1621,7 +1633,7 @@ class Module_student_submissions {
      * No warnings
      *
      */
-    async get(data: { problem_id: string, submission_id: string } ) : Promise<Submission> {
+    async get(data: { problem_id: string; submission_id: string }): Promise<Submission> {
         const [output, ofiles] = await this.root.execute('student.submissions.get', data)
         return output
     }
@@ -1633,11 +1645,15 @@ class Module_student_submissions {
      * No warnings
      *
      */
-    async submit(data: { problem_id: string, compiler_id: string, annotation: string } , ifile: File) : Promise<SubmissionPostOut> {
-        const [output, ofiles] = await this.root.execute('student.submissions.submit', data, [ifile])
+    async submit(
+        data: { problem_id: string; compiler_id: string; annotation: string },
+        ifile: File,
+    ): Promise<SubmissionPostOut> {
+        const [output, ofiles] = await this.root.execute('student.submissions.submit', data, [
+            ifile,
+        ])
         return output
     }
-
 }
 
 /**
@@ -1646,12 +1662,10 @@ class Module_student_submissions {
  *
  */
 class Module_student_courses {
-
     private readonly root: JutgeApiClient
 
     constructor(root: JutgeApiClient) {
         this.root = root
-
     }
 
     /**
@@ -1661,7 +1675,7 @@ class Module_student_courses {
      * No warnings
      *
      */
-    async getAllAvailable() : Promise<BriefCourses> {
+    async getAllAvailable(): Promise<BriefCourses> {
         const [output, ofiles] = await this.root.execute('student.courses.getAllAvailable', null)
         return output
     }
@@ -1673,7 +1687,7 @@ class Module_student_courses {
      * No warnings
      *
      */
-    async getAllEnrolled() : Promise<BriefCourses> {
+    async getAllEnrolled(): Promise<BriefCourses> {
         const [output, ofiles] = await this.root.execute('student.courses.getAllEnrolled', null)
         return output
     }
@@ -1685,7 +1699,7 @@ class Module_student_courses {
      * No warnings
      * Includes owner and lists.
      */
-    async getAvailable(course_key: string) : Promise<Course> {
+    async getAvailable(course_key: string): Promise<Course> {
         const [output, ofiles] = await this.root.execute('student.courses.getAvailable', course_key)
         return output
     }
@@ -1697,7 +1711,7 @@ class Module_student_courses {
      * No warnings
      * Includes owner and lists.
      */
-    async getEnrolled(course_key: string) : Promise<Course> {
+    async getEnrolled(course_key: string): Promise<Course> {
         const [output, ofiles] = await this.root.execute('student.courses.getEnrolled', course_key)
         return output
     }
@@ -1709,7 +1723,7 @@ class Module_student_courses {
      * No warnings
      *
      */
-    async enroll(course_key: string) : Promise<void> {
+    async enroll(course_key: string): Promise<void> {
         const [output, ofiles] = await this.root.execute('student.courses.enroll', course_key)
         return output
     }
@@ -1721,11 +1735,10 @@ class Module_student_courses {
      * No warnings
      *
      */
-    async unenroll(course_key: string) : Promise<void> {
+    async unenroll(course_key: string): Promise<void> {
         const [output, ofiles] = await this.root.execute('student.courses.unenroll', course_key)
         return output
     }
-
 }
 
 /**
@@ -1734,12 +1747,10 @@ class Module_student_courses {
  *
  */
 class Module_student_lists {
-
     private readonly root: JutgeApiClient
 
     constructor(root: JutgeApiClient) {
         this.root = root
-
     }
 
     /**
@@ -1749,7 +1760,7 @@ class Module_student_lists {
      * No warnings
      *
      */
-    async getAll() : Promise<BriefLists> {
+    async getAll(): Promise<BriefLists> {
         const [output, ofiles] = await this.root.execute('student.lists.getAll', null)
         return output
     }
@@ -1761,11 +1772,10 @@ class Module_student_lists {
      * No warnings
      * Includes items, owner.
      */
-    async get(list_key: string) : Promise<List> {
+    async get(list_key: string): Promise<List> {
         const [output, ofiles] = await this.root.execute('student.lists.get', list_key)
         return output
     }
-
 }
 
 /**
@@ -1774,12 +1784,10 @@ class Module_student_lists {
  *
  */
 class Module_student_statuses {
-
     private readonly root: JutgeApiClient
 
     constructor(root: JutgeApiClient) {
         this.root = root
-
     }
 
     /**
@@ -1789,7 +1797,7 @@ class Module_student_statuses {
      * No warnings
      *
      */
-    async getAll() : Promise<AbstractStatuses> {
+    async getAll(): Promise<AbstractStatuses> {
         const [output, ofiles] = await this.root.execute('student.statuses.getAll', null)
         return output
     }
@@ -1801,8 +1809,11 @@ class Module_student_statuses {
      * No warnings
      *
      */
-    async getForAbstractProblem(problem_nm: string) : Promise<AbstractStatus> {
-        const [output, ofiles] = await this.root.execute('student.statuses.getForAbstractProblem', problem_nm)
+    async getForAbstractProblem(problem_nm: string): Promise<AbstractStatus> {
+        const [output, ofiles] = await this.root.execute(
+            'student.statuses.getForAbstractProblem',
+            problem_nm,
+        )
         return output
     }
 
@@ -1813,11 +1824,13 @@ class Module_student_statuses {
      * No warnings
      *
      */
-    async getForProblem(problem_id: string) : Promise<Status> {
-        const [output, ofiles] = await this.root.execute('student.statuses.getForProblem', problem_id)
+    async getForProblem(problem_id: string): Promise<Status> {
+        const [output, ofiles] = await this.root.execute(
+            'student.statuses.getForProblem',
+            problem_id,
+        )
         return output
     }
-
 }
 
 /**
@@ -1826,12 +1839,10 @@ class Module_student_statuses {
  *
  */
 class Module_student_awards {
-
     private readonly root: JutgeApiClient
 
     constructor(root: JutgeApiClient) {
         this.root = root
-
     }
 
     /**
@@ -1841,7 +1852,7 @@ class Module_student_awards {
      * No warnings
      *
      */
-    async getAll() : Promise<BriefAwards> {
+    async getAll(): Promise<BriefAwards> {
         const [output, ofiles] = await this.root.execute('student.awards.getAll', null)
         return output
     }
@@ -1853,13 +1864,11 @@ class Module_student_awards {
      * No warnings
      *
      */
-    async get(award_id: string) : Promise<Award> {
+    async get(award_id: string): Promise<Award> {
         const [output, ofiles] = await this.root.execute('student.awards.get', award_id)
         return output
     }
-
 }
-
 
 /**
  *
@@ -1867,7 +1876,6 @@ class Module_student_awards {
  *
  */
 class Module_instructor {
-
     private readonly root: JutgeApiClient
 
     readonly tags: Module_instructor_tags
@@ -1888,7 +1896,6 @@ class Module_instructor {
         this.queries = new Module_instructor_queries(root)
         this.problems = new Module_instructor_problems(root)
     }
-
 }
 
 /**
@@ -1897,12 +1904,10 @@ class Module_instructor {
  *
  */
 class Module_instructor_tags {
-
     private readonly root: JutgeApiClient
 
     constructor(root: JutgeApiClient) {
         this.root = root
-
     }
 
     /**
@@ -1912,7 +1917,7 @@ class Module_instructor_tags {
      * No warnings
      *
      */
-    async getAll() : Promise<string[]> {
+    async getAll(): Promise<string[]> {
         const [output, ofiles] = await this.root.execute('instructor.tags.getAll', null)
         return output
     }
@@ -1924,7 +1929,7 @@ class Module_instructor_tags {
      * No warnings
      *
      */
-    async getDict() : Promise<TagsDict> {
+    async getDict(): Promise<TagsDict> {
         const [output, ofiles] = await this.root.execute('instructor.tags.getDict', null)
         return output
     }
@@ -1936,11 +1941,10 @@ class Module_instructor_tags {
      * No warnings
      *
      */
-    async get(tag: string) : Promise<string[]> {
+    async get(tag: string): Promise<string[]> {
         const [output, ofiles] = await this.root.execute('instructor.tags.get', tag)
         return output
     }
-
 }
 
 /**
@@ -1949,12 +1953,10 @@ class Module_instructor_tags {
  *
  */
 class Module_instructor_documents {
-
     private readonly root: JutgeApiClient
 
     constructor(root: JutgeApiClient) {
         this.root = root
-
     }
 
     /**
@@ -1964,7 +1966,7 @@ class Module_instructor_documents {
      * No warnings
      *
      */
-    async index() : Promise<Documents> {
+    async index(): Promise<Documents> {
         const [output, ofiles] = await this.root.execute('instructor.documents.index', null)
         return output
     }
@@ -1976,7 +1978,7 @@ class Module_instructor_documents {
      * No warnings
      *
      */
-    async get(document_nm: string) : Promise<Document> {
+    async get(document_nm: string): Promise<Document> {
         const [output, ofiles] = await this.root.execute('instructor.documents.get', document_nm)
         return output
     }
@@ -1988,7 +1990,7 @@ class Module_instructor_documents {
      * No warnings
      *
      */
-    async getPdf(document_nm: string) : Promise<Download> {
+    async getPdf(document_nm: string): Promise<Download> {
         const [output, ofiles] = await this.root.execute('instructor.documents.getPdf', document_nm)
         return ofiles[0]
     }
@@ -2000,8 +2002,10 @@ class Module_instructor_documents {
      * No warnings
      *
      */
-    async create(data: Document, ifile: File) : Promise<void> {
-        const [output, ofiles] = await this.root.execute('instructor.documents.create', data, [ifile])
+    async create(data: Document, ifile: File): Promise<void> {
+        const [output, ofiles] = await this.root.execute('instructor.documents.create', data, [
+            ifile,
+        ])
         return output
     }
 
@@ -2012,7 +2016,7 @@ class Module_instructor_documents {
      * No warnings
      *
      */
-    async update(data: Document) : Promise<void> {
+    async update(data: Document): Promise<void> {
         const [output, ofiles] = await this.root.execute('instructor.documents.update', data)
         return output
     }
@@ -2024,8 +2028,12 @@ class Module_instructor_documents {
      * No warnings
      *
      */
-    async updatePdf(document_nm: string, ifile: File) : Promise<void> {
-        const [output, ofiles] = await this.root.execute('instructor.documents.updatePdf', document_nm, [ifile])
+    async updatePdf(document_nm: string, ifile: File): Promise<void> {
+        const [output, ofiles] = await this.root.execute(
+            'instructor.documents.updatePdf',
+            document_nm,
+            [ifile],
+        )
         return output
     }
 
@@ -2036,11 +2044,10 @@ class Module_instructor_documents {
      * No warnings
      *
      */
-    async remove(document_nm: string) : Promise<void> {
+    async remove(document_nm: string): Promise<void> {
         const [output, ofiles] = await this.root.execute('instructor.documents.remove', document_nm)
         return output
     }
-
 }
 
 /**
@@ -2049,12 +2056,10 @@ class Module_instructor_documents {
  *
  */
 class Module_instructor_lists {
-
     private readonly root: JutgeApiClient
 
     constructor(root: JutgeApiClient) {
         this.root = root
-
     }
 
     /**
@@ -2064,7 +2069,7 @@ class Module_instructor_lists {
      * No warnings
      *
      */
-    async index() : Promise<InstructorLists> {
+    async index(): Promise<InstructorLists> {
         const [output, ofiles] = await this.root.execute('instructor.lists.index', null)
         return output
     }
@@ -2076,7 +2081,7 @@ class Module_instructor_lists {
      * No warnings
      *
      */
-    async get(list_nm: string) : Promise<InstructorListWithItems> {
+    async get(list_nm: string): Promise<InstructorListWithItems> {
         const [output, ofiles] = await this.root.execute('instructor.lists.get', list_nm)
         return output
     }
@@ -2088,7 +2093,7 @@ class Module_instructor_lists {
      * No warnings
      *
      */
-    async getItems(list_nm: string) : Promise<InstructorListItems> {
+    async getItems(list_nm: string): Promise<InstructorListItems> {
         const [output, ofiles] = await this.root.execute('instructor.lists.getItems', list_nm)
         return output
     }
@@ -2100,7 +2105,7 @@ class Module_instructor_lists {
      * No warnings
      *
      */
-    async create(data: InstructorList) : Promise<void> {
+    async create(data: InstructorList): Promise<void> {
         const [output, ofiles] = await this.root.execute('instructor.lists.create', data)
         return output
     }
@@ -2112,7 +2117,7 @@ class Module_instructor_lists {
      * No warnings
      *
      */
-    async update(data: InstructorList) : Promise<void> {
+    async update(data: InstructorList): Promise<void> {
         const [output, ofiles] = await this.root.execute('instructor.lists.update', data)
         return output
     }
@@ -2124,7 +2129,7 @@ class Module_instructor_lists {
      * No warnings
      *
      */
-    async remove(list_nm: string) : Promise<void> {
+    async remove(list_nm: string): Promise<void> {
         const [output, ofiles] = await this.root.execute('instructor.lists.remove', list_nm)
         return output
     }
@@ -2136,11 +2141,10 @@ class Module_instructor_lists {
      * No warnings
      *
      */
-    async setItems(data: { list_nm: string, items: InstructorListItems } ) : Promise<void> {
+    async setItems(data: { list_nm: string; items: InstructorListItems }): Promise<void> {
         const [output, ofiles] = await this.root.execute('instructor.lists.setItems', data)
         return output
     }
-
 }
 
 /**
@@ -2149,12 +2153,10 @@ class Module_instructor_lists {
  *
  */
 class Module_instructor_courses {
-
     private readonly root: JutgeApiClient
 
     constructor(root: JutgeApiClient) {
         this.root = root
-
     }
 
     /**
@@ -2164,7 +2166,7 @@ class Module_instructor_courses {
      * No warnings
      *
      */
-    async index() : Promise<InstructorCourses> {
+    async index(): Promise<InstructorCourses> {
         const [output, ofiles] = await this.root.execute('instructor.courses.index', null)
         return output
     }
@@ -2176,7 +2178,7 @@ class Module_instructor_courses {
      * No warnings
      *
      */
-    async get(course_nm: string) : Promise<InstructorCourseWithItems> {
+    async get(course_nm: string): Promise<InstructorCourseWithItems> {
         const [output, ofiles] = await this.root.execute('instructor.courses.get', course_nm)
         return output
     }
@@ -2188,7 +2190,7 @@ class Module_instructor_courses {
      * No warnings
      *
      */
-    async getLists(course_nm: string) : Promise<string[]> {
+    async getLists(course_nm: string): Promise<string[]> {
         const [output, ofiles] = await this.root.execute('instructor.courses.getLists', course_nm)
         return output
     }
@@ -2200,8 +2202,11 @@ class Module_instructor_courses {
      * No warnings
      *
      */
-    async getStudents(course_nm: string) : Promise<CourseMembers> {
-        const [output, ofiles] = await this.root.execute('instructor.courses.getStudents', course_nm)
+    async getStudents(course_nm: string): Promise<CourseMembers> {
+        const [output, ofiles] = await this.root.execute(
+            'instructor.courses.getStudents',
+            course_nm,
+        )
         return output
     }
 
@@ -2212,7 +2217,7 @@ class Module_instructor_courses {
      * No warnings
      *
      */
-    async getTutors(course_nm: string) : Promise<CourseMembers> {
+    async getTutors(course_nm: string): Promise<CourseMembers> {
         const [output, ofiles] = await this.root.execute('instructor.courses.getTutors', course_nm)
         return output
     }
@@ -2224,7 +2229,7 @@ class Module_instructor_courses {
      * No warnings
      *
      */
-    async create(data: InstructorCourse) : Promise<void> {
+    async create(data: InstructorCourse): Promise<void> {
         const [output, ofiles] = await this.root.execute('instructor.courses.create', data)
         return output
     }
@@ -2236,7 +2241,7 @@ class Module_instructor_courses {
      * No warnings
      *
      */
-    async update(data: InstructorCourse) : Promise<void> {
+    async update(data: InstructorCourse): Promise<void> {
         const [output, ofiles] = await this.root.execute('instructor.courses.update', data)
         return output
     }
@@ -2248,7 +2253,7 @@ class Module_instructor_courses {
      * No warnings
      * Note: A course should not be deleted. Ask a system administrator to remove it.
      */
-    async remove(course_nm: string) : Promise<void> {
+    async remove(course_nm: string): Promise<void> {
         const [output, ofiles] = await this.root.execute('instructor.courses.remove', course_nm)
         return output
     }
@@ -2260,7 +2265,7 @@ class Module_instructor_courses {
      * No warnings
      *
      */
-    async setLists(data: { course_nm: string, lists: string[] } ) : Promise<void> {
+    async setLists(data: { course_nm: string; lists: string[] }): Promise<void> {
         const [output, ofiles] = await this.root.execute('instructor.courses.set_lists', data)
         return output
     }
@@ -2272,7 +2277,7 @@ class Module_instructor_courses {
      * No warnings
      *
      */
-    async inviteStudents(data: { course_nm: string, emails: string[] } ) : Promise<void> {
+    async inviteStudents(data: { course_nm: string; emails: string[] }): Promise<void> {
         const [output, ofiles] = await this.root.execute('instructor.courses.invite_students', data)
         return output
     }
@@ -2284,7 +2289,7 @@ class Module_instructor_courses {
      * No warnings
      *
      */
-    async inviteTutors(data: { course_nm: string, emails: string[] } ) : Promise<void> {
+    async inviteTutors(data: { course_nm: string; emails: string[] }): Promise<void> {
         const [output, ofiles] = await this.root.execute('instructor.courses.invite_tutors', data)
         return output
     }
@@ -2296,7 +2301,7 @@ class Module_instructor_courses {
      * No warnings
      *
      */
-    async removeStudents(data: { course_nm: string, emails: string[] } ) : Promise<void> {
+    async removeStudents(data: { course_nm: string; emails: string[] }): Promise<void> {
         const [output, ofiles] = await this.root.execute('instructor.courses.remove_students', data)
         return output
     }
@@ -2308,11 +2313,10 @@ class Module_instructor_courses {
      * No warnings
      *
      */
-    async removeTutors(data: { course_nm: string, emails: string[] } ) : Promise<void> {
+    async removeTutors(data: { course_nm: string; emails: string[] }): Promise<void> {
         const [output, ofiles] = await this.root.execute('instructor.courses.remove_tutors', data)
         return output
     }
-
 }
 
 /**
@@ -2321,12 +2325,10 @@ class Module_instructor_courses {
  *
  */
 class Module_instructor_exams {
-
     private readonly root: JutgeApiClient
 
     constructor(root: JutgeApiClient) {
         this.root = root
-
     }
 
     /**
@@ -2336,7 +2338,7 @@ class Module_instructor_exams {
      * No warnings
      *
      */
-    async index() : Promise<InstructorExams> {
+    async index(): Promise<InstructorExams> {
         const [output, ofiles] = await this.root.execute('instructor.exams.index', null)
         return output
     }
@@ -2348,7 +2350,7 @@ class Module_instructor_exams {
      * No warnings
      *
      */
-    async get(exam_nm: string) : Promise<InstructorExamWithItems> {
+    async get(exam_nm: string): Promise<InstructorExamWithItems> {
         const [output, ofiles] = await this.root.execute('instructor.exams.get', exam_nm)
         return output
     }
@@ -2360,7 +2362,7 @@ class Module_instructor_exams {
      * No warnings
      *
      */
-    async create(data: InstructorExamCreation) : Promise<void> {
+    async create(data: InstructorExamCreation): Promise<void> {
         const [output, ofiles] = await this.root.execute('instructor.exams.create', data)
         return output
     }
@@ -2372,7 +2374,7 @@ class Module_instructor_exams {
      * No warnings
      *
      */
-    async update(data: InstructorExamCreation) : Promise<void> {
+    async update(data: InstructorExamCreation): Promise<void> {
         const [output, ofiles] = await this.root.execute('instructor.exams.update', data)
         return output
     }
@@ -2384,7 +2386,7 @@ class Module_instructor_exams {
      * No warnings
      * Note: An exam can only be deleted if it has not started.
      */
-    async remove(exam_nm: string) : Promise<void> {
+    async remove(exam_nm: string): Promise<void> {
         const [output, ofiles] = await this.root.execute('instructor.exams.remove', exam_nm)
         return output
     }
@@ -2396,7 +2398,7 @@ class Module_instructor_exams {
      * No warnings
      *
      */
-    async getDocuments(exam_nm: string) : Promise<InstructorExamDocuments> {
+    async getDocuments(exam_nm: string): Promise<InstructorExamDocuments> {
         const [output, ofiles] = await this.root.execute('instructor.exams.getDocuments', exam_nm)
         return output
     }
@@ -2408,7 +2410,7 @@ class Module_instructor_exams {
      * No warnings
      *
      */
-    async getCourse(exam_nm: string) : Promise<InstructorExamCourse> {
+    async getCourse(exam_nm: string): Promise<InstructorExamCourse> {
         const [output, ofiles] = await this.root.execute('instructor.exams.getCourse', exam_nm)
         return output
     }
@@ -2420,7 +2422,7 @@ class Module_instructor_exams {
      * No warnings
      *
      */
-    async getProblems(exam_nm: string) : Promise<InstructorExamProblems> {
+    async getProblems(exam_nm: string): Promise<InstructorExamProblems> {
         const [output, ofiles] = await this.root.execute('instructor.exams.getProblems', exam_nm)
         return output
     }
@@ -2432,7 +2434,7 @@ class Module_instructor_exams {
      * No warnings
      *
      */
-    async getStudents(exam_nm: string) : Promise<InstructorExamStudents> {
+    async getStudents(exam_nm: string): Promise<InstructorExamStudents> {
         const [output, ofiles] = await this.root.execute('instructor.exams.getStudents', exam_nm)
         return output
     }
@@ -2444,7 +2446,7 @@ class Module_instructor_exams {
      * No warnings
      *
      */
-    async getStudent(data: { exam_nm: string, email: string } ) : Promise<InstructorExamStudent> {
+    async getStudent(data: { exam_nm: string; email: string }): Promise<InstructorExamStudent> {
         const [output, ofiles] = await this.root.execute('instructor.exams.getStudent', data)
         return output
     }
@@ -2456,7 +2458,10 @@ class Module_instructor_exams {
      * No warnings
      * This endpoint prepares a ZIP file to download the submissions of an exam. Preparing the ZIP file takes some time, an href link to the ZIP will be returned. This ZIP file will be available for download for a limited time.
      */
-    async getSubmissions(data: { exam_nm: string, options: InstructorExamSubmissionsOptions } ) : Promise<Pack> {
+    async getSubmissions(data: {
+        exam_nm: string
+        options: InstructorExamSubmissionsOptions
+    }): Promise<Pack> {
         const [output, ofiles] = await this.root.execute('instructor.exams.getSubmissions', data)
         return output
     }
@@ -2468,7 +2473,7 @@ class Module_instructor_exams {
      * No warnings
      *
      */
-    async setDocuments(data: { exam_nm: string, document_nms: string[] } ) : Promise<void> {
+    async setDocuments(data: { exam_nm: string; document_nms: string[] }): Promise<void> {
         const [output, ofiles] = await this.root.execute('instructor.exams.setDocuments', data)
         return output
     }
@@ -2480,7 +2485,7 @@ class Module_instructor_exams {
      * No warnings
      *
      */
-    async setProblems(data: { exam_nm: string, problems: InstructorExamProblems } ) : Promise<void> {
+    async setProblems(data: { exam_nm: string; problems: InstructorExamProblems }): Promise<void> {
         const [output, ofiles] = await this.root.execute('instructor.exams.setProblems', data)
         return output
     }
@@ -2492,7 +2497,10 @@ class Module_instructor_exams {
      * No warnings
      *
      */
-    async setStudents(data: { exam_nm: string, students: InstructorExamStudentsPost } ) : Promise<void> {
+    async setStudents(data: {
+        exam_nm: string
+        students: InstructorExamStudentsPost
+    }): Promise<void> {
         const [output, ofiles] = await this.root.execute('instructor.exams.setStudents', data)
         return output
     }
@@ -2504,7 +2512,10 @@ class Module_instructor_exams {
      * No warnings
      *
      */
-    async addStudents(data: { exam_nm: string, students: InstructorExamStudentsPost } ) : Promise<void> {
+    async addStudents(data: {
+        exam_nm: string
+        students: InstructorExamStudentsPost
+    }): Promise<void> {
         const [output, ofiles] = await this.root.execute('instructor.exams.addStudents', data)
         return output
     }
@@ -2516,11 +2527,10 @@ class Module_instructor_exams {
      * No warnings
      *
      */
-    async removeStudents(data: { exam_nm: string, emails: string[] } ) : Promise<void> {
+    async removeStudents(data: { exam_nm: string; emails: string[] }): Promise<void> {
         const [output, ofiles] = await this.root.execute('instructor.exams.removeStudents', data)
         return output
     }
-
 }
 
 /**
@@ -2529,12 +2539,10 @@ class Module_instructor_exams {
  *
  */
 class Module_instructor_queries {
-
     private readonly root: JutgeApiClient
 
     constructor(root: JutgeApiClient) {
         this.root = root
-
     }
 
     /**
@@ -2544,8 +2552,14 @@ class Module_instructor_queries {
      * No warnings
      * Returns a list of submissions for a given problem for all students of a given course. Each submission includes the email, time, problem name, problem id, verdict, and IP address. The list is ordered by email and time. Known as ricard01 in the past.
      */
-    async getCourseProblemSubmissions(data: { course_nm: string, problem_nm: string } ) : Promise<SubmissionsQuery> {
-        const [output, ofiles] = await this.root.execute('instructor.queries.getCourseProblemSubmissions', data)
+    async getCourseProblemSubmissions(data: {
+        course_nm: string
+        problem_nm: string
+    }): Promise<SubmissionsQuery> {
+        const [output, ofiles] = await this.root.execute(
+            'instructor.queries.getCourseProblemSubmissions',
+            data,
+        )
         return output
     }
 
@@ -2556,11 +2570,16 @@ class Module_instructor_queries {
      * No warnings
      * Returns a list of submissions for all problems in a given list for all students of a given course. Each submission includes the email, time, problem name, problem id, verdict, and IP address. The list is ordered by email, problem id and time. Known as ricard02 in the past.
      */
-    async getCourseListSubmissions(data: { course_nm: string, list_nm: string } ) : Promise<SubmissionsQuery> {
-        const [output, ofiles] = await this.root.execute('instructor.queries.getCourseListSubmissions', data)
+    async getCourseListSubmissions(data: {
+        course_nm: string
+        list_nm: string
+    }): Promise<SubmissionsQuery> {
+        const [output, ofiles] = await this.root.execute(
+            'instructor.queries.getCourseListSubmissions',
+            data,
+        )
         return output
     }
-
 }
 
 /**
@@ -2569,12 +2588,10 @@ class Module_instructor_queries {
  *
  */
 class Module_instructor_problems {
-
     private readonly root: JutgeApiClient
 
     constructor(root: JutgeApiClient) {
         this.root = root
-
     }
 
     /**
@@ -2584,8 +2601,11 @@ class Module_instructor_problems {
      * No warnings
      * Returns an empty string if the problem has no passcode.
      */
-    async getPasscode(problem_nm: string) : Promise<string> {
-        const [output, ofiles] = await this.root.execute('instructor.problems.getPasscode', problem_nm)
+    async getPasscode(problem_nm: string): Promise<string> {
+        const [output, ofiles] = await this.root.execute(
+            'instructor.problems.getPasscode',
+            problem_nm,
+        )
         return output
     }
 
@@ -2596,7 +2616,7 @@ class Module_instructor_problems {
      * No warnings
      * The passcode must be at least 8 characters long and contain only alphanumeric characters. The passcode will be stored in the database in plain text.
      */
-    async setPasscode(data: { problem_nm: string, passcode: string } ) : Promise<void> {
+    async setPasscode(data: { problem_nm: string; passcode: string }): Promise<void> {
         const [output, ofiles] = await this.root.execute('instructor.problems.setPasscode', data)
         return output
     }
@@ -2608,8 +2628,11 @@ class Module_instructor_problems {
      * No warnings
      *
      */
-    async removePasscode(problem_nm: string) : Promise<void> {
-        const [output, ofiles] = await this.root.execute('instructor.problems.removePasscode', problem_nm)
+    async removePasscode(problem_nm: string): Promise<void> {
+        const [output, ofiles] = await this.root.execute(
+            'instructor.problems.removePasscode',
+            problem_nm,
+        )
         return output
     }
 
@@ -2620,7 +2643,7 @@ class Module_instructor_problems {
      * No warnings
      *
      */
-    async deprecate(data: { problem_nm: string, reason: string } ) : Promise<void> {
+    async deprecate(data: { problem_nm: string; reason: string }): Promise<void> {
         const [output, ofiles] = await this.root.execute('instructor.problems.deprecate', data)
         return output
     }
@@ -2632,8 +2655,11 @@ class Module_instructor_problems {
      * No warnings
      *
      */
-    async undeprecate(problem_nm: string) : Promise<void> {
-        const [output, ofiles] = await this.root.execute('instructor.problems.undeprecate', problem_nm)
+    async undeprecate(problem_nm: string): Promise<void> {
+        const [output, ofiles] = await this.root.execute(
+            'instructor.problems.undeprecate',
+            problem_nm,
+        )
         return output
     }
 
@@ -2644,13 +2670,11 @@ class Module_instructor_problems {
      * No warnings
      * Quick and dirty implementation, should be improved. Returns a zip file with the abstract problem and all its problems.
      */
-    async download(problem_nm: string) : Promise<Download> {
+    async download(problem_nm: string): Promise<Download> {
         const [output, ofiles] = await this.root.execute('instructor.problems.download', problem_nm)
         return ofiles[0]
     }
-
 }
-
 
 /**
  *
@@ -2658,7 +2682,6 @@ class Module_instructor_problems {
  *
  */
 class Module_admin {
-
     private readonly root: JutgeApiClient
 
     readonly instructors: Module_admin_instructors
@@ -2679,7 +2702,6 @@ class Module_admin {
         this.stats = new Module_admin_stats(root)
         this.problems = new Module_admin_problems(root)
     }
-
 }
 
 /**
@@ -2688,12 +2710,10 @@ class Module_admin {
  *
  */
 class Module_admin_instructors {
-
     private readonly root: JutgeApiClient
 
     constructor(root: JutgeApiClient) {
         this.root = root
-
     }
 
     /**
@@ -2703,7 +2723,7 @@ class Module_admin_instructors {
      * No warnings
      *
      */
-    async get() : Promise<InstructorEntries> {
+    async get(): Promise<InstructorEntries> {
         const [output, ofiles] = await this.root.execute('admin.instructors.get', null)
         return output
     }
@@ -2715,7 +2735,7 @@ class Module_admin_instructors {
      * No warnings
      *
      */
-    async add(data: { email: string, username: string } ) : Promise<void> {
+    async add(data: { email: string; username: string }): Promise<void> {
         const [output, ofiles] = await this.root.execute('admin.instructors.add', data)
         return output
     }
@@ -2727,11 +2747,10 @@ class Module_admin_instructors {
      * No warnings
      *
      */
-    async remove(email: string) : Promise<void> {
+    async remove(email: string): Promise<void> {
         const [output, ofiles] = await this.root.execute('admin.instructors.remove', email)
         return output
     }
-
 }
 
 /**
@@ -2740,12 +2759,10 @@ class Module_admin_instructors {
  *
  */
 class Module_admin_users {
-
     private readonly root: JutgeApiClient
 
     constructor(root: JutgeApiClient) {
         this.root = root
-
     }
 
     /**
@@ -2755,7 +2772,7 @@ class Module_admin_users {
      * No warnings
      *
      */
-    async count() : Promise<number> {
+    async count(): Promise<number> {
         const [output, ofiles] = await this.root.execute('admin.users.count', null)
         return output
     }
@@ -2767,7 +2784,7 @@ class Module_admin_users {
      * No warnings
      *
      */
-    async create(data: UserCreation) : Promise<void> {
+    async create(data: UserCreation): Promise<void> {
         const [output, ofiles] = await this.root.execute('admin.users.create', data)
         return output
     }
@@ -2779,7 +2796,7 @@ class Module_admin_users {
      * No warnings
      *
      */
-    async remove(email: string) : Promise<void> {
+    async remove(email: string): Promise<void> {
         const [output, ofiles] = await this.root.execute('admin.users.remove', email)
         return output
     }
@@ -2791,11 +2808,10 @@ class Module_admin_users {
      * No warnings
      *
      */
-    async setPassword(data: { email: string, password: string } ) : Promise<void> {
+    async setPassword(data: { email: string; password: string }): Promise<void> {
         const [output, ofiles] = await this.root.execute('admin.users.setPassword', data)
         return output
     }
-
 }
 
 /**
@@ -2804,12 +2820,10 @@ class Module_admin_users {
  *
  */
 class Module_admin_dashboard {
-
     private readonly root: JutgeApiClient
 
     constructor(root: JutgeApiClient) {
         this.root = root
-
     }
 
     /**
@@ -2819,7 +2833,7 @@ class Module_admin_dashboard {
      * No warnings
      *
      */
-    async getAll() : Promise<AdminDashboard> {
+    async getAll(): Promise<AdminDashboard> {
         const [output, ofiles] = await this.root.execute('admin.dashboard.getAll', null)
         return output
     }
@@ -2831,7 +2845,7 @@ class Module_admin_dashboard {
      * No warnings
      *
      */
-    async getFreeDiskSpace() : Promise<Record<string, FreeDiskSpace | null>> {
+    async getFreeDiskSpace(): Promise<Record<string, FreeDiskSpace | null>> {
         const [output, ofiles] = await this.root.execute('admin.dashboard.getFreeDiskSpace', null)
         return output
     }
@@ -2843,8 +2857,11 @@ class Module_admin_dashboard {
      * No warnings
      *
      */
-    async getRecentConnectedUsers() : Promise<RecentConnectedUsers> {
-        const [output, ofiles] = await this.root.execute('admin.dashboard.getRecentConnectedUsers', null)
+    async getRecentConnectedUsers(): Promise<RecentConnectedUsers> {
+        const [output, ofiles] = await this.root.execute(
+            'admin.dashboard.getRecentConnectedUsers',
+            null,
+        )
         return output
     }
 
@@ -2855,8 +2872,11 @@ class Module_admin_dashboard {
      * No warnings
      *
      */
-    async getRecentLoadAverages() : Promise<RecentLoadAverages> {
-        const [output, ofiles] = await this.root.execute('admin.dashboard.getRecentLoadAverages', null)
+    async getRecentLoadAverages(): Promise<RecentLoadAverages> {
+        const [output, ofiles] = await this.root.execute(
+            'admin.dashboard.getRecentLoadAverages',
+            null,
+        )
         return output
     }
 
@@ -2867,8 +2887,11 @@ class Module_admin_dashboard {
      * No warnings
      *
      */
-    async getRecentSubmissions() : Promise<RecentSubmissions> {
-        const [output, ofiles] = await this.root.execute('admin.dashboard.getRecentSubmissions', null)
+    async getRecentSubmissions(): Promise<RecentSubmissions> {
+        const [output, ofiles] = await this.root.execute(
+            'admin.dashboard.getRecentSubmissions',
+            null,
+        )
         return output
     }
 
@@ -2879,8 +2902,11 @@ class Module_admin_dashboard {
      * No warnings
      *
      */
-    async getSubmissionsHistograms() : Promise<SubmissionsHistograms> {
-        const [output, ofiles] = await this.root.execute('admin.dashboard.getSubmissionsHistograms', null)
+    async getSubmissionsHistograms(): Promise<SubmissionsHistograms> {
+        const [output, ofiles] = await this.root.execute(
+            'admin.dashboard.getSubmissionsHistograms',
+            null,
+        )
         return output
     }
 
@@ -2891,7 +2917,7 @@ class Module_admin_dashboard {
      * No warnings
      *
      */
-    async getZombies() : Promise<Zombies> {
+    async getZombies(): Promise<Zombies> {
         const [output, ofiles] = await this.root.execute('admin.dashboard.getZombies', null)
         return output
     }
@@ -2903,11 +2929,10 @@ class Module_admin_dashboard {
      * No warnings
      *
      */
-    async getUpcomingExams() : Promise<UpcomingExams> {
+    async getUpcomingExams(): Promise<UpcomingExams> {
         const [output, ofiles] = await this.root.execute('admin.dashboard.getUpcomingExams', null)
         return output
     }
-
 }
 
 /**
@@ -2916,12 +2941,10 @@ class Module_admin_dashboard {
  *
  */
 class Module_admin_queue {
-
     private readonly root: JutgeApiClient
 
     constructor(root: JutgeApiClient) {
         this.root = root
-
     }
 
     /**
@@ -2931,7 +2954,7 @@ class Module_admin_queue {
      * No warnings
      *
      */
-    async getQueue() : Promise<SubmissionQueueItems> {
+    async getQueue(): Promise<SubmissionQueueItems> {
         const [output, ofiles] = await this.root.execute('admin.queue.getQueue', null)
         return output
     }
@@ -2943,7 +2966,7 @@ class Module_admin_queue {
      * No warnings
      *
      */
-    async getQueueZombies() : Promise<SubmissionQueueItems> {
+    async getQueueZombies(): Promise<SubmissionQueueItems> {
         const [output, ofiles] = await this.root.execute('admin.queue.getQueueZombies', null)
         return output
     }
@@ -2955,7 +2978,7 @@ class Module_admin_queue {
      * No warnings
      *
      */
-    async getQueueFatals() : Promise<SubmissionQueueItems> {
+    async getQueueFatals(): Promise<SubmissionQueueItems> {
         const [output, ofiles] = await this.root.execute('admin.queue.getQueueFatals', null)
         return output
     }
@@ -2967,11 +2990,10 @@ class Module_admin_queue {
      * No warnings
      *
      */
-    async getQueueSetterErrors() : Promise<SubmissionQueueItems> {
+    async getQueueSetterErrors(): Promise<SubmissionQueueItems> {
         const [output, ofiles] = await this.root.execute('admin.queue.getQueueSetterErrors', null)
         return output
     }
-
 }
 
 /**
@@ -2980,12 +3002,10 @@ class Module_admin_queue {
  *
  */
 class Module_admin_tasks {
-
     private readonly root: JutgeApiClient
 
     constructor(root: JutgeApiClient) {
         this.root = root
-
     }
 
     /**
@@ -2995,7 +3015,7 @@ class Module_admin_tasks {
      * No warnings
      * Purge expired access tokens (call it from time to time, it does not hurt)
      */
-    async purgeAuthTokens() : Promise<void> {
+    async purgeAuthTokens(): Promise<void> {
         const [output, ofiles] = await this.root.execute('admin.tasks.purge-auth-tokens', null)
         return output
     }
@@ -3007,11 +3027,10 @@ class Module_admin_tasks {
      * No warnings
      *
      */
-    async clearCaches() : Promise<void> {
+    async clearCaches(): Promise<void> {
         const [output, ofiles] = await this.root.execute('admin.tasks.clear-caches', null)
         return output
     }
-
 }
 
 /**
@@ -3020,12 +3039,10 @@ class Module_admin_tasks {
  *
  */
 class Module_admin_stats {
-
     private readonly root: JutgeApiClient
 
     constructor(root: JutgeApiClient) {
         this.root = root
-
     }
 
     /**
@@ -3035,7 +3052,7 @@ class Module_admin_stats {
      * No warnings
      *
      */
-    async getCounters() : Promise<Record<string, number>> {
+    async getCounters(): Promise<Record<string, number>> {
         const [output, ofiles] = await this.root.execute('admin.stats.getCounters', null)
         return output
     }
@@ -3047,8 +3064,11 @@ class Module_admin_stats {
      * No warnings
      *
      */
-    async getDistributionOfVerdicts() : Promise<Record<string, number>> {
-        const [output, ofiles] = await this.root.execute('admin.stats.getDistributionOfVerdicts', null)
+    async getDistributionOfVerdicts(): Promise<Record<string, number>> {
+        const [output, ofiles] = await this.root.execute(
+            'admin.stats.getDistributionOfVerdicts',
+            null,
+        )
         return output
     }
 
@@ -3059,8 +3079,11 @@ class Module_admin_stats {
      * No warnings
      *
      */
-    async getDistributionOfVerdictsByYear() : Promise<Record<string, number>[]> {
-        const [output, ofiles] = await this.root.execute('admin.stats.getDistributionOfVerdictsByYear', null)
+    async getDistributionOfVerdictsByYear(): Promise<Record<string, number>[]> {
+        const [output, ofiles] = await this.root.execute(
+            'admin.stats.getDistributionOfVerdictsByYear',
+            null,
+        )
         return output
     }
 
@@ -3071,8 +3094,11 @@ class Module_admin_stats {
      * No warnings
      *
      */
-    async getDistributionOfCompilers() : Promise<Record<string, number>> {
-        const [output, ofiles] = await this.root.execute('admin.stats.getDistributionOfCompilers', null)
+    async getDistributionOfCompilers(): Promise<Record<string, number>> {
+        const [output, ofiles] = await this.root.execute(
+            'admin.stats.getDistributionOfCompilers',
+            null,
+        )
         return output
     }
 
@@ -3083,8 +3109,11 @@ class Module_admin_stats {
      * No warnings
      *
      */
-    async getDistributionOfProglangs() : Promise<Record<string, number>> {
-        const [output, ofiles] = await this.root.execute('admin.stats.getDistributionOfProglangs', null)
+    async getDistributionOfProglangs(): Promise<Record<string, number>> {
+        const [output, ofiles] = await this.root.execute(
+            'admin.stats.getDistributionOfProglangs',
+            null,
+        )
         return output
     }
 
@@ -3095,8 +3124,11 @@ class Module_admin_stats {
      * No warnings
      *
      */
-    async getDistributionOfUsersByYear() : Promise<Record<string, number>> {
-        const [output, ofiles] = await this.root.execute('admin.stats.getDistributionOfUsersByYear', null)
+    async getDistributionOfUsersByYear(): Promise<Record<string, number>> {
+        const [output, ofiles] = await this.root.execute(
+            'admin.stats.getDistributionOfUsersByYear',
+            null,
+        )
         return output
     }
 
@@ -3107,8 +3139,11 @@ class Module_admin_stats {
      * No warnings
      *
      */
-    async getDistributionOfUsersByCountry() : Promise<Record<string, number>> {
-        const [output, ofiles] = await this.root.execute('admin.stats.getDistributionOfUsersByCountry', null)
+    async getDistributionOfUsersByCountry(): Promise<Record<string, number>> {
+        const [output, ofiles] = await this.root.execute(
+            'admin.stats.getDistributionOfUsersByCountry',
+            null,
+        )
         return output
     }
 
@@ -3119,8 +3154,11 @@ class Module_admin_stats {
      * No warnings
      *
      */
-    async getDistributionOfUsersBySubmissions(data: number) : Promise<Record<string, number>> {
-        const [output, ofiles] = await this.root.execute('admin.stats.getDistributionOfUsersBySubmissions', data)
+    async getDistributionOfUsersBySubmissions(data: number): Promise<Record<string, number>> {
+        const [output, ofiles] = await this.root.execute(
+            'admin.stats.getDistributionOfUsersBySubmissions',
+            data,
+        )
         return output
     }
 
@@ -3131,7 +3169,7 @@ class Module_admin_stats {
      * ❌ Warning: Input type is not correct
      *
      */
-    async getRankingOfUsers(data: string | number) : Promise<UserRanking> {
+    async getRankingOfUsers(data: string | number): Promise<UserRanking> {
         const [output, ofiles] = await this.root.execute('admin.stats.getRankingOfUsers', data)
         return output
     }
@@ -3143,8 +3181,11 @@ class Module_admin_stats {
      * No warnings
      *
      */
-    async getDistributionOfSubmissionsByHour() : Promise<Record<string, number>> {
-        const [output, ofiles] = await this.root.execute('admin.stats.getDistributionOfSubmissionsByHour', null)
+    async getDistributionOfSubmissionsByHour(): Promise<Record<string, number>> {
+        const [output, ofiles] = await this.root.execute(
+            'admin.stats.getDistributionOfSubmissionsByHour',
+            null,
+        )
         return output
     }
 
@@ -3155,8 +3196,11 @@ class Module_admin_stats {
      * No warnings
      *
      */
-    async getDistributionOfSubmissionsByProglang() : Promise<Record<string, number>> {
-        const [output, ofiles] = await this.root.execute('admin.stats.getDistributionOfSubmissionsByProglang', null)
+    async getDistributionOfSubmissionsByProglang(): Promise<Record<string, number>> {
+        const [output, ofiles] = await this.root.execute(
+            'admin.stats.getDistributionOfSubmissionsByProglang',
+            null,
+        )
         return output
     }
 
@@ -3167,8 +3211,11 @@ class Module_admin_stats {
      * No warnings
      *
      */
-    async getDistributionOfSubmissionsByCompiler() : Promise<Record<string, number>> {
-        const [output, ofiles] = await this.root.execute('admin.stats.getDistributionOfSubmissionsByCompiler', null)
+    async getDistributionOfSubmissionsByCompiler(): Promise<Record<string, number>> {
+        const [output, ofiles] = await this.root.execute(
+            'admin.stats.getDistributionOfSubmissionsByCompiler',
+            null,
+        )
         return output
     }
 
@@ -3179,8 +3226,11 @@ class Module_admin_stats {
      * No warnings
      *
      */
-    async getDistributionOfSubmissionsByWeekday() : Promise<Record<string, number>> {
-        const [output, ofiles] = await this.root.execute('admin.stats.getDistributionOfSubmissionsByWeekday', null)
+    async getDistributionOfSubmissionsByWeekday(): Promise<Record<string, number>> {
+        const [output, ofiles] = await this.root.execute(
+            'admin.stats.getDistributionOfSubmissionsByWeekday',
+            null,
+        )
         return output
     }
 
@@ -3191,8 +3241,11 @@ class Module_admin_stats {
      * No warnings
      *
      */
-    async getDistributionOfSubmissionsByYear() : Promise<Record<string, number>> {
-        const [output, ofiles] = await this.root.execute('admin.stats.getDistributionOfSubmissionsByYear', null)
+    async getDistributionOfSubmissionsByYear(): Promise<Record<string, number>> {
+        const [output, ofiles] = await this.root.execute(
+            'admin.stats.getDistributionOfSubmissionsByYear',
+            null,
+        )
         return output
     }
 
@@ -3203,8 +3256,13 @@ class Module_admin_stats {
      * No warnings
      *
      */
-    async getDistributionOfSubmissionsByYearForProglang(proglang: string) : Promise<Record<string, number>> {
-        const [output, ofiles] = await this.root.execute('admin.stats.getDistributionOfSubmissionsByYearForProglang', proglang)
+    async getDistributionOfSubmissionsByYearForProglang(
+        proglang: string,
+    ): Promise<Record<string, number>> {
+        const [output, ofiles] = await this.root.execute(
+            'admin.stats.getDistributionOfSubmissionsByYearForProglang',
+            proglang,
+        )
         return output
     }
 
@@ -3215,8 +3273,11 @@ class Module_admin_stats {
      * No warnings
      *
      */
-    async getDistributionOfSubmissionsByDay() : Promise<Record<string, number>> {
-        const [output, ofiles] = await this.root.execute('admin.stats.getDistributionOfSubmissionsByDay', null)
+    async getDistributionOfSubmissionsByDay(): Promise<Record<string, number>> {
+        const [output, ofiles] = await this.root.execute(
+            'admin.stats.getDistributionOfSubmissionsByDay',
+            null,
+        )
         return output
     }
 
@@ -3227,11 +3288,13 @@ class Module_admin_stats {
      * No warnings
      *
      */
-    async getHeatmapCalendarOfSubmissions(data: DateRange) : Promise<any> {
-        const [output, ofiles] = await this.root.execute('admin.stats.getHeatmapCalendarOfSubmissions', data)
+    async getHeatmapCalendarOfSubmissions(data: DateRange): Promise<any> {
+        const [output, ofiles] = await this.root.execute(
+            'admin.stats.getHeatmapCalendarOfSubmissions',
+            data,
+        )
         return output
     }
-
 }
 
 /**
@@ -3240,12 +3303,10 @@ class Module_admin_stats {
  *
  */
 class Module_admin_problems {
-
     private readonly root: JutgeApiClient
 
     constructor(root: JutgeApiClient) {
         this.root = root
-
     }
 
     /**
@@ -3255,13 +3316,11 @@ class Module_admin_problems {
      * ❌ Warning: TODO
      *
      */
-    async getProblemSolution(data: { problem_id: string, proglang: string } ) : Promise<string> {
+    async getProblemSolution(data: { problem_id: string; proglang: string }): Promise<string> {
         const [output, ofiles] = await this.root.execute('admin.problems.getProblemSolution', data)
         return output
     }
-
 }
-
 
 /**
  *
@@ -3269,12 +3328,10 @@ class Module_admin_problems {
  *
  */
 class Module_check {
-
     private readonly root: JutgeApiClient
 
     constructor(root: JutgeApiClient) {
         this.root = root
-
     }
 
     /**
@@ -3284,7 +3341,7 @@ class Module_check {
      * No warnings
      *
      */
-    async checkUser() : Promise<void> {
+    async checkUser(): Promise<void> {
         const [output, ofiles] = await this.root.execute('check.checkUser', null)
         return output
     }
@@ -3296,7 +3353,7 @@ class Module_check {
      * No warnings
      *
      */
-    async checkInstructor() : Promise<void> {
+    async checkInstructor(): Promise<void> {
         const [output, ofiles] = await this.root.execute('check.checkInstructor', null)
         return output
     }
@@ -3308,7 +3365,7 @@ class Module_check {
      * No warnings
      *
      */
-    async checkAdmin() : Promise<void> {
+    async checkAdmin(): Promise<void> {
         const [output, ofiles] = await this.root.execute('check.checkAdmin', null)
         return output
     }
@@ -3320,11 +3377,10 @@ class Module_check {
      * No warnings
      *
      */
-    async throwError(exception: string) : Promise<void> {
+    async throwError(exception: string): Promise<void> {
         const [output, ofiles] = await this.root.execute('check.throwError', exception)
         return output
     }
-
 }
 
 /**
@@ -3333,12 +3389,10 @@ class Module_check {
  *
  */
 class Module_playground {
-
     private readonly root: JutgeApiClient
 
     constructor(root: JutgeApiClient) {
         this.root = root
-
     }
 
     /**
@@ -3348,7 +3402,7 @@ class Module_playground {
      * No warnings
      *
      */
-    async upload(data: Name, ifile: File) : Promise<string> {
+    async upload(data: Name, ifile: File): Promise<string> {
         const [output, ofiles] = await this.root.execute('playground.upload', data, [ifile])
         return output
     }
@@ -3360,7 +3414,7 @@ class Module_playground {
      * No warnings
      *
      */
-    async negate(ifile: File) : Promise<Download> {
+    async negate(ifile: File): Promise<Download> {
         const [output, ofiles] = await this.root.execute('playground.negate', null, [ifile])
         return ofiles[0]
     }
@@ -3372,7 +3426,7 @@ class Module_playground {
      * No warnings
      *
      */
-    async download(data: Name) : Promise<Download> {
+    async download(data: Name): Promise<Download> {
         const [output, ofiles] = await this.root.execute('playground.download', data)
         return ofiles[0]
     }
@@ -3384,7 +3438,7 @@ class Module_playground {
      * No warnings
      *
      */
-    async download2(data: Name) : Promise<[string, Download]> {
+    async download2(data: Name): Promise<[string, Download]> {
         const [output, ofiles] = await this.root.execute('playground.download2', data)
         return [output, ofiles[0]]
     }
@@ -3396,7 +3450,7 @@ class Module_playground {
      * No warnings
      *
      */
-    async ping() : Promise<string> {
+    async ping(): Promise<string> {
         const [output, ofiles] = await this.root.execute('playground.ping', null)
         return output
     }
@@ -3408,7 +3462,7 @@ class Module_playground {
      * No warnings
      *
      */
-    async toUpperCase(s: string) : Promise<string> {
+    async toUpperCase(s: string): Promise<string> {
         const [output, ofiles] = await this.root.execute('playground.toUpperCase', s)
         return output
     }
@@ -3420,7 +3474,7 @@ class Module_playground {
      * No warnings
      *
      */
-    async add2i(data: TwoInts) : Promise<number> {
+    async add2i(data: TwoInts): Promise<number> {
         const [output, ofiles] = await this.root.execute('playground.add2i', data)
         return output
     }
@@ -3432,7 +3486,7 @@ class Module_playground {
      * No warnings
      *
      */
-    async add2f(data: TwoFloats) : Promise<number> {
+    async add2f(data: TwoFloats): Promise<number> {
         const [output, ofiles] = await this.root.execute('playground.add2f', data)
         return output
     }
@@ -3444,7 +3498,7 @@ class Module_playground {
      * No warnings
      *
      */
-    async inc(data: TwoInts) : Promise<TwoInts> {
+    async inc(data: TwoInts): Promise<TwoInts> {
         const [output, ofiles] = await this.root.execute('playground.inc', data)
         return output
     }
@@ -3456,7 +3510,7 @@ class Module_playground {
      * No warnings
      *
      */
-    async add3i(data: { a: number, b: number, c: number } ) : Promise<number> {
+    async add3i(data: { a: number; b: number; c: number }): Promise<number> {
         const [output, ofiles] = await this.root.execute('playground.add3i', data)
         return output
     }
@@ -3468,10 +3522,8 @@ class Module_playground {
      * No warnings
      *
      */
-    async something(data: SomeType) : Promise<SomeType> {
+    async something(data: SomeType): Promise<SomeType> {
         const [output, ofiles] = await this.root.execute('playground.something', data)
         return output
     }
-
 }
-

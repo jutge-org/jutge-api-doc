@@ -2,67 +2,80 @@
 
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog'
-import { JutgeApiClient } from '@/lib/jutge_api_client'
-import Editor from '@monaco-editor/react'
-import { useRef, useState } from 'react'
-import ts from 'typescript'
-
-declare global {
-    interface Window {
-        JutgeApiClient: any
-        j: JutgeApiClient
-    }
-}
+import { Textarea } from '@/components/ui/textarea'
+import { EvalMessage, InputMessage, OutputMessage, PongMessage } from '@/lib/worker'
+import { LoaderIcon } from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
 
 type Cell = {
     input: string
-    output: any
-    error: string | null
+    output?: any
+    error?: string
 }
 
 export default function NotebookPage() {
-    const [cells, setCells] = useState<Cell[]>([{ input: '', output: undefined, error: null }])
+    const [cells, setCells] = useState<Cell[]>([])
+    const [pingSent, setPingSent] = useState(false)
+    const [ready, setReady] = useState(false)
+    const [evalCellIndex, setEvalCellIndex] = useState<number>(-1)
     const [isHelpOpen, setIsHelpOpen] = useState(false)
-    const editorRef = useRef(null)
+    const workerRef = useRef(mkWorker())
 
-    function openHelp() {
-        setIsHelpOpen(true)
-    }
+    // send a ping to startup the worker, because it is damm slow
+    useEffect(() => {
+        if (!window.Worker) return
+        if (pingSent) return
+        setPingSent(true)
+        sendToWorker({ type: 'ping', info: '' })
+    }, [pingSent])
 
-    function closeHelp() {
-        setIsHelpOpen(false)
-    }
+    // receive messages from worker
+    useEffect(() => {
+        //
 
-    function reset() {
-        setCells([{ input: '', output: undefined, error: null }])
-    }
-
-    async function run(i: number) {
-        const cell = cells[i]
-        let error = null
-        let output = null
-        const user_code = cell.input
-        // const ts_code = `(async () => { ${user_code} })()`
-        const ts_code = user_code
-        try {
-            const js_code = ts.transpile(ts_code, {
-                target: ts.ScriptTarget.ES5,
-                lib: ['dom'],
-                module: ts.ModuleKind.CommonJS,
-            })
-            // output = await eval?.(js_code)
-            output = await Object.getPrototypeOf(async function () {}).constructor(user_code)()
-        } catch (e) {
-            error = e instanceof Error ? e.message : 'Error'
-            output = undefined
+        function receivePong(message: PongMessage) {
+            reset()
+            setReady(true)
         }
-        setCells((prev) => {
-            const copy = [...prev]
-            copy[i].output = output
-            copy[i].error = error
-            return copy
-        })
-        setCells((prev) => [...prev, { input: '', output: undefined, error: null }])
+
+        function receiveEval(message: EvalMessage) {
+            setReady(true)
+            setCells((prev) => {
+                const copy = [...prev]
+                copy[evalCellIndex].output = message.out
+                copy[evalCellIndex].error = message.err
+                copy.push({ input: '' })
+                return copy
+            })
+        }
+
+        if (!window.Worker) return
+        const worker = workerRef.current
+        if (!worker) return
+        worker.onmessage = (e: MessageEvent<OutputMessage>) => {
+            console.log('master received message', e.data)
+            switch (e.data.type) {
+                case 'pong':
+                    return receivePong(e.data)
+                case 'eval':
+                    return receiveEval(e.data)
+            }
+        }
+    }, [workerRef, evalCellIndex])
+
+    function mkWorker() {
+        try {
+            return new Worker(new URL('@/lib/worker.ts', import.meta.url))
+        } catch (e) {
+            return null
+        }
+    }
+
+    async function onKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>, i: number) {
+        if (!ready) return
+        if (e.key === 'Enter' && i === cells.length - 1 && e.metaKey) {
+            await run(i)
+        }
     }
 
     function onChange(value: string, i: number) {
@@ -73,32 +86,81 @@ export default function NotebookPage() {
         })
     }
 
-    function handleEditorDidMount(editor: any, monaco: any, i: number) {
-        editorRef.current = editor
-        editor.focus()
-        editor.addCommand(
-            monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, // Ctrl+Enter or Cmd+Enter
-            function () {
-                run(i)
-            },
-        )
-        // https://stackoverflow.com/questions/78646558/is-it-possible-to-wrap-the-code-that-is-sent-for-validation-in-the-monaco-editor
-        monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
-            diagnosticCodesToIgnore: [1108, 2304],
-        })
+    function reset() {
+        setCells([{ input: '' }])
     }
 
-    function heightOf(cell: Cell) {
-        const lines = cell.input.split('\n').length
-        const height = Math.min(64, Math.max(12, (lines + 1) * 6))
-        console.log('height', height, lines)
-        return height
+    function openHelp() {
+        setIsHelpOpen(true)
     }
 
-    if (typeof window !== 'undefined') {
-        window.JutgeApiClient = JutgeApiClient
-        window.j = new JutgeApiClient()
+    function closeHelp() {
+        setIsHelpOpen(false)
     }
+
+    async function run(cellIndex: number) {
+        setEvalCellIndex(cellIndex)
+        setReady(false)
+        sendToWorker({ type: 'eval', info: cells[cellIndex].input })
+    }
+
+    function sendToWorker(message: InputMessage) {
+        const worker = workerRef.current
+        if (!worker) return
+        console.log('master sending message', message)
+        worker.postMessage(message)
+    }
+
+    const notebook = (
+        <div className="flex flex-col gap-0">
+            {cells.map((cell, i) => (
+                <div key={i} className="">
+                    <div key={i} className="flex flex-col gap-0">
+                        <div className="text-xs pt-2 pb-2">Input {i + 1}</div>
+                        <div className={`ml-6 h-20`}>
+                            <div
+                                className={`border-spacing-2 rounded-lg ${ready && i == cells.length - 1 ? 'border-gray-600 border-4' : 'border-gray-100 border-2'}`}
+                            >
+                                <Textarea
+                                    className="h-full w-full border-0  text-sm font-mono"
+                                    id={`input_${i}`}
+                                    defaultValue={cell.input}
+                                    readOnly={i < cells.length - 1}
+                                    onKeyDown={(e) => onKeyDown(e, i)}
+                                    onChange={(e) => onChange(e.target.value, i)}
+                                    autoFocus={ready && i === cells.length - 1}
+                                />
+                            </div>
+                        </div>
+
+                        {cell.output !== undefined && (
+                            <>
+                                <div className="text-xs pt-0 pb-2">Output {i + 1}</div>
+                                <div className="ml-6 h-20">
+                                    <div className="border-spacing-2 rounded-lg border-gray-100 border-2">
+                                        <Textarea
+                                            className="h-full w-full border-0  text-sm font-mono"
+                                            id={`output_${i}`}
+                                            defaultValue={JSON.stringify(cell.output, null, 4)}
+                                            readOnly
+                                        />
+                                    </div>
+                                </div>
+                            </>
+                        )}
+                        {cell.error !== undefined && (
+                            <>
+                                <div className="text-xs pt-0 pb-2">Error {i + 1}</div>
+                                <pre className="ml-6 max-h-64 font-mono text-sm border bg-gray-100 rounded-md p-2 text-red-500">
+                                    {cell.error}
+                                </pre>
+                            </>
+                        )}
+                    </div>
+                </div>
+            ))}
+        </div>
+    )
 
     const top = (
         <div className="flex flex-row gap-4 pb-4">
@@ -124,82 +186,16 @@ export default function NotebookPage() {
         </div>
     )
 
-    const notebook = (
-        <div className="flex flex-col gap-0">
-            {cells.map((cell, i) => (
-                <div key={i} className="">
-                    <div key={i} className="flex flex-col gap-0">
-                        <div className="text-xs pt-6 pb-2">Input {i + 1}</div>
-                        <div
-                            className={`ml-6 h-24 text-sm border-spacing-2 rounded-lg ${i == cells.length - 1 ? 'border-gray-600 border-4' : 'border-gray-100 border-2'} p-2`}
-                        >
-                            <Editor
-                                theme="vs-light"
-                                defaultLanguage="typescript"
-                                defaultValue=""
-                                options={{
-                                    minimap: { enabled: false },
-                                    lineNumbers: 'off',
-                                    glyphMargin: false,
-                                    folding: false,
-                                    // https://stackoverflow.com/questions/53448735/is-there-a-way-to-completely-hide-the-gutter-of-monaco-editor
-                                    // Undocumented see https://github.com/Microsoft/vscode/issues/30795#issuecomment-410998882
-                                    lineDecorationsWidth: 0,
-                                    lineNumbersMinChars: 0,
-                                    renderLineHighlight: 'none',
-                                    readOnly: i != cells.length - 1,
-                                }}
-                                onChange={(value, event) => onChange(value || '', i)}
-                                onMount={(editor, monaco) =>
-                                    handleEditorDidMount(editor, monaco, i)
-                                }
-                            />
-                        </div>
-
-                        {cell.output !== undefined && (
-                            <>
-                                <div className="text-xs pt-4 pb-2">Output {i + 1}</div>
-                                <div className="ml-6 h-36 border-spacing-2 rounded-lg border-gray-100 border-2 p-2">
-                                    <Editor
-                                        theme="vs-light"
-                                        defaultLanguage="json"
-                                        defaultValue={JSON.stringify(cell.output, null, 4)}
-                                        options={{
-                                            minimap: { enabled: false },
-                                            lineNumbers: 'off',
-                                            glyphMargin: false,
-                                            folding: false,
-                                            // https://stackoverflow.com/questions/53448735/is-there-a-way-to-completely-hide-the-gutter-of-monaco-editor
-                                            // Undocumented see https://github.com/Microsoft/vscode/issues/30795#issuecomment-410998882
-                                            lineDecorationsWidth: 0,
-                                            lineNumbersMinChars: 0,
-                                            renderLineHighlight: 'none',
-                                            readOnly: true,
-                                            scrollBeyondLastLine: false,
-                                        }}
-                                    />
-                                </div>
-                            </>
-                        )}
-
-                        {cell.error !== null && (
-                            <>
-                                <div className="text-xs pt-4 pb-2">Error {i + 1}</div>
-                                <pre className="ml-6 max-h-64 font-mono text-sm border bg-gray-100 rounded-md p-2 text-red-500">
-                                    {cell.error}
-                                </pre>
-                            </>
-                        )}
-                    </div>
-                </div>
-            ))}
-        </div>
-    )
-
     return (
         <div className="px-4 flex flex-col">
             {top}
             {notebook}
+            {!ready && (
+                <div className="pl-8 pt-4 pb-32">
+                    <LoaderIcon className="animate-spin text-red-500" />
+                </div>
+            )}
+            <div id="end" autoFocus={!ready} />
         </div>
     )
 }
