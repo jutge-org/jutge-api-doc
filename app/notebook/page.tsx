@@ -252,7 +252,11 @@ function OutputArea({ output, index }: { output: OutputMessage; index: number })
                 <Editor
                     theme="vs-light"
                     defaultLanguage="json"
-                    defaultValue={JSON.stringify(output.info, null, 4)}
+                    defaultValue={
+                        typeof output.info === 'string'
+                            ? output.info
+                            : JSON.stringify(output.info, null, 4)
+                    }
                     height={'80px'}
                     options={{
                         minimap: { enabled: false },
