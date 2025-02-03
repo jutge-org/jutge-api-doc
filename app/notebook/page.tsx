@@ -1,25 +1,40 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
+import { ChartConfig, ChartContainer } from '@/components/ui/chart'
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog'
-import { Textarea } from '@/components/ui/textarea'
-import { EvalMessage, InputMessage, OutputMessage, PongMessage } from '@/lib/worker'
+import { InputMessage, OutputMessage } from '@/lib/worker'
+import { Editor } from '@monaco-editor/react'
 import { LoaderIcon } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
+import { Bar, BarChart } from 'recharts'
 
 type Cell = {
     input: string
-    output?: any
+    outputs: any[]
     error?: string
 }
 
 export default function NotebookPage() {
-    const [cells, setCells] = useState<Cell[]>([])
+    const [cells, setCells] = useState<Cell[]>([
+        /*
+        {
+            input: 'foo',
+            outputs: [
+                { type: 'print', info: 1 },
+                { type: 'print', info: 2 },
+                { type: 'eval', info: 3 },
+                { type: 'error', info: 4 },
+            ],
+        },
+        */
+    ])
     const [pingSent, setPingSent] = useState(false)
     const [ready, setReady] = useState(false)
     const [evalCellIndex, setEvalCellIndex] = useState<number>(-1)
     const [isHelpOpen, setIsHelpOpen] = useState(false)
     const workerRef = useRef(mkWorker())
+    const editorRef = useRef(null)
 
     // send a ping to startup the worker, because it is damm slow
     useEffect(() => {
@@ -33,19 +48,28 @@ export default function NotebookPage() {
     useEffect(() => {
         //
 
-        function receivePong(message: PongMessage) {
+        function receivePong(message: InputMessage) {
             reset()
             setReady(true)
         }
 
-        function receiveEval(message: EvalMessage) {
+        function receiveData(message: InputMessage) {
+            setCells((oldCells) => {
+                const newCells = [...oldCells]
+                newCells[evalCellIndex].outputs.push(message)
+                return newCells
+            })
+        }
+
+        function receiveEval(message: InputMessage) {
             setReady(true)
-            setCells((prev) => {
-                const copy = [...prev]
-                copy[evalCellIndex].output = message.out
-                copy[evalCellIndex].error = message.err
-                copy.push({ input: '' })
-                return copy
+            setCells((oldCells) => {
+                const newCells = [...oldCells]
+                if (message.type !== 'eval' || message.info !== undefined) {
+                    newCells[evalCellIndex].outputs.push(message)
+                }
+                newCells.push({ input: '', outputs: [] })
+                return newCells
             })
         }
 
@@ -57,24 +81,36 @@ export default function NotebookPage() {
             switch (e.data.type) {
                 case 'pong':
                     return receivePong(e.data)
+                case 'print':
+                case 'chart':
+                    return receiveData(e.data)
                 case 'eval':
+                case 'error':
                     return receiveEval(e.data)
             }
         }
     }, [workerRef, evalCellIndex])
+
+    function handleEditorDidMount(editor: any, monaco: any, i: number) {
+        editorRef.current = editor
+        editor.focus()
+        editor.addCommand(
+            monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, // Ctrl+Enter or Cmd+Enter
+            function () {
+                run(i)
+            },
+        )
+        // https://stackoverflow.com/questions/78646558/is-it-possible-to-wrap-the-code-that-is-sent-for-validation-in-the-monaco-editor
+        monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
+            diagnosticCodesToIgnore: [1108, 2304, 1375, 1378, 2554],
+        })
+    }
 
     function mkWorker() {
         try {
             return new Worker(new URL('@/lib/worker.ts', import.meta.url))
         } catch (e) {
             return null
-        }
-    }
-
-    async function onKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>, i: number) {
-        if (!ready) return
-        if (e.key === 'Enter' && i === cells.length - 1 && e.metaKey) {
-            await run(i)
         }
     }
 
@@ -87,7 +123,7 @@ export default function NotebookPage() {
     }
 
     function reset() {
-        setCells([{ input: '' }])
+        setCells([{ input: '', outputs: [] }])
     }
 
     function openHelp() {
@@ -117,44 +153,43 @@ export default function NotebookPage() {
                 <div key={i} className="">
                     <div key={i} className="flex flex-col gap-0">
                         <div className="text-xs pt-2 pb-2">Input {i + 1}</div>
-                        <div className={`ml-6 h-20`}>
+                        <div className={`ml-6 h-32`}>
                             <div
-                                className={`border-spacing-2 rounded-lg ${ready && i == cells.length - 1 ? 'border-gray-600 border-4' : 'border-gray-100 border-2'}`}
+                                className={`border-spacing-2 rounded-lg ${ready && i == cells.length - 1 ? 'border-gray-600 border-4' : 'border-gray-100 border-2'} p-2`}
                             >
-                                <Textarea
-                                    className="h-full w-full border-0  text-sm font-mono"
-                                    id={`input_${i}`}
-                                    defaultValue={cell.input}
-                                    readOnly={i < cells.length - 1}
-                                    onKeyDown={(e) => onKeyDown(e, i)}
-                                    onChange={(e) => onChange(e.target.value, i)}
-                                    autoFocus={ready && i === cells.length - 1}
+                                <Editor
+                                    theme="vs-light"
+                                    defaultLanguage="typescript"
+                                    defaultValue=""
+                                    height={'100px'}
+                                    options={{
+                                        minimap: { enabled: false },
+                                        lineNumbers: 'off',
+                                        glyphMargin: false,
+                                        folding: false,
+                                        // https://stackoverflow.com/questions/53448735/is-there-a-way-to-completely-hide-the-gutter-of-monaco-editor
+                                        // Undocumented see https://github.com/Microsoft/vscode/issues/30795#issuecomment-410998882
+                                        lineDecorationsWidth: 0,
+                                        lineNumbersMinChars: 0,
+                                        renderLineHighlight: 'none',
+                                        readOnly: i != cells.length - 1,
+                                    }}
+                                    onChange={(value, event) => onChange(value || '', i)}
+                                    onMount={(editor, monaco) =>
+                                        handleEditorDidMount(editor, monaco, i)
+                                    }
                                 />
                             </div>
                         </div>
 
-                        {cell.output !== undefined && (
-                            <>
+                        {cell.outputs.length != 0 && (
+                            <div className="flex flex-col gap-2">
                                 <div className="text-xs pt-0 pb-2">Output {i + 1}</div>
-                                <div className="ml-6 h-20">
-                                    <div className="border-spacing-2 rounded-lg border-gray-100 border-2">
-                                        <Textarea
-                                            className="h-full w-full border-0  text-sm font-mono"
-                                            id={`output_${i}`}
-                                            defaultValue={JSON.stringify(cell.output, null, 4)}
-                                            readOnly
-                                        />
-                                    </div>
-                                </div>
-                            </>
-                        )}
-                        {cell.error !== undefined && (
-                            <>
-                                <div className="text-xs pt-0 pb-2">Error {i + 1}</div>
-                                <pre className="ml-6 max-h-64 font-mono text-sm border bg-gray-100 rounded-md p-2 text-red-500">
-                                    {cell.error}
-                                </pre>
-                            </>
+
+                                {cell.outputs.map((output, j) => (
+                                    <OutputArea key={`${i}:${j}`} output={output} index={j} />
+                                ))}
+                            </div>
                         )}
                     </div>
                 </div>
@@ -172,14 +207,15 @@ export default function NotebookPage() {
                 <DialogContent aria-describedby={undefined}>
                     <DialogTitle>Help</DialogTitle>
                     <p>
+                        Use <kbd>⌘⏎</kbd> or <kbd>^⏎</kbd> to run the code of the last cell.
+                    </p>
+                    <p>
                         Use <code>j</code> variable to get a <code>JutgeApiClient</code> object. Or
                         use <code>new JutgeApiClient()</code> to create a new instance.
                     </p>
                     <p>
-                        Use <kbd>⌘⏎</kbd> or <kbd>^⏎</kbd> to run the code of the last cell.
-                    </p>
-                    <p>
-                        Use <code>return</code> to provide a result.
+                        Use <code>print()</code> to print a value. Use <code>return</code> to return
+                        a result and use `last` to use the last returned value.
                     </p>
                 </DialogContent>
             </Dialog>
@@ -195,7 +231,72 @@ export default function NotebookPage() {
                     <LoaderIcon className="animate-spin text-red-500" />
                 </div>
             )}
-            <div id="end" autoFocus={!ready} />
+            <div className="mb-16" />
+        </div>
+    )
+}
+
+function OutputArea({ output, index }: { output: OutputMessage; index: number }) {
+    const label: Record<string, string> = {
+        print: 'P',
+        chart: 'C',
+        eval: 'R',
+        error: 'E',
+    }
+
+    let content = (
+        <div className="grow h-18">
+            <div
+                className={`border-spacing-2 rounded-lg ${output.type == 'error' ? 'border-red-500' : 'border-gray-100'} border-2 p-2`}
+            >
+                <Editor
+                    theme="vs-light"
+                    defaultLanguage="json"
+                    defaultValue={JSON.stringify(output.info, null, 4)}
+                    height={'80px'}
+                    options={{
+                        minimap: { enabled: false },
+                        lineNumbers: 'off',
+                        glyphMargin: false,
+                        folding: false,
+                        // https://stackoverflow.com/questions/53448735/is-there-a-way-to-completely-hide-the-gutter-of-monaco-editor
+                        // Undocumented see https://github.com/Microsoft/vscode/issues/30795#issuecomment-410998882
+                        lineDecorationsWidth: 0,
+                        lineNumbersMinChars: 0,
+                        renderLineHighlight: 'none',
+                        readOnly: true,
+                        scrollBeyondLastLine: false,
+                    }}
+                />
+            </div>
+        </div>
+    )
+
+    if (output.type === 'chart') {
+        const chartData: { x: number; y: number }[] = []
+        for (let i = 0; i < output.info.length; i++) {
+            chartData.push({ x: i, y: output.info[i] })
+        }
+
+        const chartConfig = {} satisfies ChartConfig
+
+        content = (
+            <div className="border-spacing-2 rounded-lg border-gray-100 border-2 p-2">
+                <ChartContainer config={chartConfig} className="min-h-[150px] max-w-[300px] w-full">
+                    <BarChart accessibilityLayer data={chartData}>
+                        <Bar dataKey="y" fill="var(--color-chart-1)" radius={4} />
+                    </BarChart>
+                </ChartContainer>
+            </div>
+        )
+    }
+
+    return (
+        <div className="pl-6 w-full flex flex-row gap-4">
+            <div className="pt-2 w-8 text-xs text-left text-gray-800">
+                {`[${label[output.type]}${index + 1}]`}
+            </div>
+            {content}
         </div>
     )
 }
