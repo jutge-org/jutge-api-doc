@@ -3,7 +3,7 @@
 import { Button } from '@/components/ui/button'
 import { ChartConfig, ChartContainer } from '@/components/ui/chart'
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog'
-import { InputMessage, OutputMessage } from '@/lib/worker'
+import type { Message } from '@/lib/worker'
 import { Editor } from '@monaco-editor/react'
 import { LoaderIcon } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
@@ -48,12 +48,12 @@ export default function NotebookPage() {
     useEffect(() => {
         //
 
-        function receivePong(message: InputMessage) {
+        function receivePong(message: Message) {
             reset()
             setReady(true)
         }
 
-        function receiveData(message: InputMessage) {
+        function receiveData(message: Message) {
             setCells((oldCells) => {
                 const newCells = [...oldCells]
                 newCells[evalCellIndex].outputs.push(message)
@@ -61,7 +61,7 @@ export default function NotebookPage() {
             })
         }
 
-        function receiveEval(message: InputMessage) {
+        function receiveEval(message: Message) {
             setReady(true)
             setCells((oldCells) => {
                 const newCells = [...oldCells]
@@ -73,11 +73,15 @@ export default function NotebookPage() {
             })
         }
 
+        function receiveInput(message: Message) {
+            const info = prompt(message.info)
+            sendToWorker({ type: 'input', info })
+        }
+
         if (!window.Worker) return
         const worker = workerRef.current
         if (!worker) return
-        worker.onmessage = (e: MessageEvent<OutputMessage>) => {
-            console.log('master received message', e.data)
+        worker.onmessage = (e: MessageEvent<Message>) => {
             switch (e.data.type) {
                 case 'pong':
                     return receivePong(e.data)
@@ -87,6 +91,8 @@ export default function NotebookPage() {
                 case 'eval':
                 case 'error':
                     return receiveEval(e.data)
+                case 'input':
+                    return receiveInput(e.data)
             }
         }
     }, [workerRef, evalCellIndex])
@@ -140,10 +146,9 @@ export default function NotebookPage() {
         sendToWorker({ type: 'eval', info: cells[cellIndex].input })
     }
 
-    function sendToWorker(message: InputMessage) {
+    function sendToWorker(message: Message) {
         const worker = workerRef.current
         if (!worker) return
-        console.log('master sending message', message)
         worker.postMessage(message)
     }
 
@@ -236,7 +241,7 @@ export default function NotebookPage() {
     )
 }
 
-function OutputArea({ output, index }: { output: OutputMessage; index: number }) {
+function OutputArea({ output, index }: { output: Message; index: number }) {
     const label: Record<string, string> = {
         print: 'P',
         chart: 'C',

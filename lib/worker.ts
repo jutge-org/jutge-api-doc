@@ -3,40 +3,40 @@
 import ts from 'typescript'
 import { JutgeApiClient } from './jutge_api_client'
 
-export type InputMessage = {
-    type: string
-    info: string
-}
-
-export type OutputMessage = {
+export type Message = {
     type: string
     info: any
 }
 
-self.onmessage = async (event: MessageEvent<InputMessage>) => {
+let inputResolver: null | ((value: string | PromiseLike<string>) => void) = null
+
+self.onmessage = async (event: MessageEvent<Message>) => {
     const inputMsg = event.data
-    console.log('worker received message', inputMsg)
     if (inputMsg.type === 'ping') {
         self.postMessage({ type: 'pong', info: null })
     } else if (inputMsg.type === 'eval') {
         const result = await evaluate(inputMsg.info)
         self.postMessage(result)
+    } else if (inputMsg.type === 'input') {
+        if (inputResolver === null) return console.error('inputResolver is null')
+        inputResolver(inputMsg.info)
+        inputResolver = null
     } else {
         console.error('unknown action', inputMsg.type)
     }
 }
 
-async function evaluate(ts_code: string): Promise<OutputMessage> {
-    const js_code = ts.transpile(ts_code, {
-        target: ts.ScriptTarget.ES5,
-        lib: ['dom'],
-        module: ts.ModuleKind.CommonJS,
-    })
+async function evaluate(ts_code: string): Promise<Message> {
     try {
+        const js_code = ts.transpile(ts_code, {
+            target: ts.ScriptTarget.ES5,
+            lib: ['dom'],
+            module: ts.ModuleKind.CommonJS,
+        })
         const asyncCode = (0, eval)(
-            ' (async function(print, chart, j, last, JutgeApiClient) {' + js_code + '\n})',
+            ' (async function(input, print, chart, j, last, JutgeApiClient) {' + js_code + '\n})',
         )
-        last = await asyncCode(printFunc, chartFunc, jutgeInstance, last, JutgeApiClient)
+        last = await asyncCode(inputFunc, printFunc, chartFunc, jutgeInstance, last, JutgeApiClient)
         return { type: 'eval', info: last }
     } catch (err) {
         if (err instanceof Error) {
@@ -45,6 +45,17 @@ async function evaluate(ts_code: string): Promise<OutputMessage> {
             return { type: 'error', info: JSON.stringify(err) }
         }
     }
+}
+
+async function inputFunc(message: string): Promise<string> {
+    self.postMessage({ type: 'input', info: message })
+    if (inputResolver !== null) {
+        console.error('oops, inputResolver should be null')
+        return ''
+    }
+    return new Promise<string>((resolve) => {
+        inputResolver = resolve
+    })
 }
 
 function printFunc(x: any) {
