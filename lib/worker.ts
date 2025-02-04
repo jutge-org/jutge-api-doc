@@ -8,7 +8,7 @@ export type Message = {
     info: any
 }
 
-let inputResolver: null | ((value: string | PromiseLike<string>) => void) = null
+let inputResolver: null | ((value: string | null | PromiseLike<string | null>) => void) = null
 
 self.onmessage = async (event: MessageEvent<Message>) => {
     const inputMsg = event.data
@@ -34,9 +34,19 @@ async function evaluate(ts_code: string): Promise<Message> {
             module: ts.ModuleKind.CommonJS,
         })
         const asyncCode = (0, eval)(
-            ' (async function(input, print, chart, j, last, JutgeApiClient) {' + js_code + '\n})',
+            ' (async function(login, input, print, chart, j, last, JutgeApiClient) {' +
+                js_code +
+                '\n})',
         )
-        last = await asyncCode(inputFunc, printFunc, chartFunc, jutgeInstance, last, JutgeApiClient)
+        last = await asyncCode(
+            loginFunc,
+            inputFunc,
+            printFunc,
+            chartFunc,
+            jutgeInstance,
+            last,
+            JutgeApiClient,
+        )
         return { type: 'eval', info: last }
     } catch (err) {
         if (err instanceof Error) {
@@ -47,13 +57,33 @@ async function evaluate(ts_code: string): Promise<Message> {
     }
 }
 
-async function inputFunc(message: string): Promise<string> {
-    self.postMessage({ type: 'input', info: message })
+async function loginFunc(): Promise<boolean> {
+    const email = await inputFunc('Enter your email:')
+    if (email == null) return false
+    const password = await inputFunc('Enter your password:', true)
+    if (password == null) return false
+    try {
+        await jutgeInstance.login({ email, password })
+        return true
+    } catch (err) {
+        console.error(err)
+        return false
+    }
+}
+
+async function inputFunc(message: string, passwordMode: boolean = false): Promise<string | null> {
+    self.postMessage({
+        type: 'input',
+        info: {
+            message,
+            passwordMode,
+        },
+    })
     if (inputResolver !== null) {
         console.error('oops, inputResolver should be null')
         return ''
     }
-    return new Promise<string>((resolve) => {
+    return new Promise<string | null>((resolve) => {
         inputResolver = resolve
     })
 }

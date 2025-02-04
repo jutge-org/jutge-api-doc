@@ -57,6 +57,12 @@ const clients: Item[] = [
         isActive: false,
     },
     {
+        name: 'C++',
+        type: 'client',
+        url: '/cpp',
+        isActive: false,
+    },
+    {
         name: 'PHP',
         type: 'client',
         url: '/php',
@@ -71,8 +77,8 @@ const user = {
 }
 
 const apiRaw = [
-    { name: 'Directory', url: '/api/dir' },
-    { name: 'Run', url: '/api/run' },
+    { name: 'Notebook', url: '/notebook' },
+    { name: 'Raw Directory', url: '/api/dir' },
 ]
 
 export function AppSidebar({ ...props }: AppSidebarProps) {
@@ -141,7 +147,7 @@ function Clients({ clients }: { clients: Item[] }) {
 function ApiRaw({ apiRaw: items }: { apiRaw: ApiRawItem[] }) {
     return (
         <SidebarGroup>
-            <SidebarGroupLabel>API Raw</SidebarGroupLabel>
+            <SidebarGroupLabel>API Tools</SidebarGroupLabel>
             <SidebarGroupContent>
                 <SidebarMenu>
                     {items.map((item, index) => (

@@ -3,6 +3,7 @@
 import { Button } from '@/components/ui/button'
 import { ChartConfig, ChartContainer } from '@/components/ui/chart'
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog'
+import { InputDialog } from '@/components/ui/input-dialog'
 import type { Message } from '@/lib/worker'
 import { Editor } from '@monaco-editor/react'
 import { LoaderIcon } from 'lucide-react'
@@ -32,7 +33,13 @@ export default function NotebookPage() {
     const [pingSent, setPingSent] = useState(false)
     const [ready, setReady] = useState(false)
     const [evalCellIndex, setEvalCellIndex] = useState<number>(-1)
-    const [isHelpOpen, setIsHelpOpen] = useState(false)
+    const [isHelpOpen, setIsHelpOpen] = useState(true)
+
+    // input dialog vars
+    const [isDialogOpen, setIsDialogOpen] = useState(false)
+    const [isPasswordMode, setIsPasswordMode] = useState(false)
+    const [prompt, setPrompt] = useState<string>('Please enter a string value')
+
     const workerRef = useRef(mkWorker())
     const editorRef = useRef(null)
 
@@ -74,8 +81,9 @@ export default function NotebookPage() {
         }
 
         function receiveInput(message: Message) {
-            const info = prompt(message.info)
-            sendToWorker({ type: 'input', info })
+            setPrompt(message.info.message)
+            setIsPasswordMode(message.info.passwordMode)
+            setIsDialogOpen(true)
         }
 
         if (!window.Worker) return
@@ -96,6 +104,11 @@ export default function NotebookPage() {
             }
         }
     }, [workerRef, evalCellIndex])
+
+    const handleCloseDialog = (info: string | null) => {
+        setIsDialogOpen(false)
+        sendToWorker({ type: 'input', info })
+    }
 
     function handleEditorDidMount(editor: any, monaco: any, i: number) {
         editorRef.current = editor
@@ -215,16 +228,31 @@ export default function NotebookPage() {
                         Use <kbd>⌘⏎</kbd> or <kbd>^⏎</kbd> to run the code of the last cell.
                     </p>
                     <p>
-                        Use <code>j</code> variable to get a <code>JutgeApiClient</code> object. Or
-                        use <code>new JutgeApiClient()</code> to create a new instance.
+                        Use <code>return</code> to return a result and use `last` to use the last
+                        returned value.
                     </p>
                     <p>
-                        Use <code>print()</code> to print a value. Use <code>return</code> to return
-                        a result and use `last` to use the last returned value.
+                        Available async functions:
+                        <code>input</code>, <code>print</code>, <code>chart</code>,{' '}
+                        <code>login</code>. TODO: Document them.
+                    </p>
+                    <p>
+                        Use <code>j</code> variable to get a <code>JutgeApiClient</code> object. Or
+                        use <code>new JutgeApiClient()</code> to create a new instance.
                     </p>
                 </DialogContent>
             </Dialog>
         </div>
+    )
+
+    const dialog = (
+        <InputDialog
+            isOpen={isDialogOpen}
+            onClose={handleCloseDialog}
+            title={isPasswordMode ? 'Input password' : 'Input text'}
+            description={prompt}
+            isPassword={isPasswordMode}
+        />
     )
 
     return (
@@ -237,6 +265,7 @@ export default function NotebookPage() {
                 </div>
             )}
             <div className="mb-16" />
+            {dialog}
         </div>
     )
 }
