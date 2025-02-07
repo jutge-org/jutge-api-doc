@@ -99,7 +99,7 @@ export const Terminal = ({ children, className }: TerminalProps) => {
                 className,
             )}
         >
-            <div className="flex flex-col gap-y-2 border-b border-border p-4">
+            <div className="flex flex-col gap-y-2 border-b border-border p-3">
                 <div className="flex flex-row gap-x-2">
                     <div className="h-3 w-3 rounded-full bg-red-500"></div>
                     <div className="h-3 w-3 rounded-full bg-yellow-500"></div>
