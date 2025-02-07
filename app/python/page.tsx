@@ -1,3 +1,4 @@
+import { AnimatedSpan, Terminal, TypingAnimation } from '@/components/magicui/terminal'
 import { TextSection } from '@/components/text-section'
 import { Button } from '@/components/ui/button'
 import { BookOpen, Download, SquareChevronRight } from 'lucide-react'
@@ -14,6 +15,10 @@ export default async function Page() {
 function PythonPage() {
     return (
         <>
+            <TerminalDemo />
+
+            <div className="h-12" />
+
             <TextSection
                 icon={<SquareChevronRight />}
                 title="Python client"
@@ -89,5 +94,74 @@ function PythonPage() {
                 }
             />
         </>
+    )
+}
+
+function TerminalDemo() {
+    return (
+        <Terminal className="h-96">
+            <TypingAnimation className="text-green-500">python3</TypingAnimation>
+            <AnimatedSpan delay={1000} className="text-black">
+                <div className="flex flex-row gap-2">
+                    <div className="text-red-500">❯❯❯</div>
+                    <div className="text-black">from jutge_api_client import JutgeApiClient</div>
+                </div>
+            </AnimatedSpan>
+            <AnimatedSpan delay={2000} className="text-black">
+                <div className="flex flex-row gap-2">
+                    <div className="text-red-500">❯❯❯</div>
+                    <div className="text-black">jutge = JutgeApiClient()</div>
+                </div>
+            </AnimatedSpan>
+            <AnimatedSpan delay={3000} className="text-black">
+                <div className="flex flex-row gap-2">
+                    <div className="text-red-500">❯❯❯</div>
+                    <div className="text-black">
+                        problem = jutge.problems.get_problem(&quot;P68688_en&quot;)
+                    </div>
+                </div>
+            </AnimatedSpan>
+            <AnimatedSpan delay={4000} className="text-black">
+                <div className="flex flex-row gap-2">
+                    <div className="text-red-500">❯❯❯</div>
+                    <div className="text-black">problem.title</div>
+                </div>
+            </AnimatedSpan>
+            <AnimatedSpan delay={4200} className="text-blue-500">
+                <span>&quot;Hello World!&quot;</span>
+            </AnimatedSpan>
+            <AnimatedSpan delay={5000} className="text-black">
+                <div className="flex flex-row gap-2">
+                    <div className="text-red-500">❯❯❯</div>
+                    <div className="text-black">
+                        jutge.login(&quot;aturing@bletchley.park&quot;, &quot;enigma&quot;)
+                    </div>
+                </div>
+            </AnimatedSpan>
+            <AnimatedSpan delay={6000} className="text-black">
+                <div className="flex flex-row gap-2">
+                    <div className="text-red-500">❯❯❯</div>
+                    <div className="text-black">jutge.student.profile.get().name</div>
+                </div>
+            </AnimatedSpan>
+            <AnimatedSpan delay={6200} className="text-blue-500">
+                <span>&quot;Alan Turing&quot;</span>
+            </AnimatedSpan>
+            <AnimatedSpan delay={7000} className="text-black">
+                <div className="flex flex-row gap-2">
+                    <div className="text-red-500">❯❯❯</div>
+                    <div className="text-black">
+                        jutge.student.statuses.get_for_problem(&quot;P68688_en&quot;)
+                    </div>
+                </div>
+            </AnimatedSpan>
+            <AnimatedSpan delay={7200} className="text-blue-500">
+                <span>
+                    Status(nb_submissions=3, nb_accepted_submissions=1,
+                    <br />
+                    nb_rejected_submissions=2, status=&quot;accepted&quot;)
+                </span>
+            </AnimatedSpan>
+        </Terminal>
     )
 }
