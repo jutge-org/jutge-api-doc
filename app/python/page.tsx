@@ -100,7 +100,7 @@ function PythonPage() {
 function TerminalDemo() {
     return (
         <Terminal className="h-96">
-            <TypingAnimation className="text-green-500">python3</TypingAnimation>
+            <TypingAnimation className="text-green-500">💲 python3</TypingAnimation>
             <AnimatedSpan delay={1000} className="text-black">
                 <div className="flex flex-row gap-2">
                     <div className="text-red-500">❯❯❯</div>
