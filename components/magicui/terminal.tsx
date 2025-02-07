@@ -87,11 +87,12 @@ export const TypingAnimation = ({
 }
 
 interface TerminalProps {
+    title: string
     children: React.ReactNode
     className?: string
 }
 
-export const Terminal = ({ children, className }: TerminalProps) => {
+export const Terminal = ({ title, children, className }: TerminalProps) => {
     return (
         <div
             className={cn(
@@ -100,10 +101,11 @@ export const Terminal = ({ children, className }: TerminalProps) => {
             )}
         >
             <div className="flex flex-col gap-y-2 border-b border-border p-3">
-                <div className="flex flex-row gap-x-2">
+                <div className="flex flex-row items-center gap-x-2">
                     <div className="h-3 w-3 rounded-full bg-red-500"></div>
                     <div className="h-3 w-3 rounded-full bg-yellow-500"></div>
                     <div className="h-3 w-3 rounded-full bg-green-500"></div>
+                    <div className="text-gray-500 pl-2">{title}</div>
                 </div>
             </div>
             <pre className="p-4">
