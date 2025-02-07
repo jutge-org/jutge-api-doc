@@ -15,7 +15,9 @@ export default async function Page() {
 function PythonPage() {
     return (
         <>
-            <TerminalDemo />
+            <div className="w-full flex flex-row justify-center mt-8 gap-4">
+                <TerminalDemo />
+            </div>
 
             <div className="h-12" />
 
