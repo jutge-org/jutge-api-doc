@@ -160,4 +160,8 @@ body {
     .markdown pre {
         @apply px-3 rounded-sm py-1 overflow-x-auto text-sm;
     }
+
+    .code-block pre {
+        @apply px-3 rounded-sm py-1 overflow-x-auto text-sm min-h-[25rem];
+    }
 }
