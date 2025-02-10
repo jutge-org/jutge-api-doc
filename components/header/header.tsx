@@ -12,16 +12,17 @@ import {
     navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
 import { cn } from "@/lib/utils"
+import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import React from "react"
 
-const clients: { title: string; href: string; description: string }[] = [
-    { title: "Python", href: "/clients/python", description: "Client en Python" },
-    { title: "Typescript", href: "/clients/typescript", description: "Client en Typescript" },
-    { title: "Javascript", href: "/clients/javascript", description: "Client en Javascript" },
-    { title: "PHP", href: "/clients/php", description: "Client en PHP" },
-    { title: "C++", href: "/clients/cpp", description: "Client en C++" },
+const clients: { title: string; id: string; description: string }[] = [
+    { title: "Python", id: "python", description: "Client en Python" },
+    { title: "Typescript", id: "typescript", description: "Client en Typescript" },
+    { title: "Javascript", id: "javascript", description: "Client en Javascript" },
+    { title: "PHP", id: "php", description: "Client en PHP" },
+    { title: "C++", id: "cpp", description: "Client en C++" },
 ]
 
 export default function Header() {
@@ -41,15 +42,16 @@ export default function Header() {
                         >
                             <NavigationMenuTrigger>Clients</NavigationMenuTrigger>
                             <NavigationMenuContent>
-                                <ul className="grid w-[300px] gap-3 p-3 md:w-[400px] md:grid-cols-2 lg:w-[500px] ">
+                                <ul className="grid w-[300px] gap-3 p-2 md:w-[400px] md:grid-cols-2 lg:w-[500px] ">
                                     {clients.map((client) => (
-                                        <ListItem
-                                            key={client.title}
+                                        <ClientItem
+                                            key={client.id}
+                                            id={client.id}
                                             title={client.title}
-                                            href={client.href}
+                                            href={`/clients/${client.id}`}
                                         >
                                             {client.description}
-                                        </ListItem>
+                                        </ClientItem>
                                     ))}
                                 </ul>
                             </NavigationMenuContent>
@@ -84,27 +86,39 @@ export default function Header() {
     )
 }
 
-const ListItem = React.forwardRef<React.ElementRef<"a">, React.ComponentPropsWithoutRef<"a">>(
-    ({ className, title, children, ...props }, ref) => {
+const ClientItem = React.forwardRef<React.ElementRef<"a">, React.ComponentPropsWithoutRef<"a">>(
+    ({ className, title, id, children, ...props }, ref) => {
         return (
             <li>
                 <NavigationMenuLink asChild>
                     <a
                         ref={ref}
                         className={cn(
-                            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+                            "flex flex-row items-center gap-3",
+                            "select-none space-y-1 rounded-md p-2 leading-none",
+                            "no-underline outline-none transition-colors",
+                            "hover:bg-accent hover:text-accent-foreground",
+                            "focus:bg-accent focus:text-accent-foreground",
                             className,
                         )}
                         {...props}
                     >
-                        <div className="text-sm font-medium leading-none">{title}</div>
-                        <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                            {children}
-                        </p>
+                        <Image
+                            src={`/logos/${id}.svg`}
+                            width={42}
+                            height={32}
+                            alt={`${title} logo`}
+                        />
+                        <div className="flex flex-col flex-1">
+                            <div className="text-sm font-medium leading-none">{title}</div>
+                            <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                                {children}
+                            </p>
+                        </div>
                     </a>
                 </NavigationMenuLink>
             </li>
         )
     },
 )
-ListItem.displayName = "ListItem"
+ClientItem.displayName = "ListItem"
