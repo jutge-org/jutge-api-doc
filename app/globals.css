@@ -53,6 +53,8 @@ body {
         --chart-3: 197 37% 24%;
         --chart-4: 43 74% 66%;
         --chart-5: 27 87% 67%;
+
+        --topbar-height: 2.8rem;
     }
 
     .dark {
@@ -105,13 +107,17 @@ body {
         @apply bg-background text-foreground;
     }
 
-    .debug,
-    .debug-1 {
+    .debug, .debug-1 {
         @apply border-red-500 border-2;
     }
-    .debug-1 {
-        @apply border;
+    .debug-2 {
+        @apply border-blue-500 border-2;
     }
+    .debug-3 {
+        @apply border-green-500 border-2;
+    }
+
+
     h1,
     h2,
     h3,
@@ -119,4 +125,5 @@ body {
     h5 {
         @apply font-bold;
     }
+
 }

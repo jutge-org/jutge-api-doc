@@ -1,5 +1,5 @@
+import { boolean, literal, string, union } from 'valibot'
 import { createEnv } from 'valibot-env'
-import { boolean, union, literal, string, number } from 'valibot'
 
 const env = createEnv({
     schema: {

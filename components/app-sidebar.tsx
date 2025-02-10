@@ -85,10 +85,7 @@ export function AppSidebar({ ...props }: AppSidebarProps) {
     const { tree } = props
     return (
         <Sidebar {...props}>
-            <Header />
-
             <SidebarContent>
-                <Clients clients={clients} />
                 <Directory tree={tree} />
                 <ApiRaw apiRaw={apiRaw} />
             </SidebarContent>

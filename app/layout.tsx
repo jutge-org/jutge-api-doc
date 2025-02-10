@@ -1,26 +1,19 @@
-import { AppSidebar } from '@/components/app-sidebar'
-import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar'
-import { getApiDir } from '@/lib/api-dir'
-import { modules } from '@/lib/api-dir'
-import type { Metadata } from 'next'
-import localFont from 'next/font/local'
-import './globals.css'
-import Header from './header'
+import { cn } from "@/lib/utils"
+import type { Metadata } from "next"
+import { Inter, Outfit, PT_Sans, Lexend, Red_Hat_Text, Quicksand } from "next/font/google"
+import Header from "../components/header/header"
+import "./globals.css"
 
-const geistSans = localFont({
-    src: './fonts/GeistVF.woff',
-    variable: '--font-geist-sans',
-    weight: '100 900',
-})
-const geistMono = localFont({
-    src: './fonts/GeistMonoVF.woff',
-    variable: '--font-geist-mono',
-    weight: '100 900',
-})
+const inter = Inter({ subsets: ["latin"] })
+const outfit = Outfit({ subsets: ["latin"] })
+const lexend = Lexend({ subsets: ["latin"] })
+const quicksand = Quicksand({ subsets: ["latin"] })
+const redhat = Red_Hat_Text({ subsets: ["latin"] })
+const ptSans = PT_Sans({ weight: ["400", "700"], subsets: ["latin"]  })
 
 export const metadata: Metadata = {
-    title: 'Jutge.org API Documentation',
-    description: 'Jutge.org API documentation',
+    title: "Jutge.org API Documentation",
+    description: "Jutge.org API documentation",
 }
 
 export default async function RootLayout({
@@ -28,19 +21,11 @@ export default async function RootLayout({
 }: Readonly<{
     children: React.ReactNode
 }>) {
-    const dir = await getApiDir()
-    const tree = modules(dir.root)
-
     return (
         <html lang="en">
-            <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-                <SidebarProvider>
-                    <AppSidebar tree={tree} />
-                    <SidebarInset>
-                        <Header />
-                        {children}
-                    </SidebarInset>
-                </SidebarProvider>
+            <body className={cn(inter.className, "bg-zinc-50")}>
+                <Header />
+                <div className="mt-[var(--topbar-height)] bg-transparent">{children}</div>
             </body>
         </html>
     )
