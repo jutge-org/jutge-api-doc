@@ -107,7 +107,8 @@ body {
         @apply bg-background text-foreground;
     }
 
-    .debug, .debug-1 {
+    .debug,
+    .debug-1 {
         @apply border-red-500 border-2;
     }
     .debug-2 {
@@ -117,7 +118,6 @@ body {
         @apply border-green-500 border-2;
     }
 
-
     h1,
     h2,
     h3,
@@ -126,4 +126,38 @@ body {
         @apply font-bold;
     }
 
+    h1 {
+        @apply text-3xl;
+    }
+    h2 {
+        @apply text-2xl mt-4 mb-1;
+    }
+    h3 {
+        @apply text-xl;
+    }
+    h4 {
+        @apply text-lg;
+    }
+    h5 {
+        @apply text-base;
+    }
+
+    .markdown h1 {
+        @apply pb-2;
+    }
+
+    .markdown a {
+        @apply text-blue-700 underline;
+    }
+    .markdown a.button {
+        @apply text-primary-foreground no-underline;
+    }
+
+    .markdown p {
+        @apply my-2 prose prose-sm;
+    }
+
+    .markdown pre {
+        @apply px-3 rounded-sm py-1 overflow-x-auto text-sm;
+    }
 }

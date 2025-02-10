@@ -54,6 +54,7 @@ export default function Header() {
                                 </ul>
                             </NavigationMenuContent>
                         </NavigationMenuItem>
+
                         <Link
                             href="/docs"
                             className={cn(
@@ -61,7 +62,7 @@ export default function Header() {
                                 pathname.startsWith("/docs") && "border-b-black",
                             )}
                         >
-                            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                            <NavigationMenuLink className={navigationMenuTriggerStyle()} asChild>
                                 <div>Documentació</div>
                             </NavigationMenuLink>
                         </Link>
@@ -72,7 +73,7 @@ export default function Header() {
                                 pathname.startsWith("/notebook") && "border-b-black",
                             )}
                         >
-                            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                            <NavigationMenuLink className={navigationMenuTriggerStyle()} asChild>
                                 <div>Prova la API</div>
                             </NavigationMenuLink>
                         </Link>
