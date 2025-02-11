@@ -3,6 +3,7 @@ import { ApiModel, makeExample } from "@/lib/api-dir"
 import { cn } from "@/lib/utils"
 import React from "react"
 import YAML from "yaml"
+import HoverCardTip from "./hover-card-tip"
 
 type TypeViewProps = {
     className?: string
@@ -40,15 +41,21 @@ export default async function TypeView({ className, name, input, spath, models }
         }
         return (
             <HoverCard openDelay={0} closeDelay={0}>
-                <HoverCardTrigger asChild className="data-[state=open]:bg-blue-100 data-[state=open]:dark:bg-stone-900 rounded px-1.5">
+                <HoverCardTrigger
+                    asChild
+                    className="data-[state=open]:bg-blue-100 data-[state=open]:dark:bg-stone-900 rounded px-1.5"
+                >
                     {link}
                 </HoverCardTrigger>
                 {model && (
-                    <HoverCardContent className="p-4 border-black relative flex flex-col w-auto min-w-[22em]">
-                        <div className="absolute -top-2.5 h-2.5 left-0 right-0 flex flex-row justify-center">
-                            <svg viewBox="0 0 30 10">
-                                <path d="M 0 10 L 15 2 L 30 10" fill="white" stroke="black" />
-                            </svg>
+                    <HoverCardContent
+                        className={cn(
+                            "p-4 border-black dark:border-white relative flex flex-col w-auto min-w-[22em]",
+                            "[&_div.up]:data-[side=top]:hidden [&_div.down]:data-[side=bottom]:hidden",
+                        )}
+                    >
+                        <div className="up absolute -top-2.5 h-2.5 left-0 right-0 flex flex-row justify-center">
+                            <HoverCardTip side="up" />
                         </div>
                         <h3 className="font-semibold mb-2 font-mono">{refName}</h3>
                         <TypeView input={model} spath={spath} models={models} />
@@ -58,6 +65,9 @@ export default async function TypeView({ className, name, input, spath, models }
                         <pre className="text-xs bg-gray-100 dark:bg-stone-900 px-2 py-1">
                             {JSON.stringify(makeExample(model, models), null, 2)}
                         </pre>
+                        <div className="down absolute -bottom-2 h-2.5 left-0 right-0 flex flex-row justify-center">
+                            <HoverCardTip side="down" />
+                        </div>
                     </HoverCardContent>
                 )}
             </HoverCard>
@@ -86,10 +96,7 @@ export default async function TypeView({ className, name, input, spath, models }
     const _Object = ({ properties }: { properties: Record<string, any> }) => (
         <div className="border pl-1.5 pt-0.5 pb-1 pr-0.5 rounded flex flex-col">
             {Object.entries(properties).map(([name, type], i) => (
-                <div
-                    key={`${name}${i}`}
-                    className="flex flex-row items-baseline p-0 h-[1.4em]"
-                >
+                <div key={`${name}${i}`} className="flex flex-row items-baseline p-0 h-[1.4em]">
                     <code className="text-[0.9em]">{name}</code>
                     <span className="text-gray-300 h-[1.4em] ml-2">&ndash;</span>
                     <TypeView input={type} spath={spath} models={models} />
@@ -119,7 +126,9 @@ export default async function TypeView({ className, name, input, spath, models }
     }
     return (
         <div className={cn("flex flex-row text-sm items-baseline gap-1", className)}>
-            {name && <div className="min-w-[3.5em] text-muted-foreground italic text-xs">{name}</div>}
+            {name && (
+                <div className="min-w-[3.5em] text-muted-foreground italic text-xs">{name}</div>
+            )}
             {body}
         </div>
     )
