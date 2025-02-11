@@ -2,6 +2,7 @@
 
 import Logo from "@/components/header/logo"
 import PageWidth from "@/components/page-width"
+import ThemeSwitcher from "@/components/theme/theme-switcher"
 import {
     NavigationMenu,
     NavigationMenuContent,
@@ -29,7 +30,7 @@ export default function Header() {
     const pathname = usePathname()
 
     return (
-        <header className="bg-white fixed top-0 left-0 right-0 px-3 border-b pt-[2px] flex flex-row items-stretch z-50">
+        <header className="bg-background fixed top-0 left-0 right-0 px-3 border-b pt-[2px] flex flex-row items-stretch z-50">
             <PageWidth className="flex flex-row items-stretch gap-2">
                 <Logo />
                 <NavigationMenu>
@@ -42,7 +43,7 @@ export default function Header() {
                         >
                             <NavigationMenuTrigger>Clients</NavigationMenuTrigger>
                             <NavigationMenuContent>
-                                <ul className="grid w-[300px] gap-3 p-2 md:w-[400px] md:grid-cols-2 lg:w-[500px] ">
+                                <ul className="flex flex-col gap-3 p-2 md:grid-cols-1 min-w-[16em]">
                                     {clients.map((client) => (
                                         <ClientItem
                                             key={client.id}
@@ -65,7 +66,7 @@ export default function Header() {
                             )}
                         >
                             <NavigationMenuLink className={navigationMenuTriggerStyle()} asChild>
-                                <div>Documentació</div>
+                                <div>Documentation</div>
                             </NavigationMenuLink>
                         </Link>
                         <Link
@@ -76,22 +77,25 @@ export default function Header() {
                             )}
                         >
                             <NavigationMenuLink className={navigationMenuTriggerStyle()} asChild>
-                                <div>Prova la API</div>
+                                <div>Playground</div>
                             </NavigationMenuLink>
                         </Link>
                     </NavigationMenuList>
                 </NavigationMenu>
+                <div className="flex-1"></div>
+                <ThemeSwitcher />
             </PageWidth>
         </header>
     )
 }
 
 const ClientItem = React.forwardRef<React.ElementRef<"a">, React.ComponentPropsWithoutRef<"a">>(
-    ({ className, title, id, children, ...props }, ref) => {
+    ({ className, title, id, href, children, ...props }, ref) => {
         return (
             <li>
                 <NavigationMenuLink asChild>
-                    <a
+                    <Link
+                        href={href || "/"}
                         ref={ref}
                         className={cn(
                             "flex flex-row items-center gap-3",
@@ -115,7 +119,7 @@ const ClientItem = React.forwardRef<React.ElementRef<"a">, React.ComponentPropsW
                                 {children}
                             </p>
                         </div>
-                    </a>
+                    </Link>
                 </NavigationMenuLink>
             </li>
         )

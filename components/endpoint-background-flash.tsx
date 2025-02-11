@@ -2,6 +2,7 @@
 
 import { cn } from "@/lib/utils"
 import { useEffect, useState } from "react"
+import { useTheme } from "./theme/hook"
 
 type EndpointBackgroundFlashProps = {
     id: string
@@ -10,6 +11,7 @@ type EndpointBackgroundFlashProps = {
 export default function EndpointBackgroundFlash({ id, children }: EndpointBackgroundFlashProps) {
     const [hash, setHash] = useState("")
     const [flash, setFlash] = useState(true)
+    const { mode } = useTheme()
 
     const onHashChange = () => {
         setHash(window.location.hash)
@@ -22,11 +24,13 @@ export default function EndpointBackgroundFlash({ id, children }: EndpointBackgr
         return () => window.removeEventListener("hashchange", onHashChange)
     })
 
+    const flashBackground = mode === "dark" ? "bg-stone-700" : "bg-yellow-100"
+
     return (
         <div
             className={cn(
-                "relative p-2 rounded transition-colors duration-1000 ease-out",
-                hash === `#${id}` && flash ? "bg-yellow-200" : "",
+                "relative rounded transition-colors duration-1000 ease-out",
+                hash === `#${id}` && flash ? flashBackground : "",
             )}
         >
             <div id={id} className="absolute -top-16 -left-10"></div>

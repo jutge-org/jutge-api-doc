@@ -1,8 +1,8 @@
-import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card'
-import { ApiModel, makeExample } from '@/lib/api-dir'
-import { cn } from '@/lib/utils'
-import React from 'react'
-import YAML from 'yaml'
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
+import { ApiModel, makeExample } from "@/lib/api-dir"
+import { cn } from "@/lib/utils"
+import React from "react"
+import YAML from "yaml"
 
 type TypeViewProps = {
     className?: string
@@ -17,8 +17,10 @@ export default async function TypeView({ className, name, input, spath, models }
     const _BasicType = ({ type }: { type: string }) => (
         <div
             className={cn(
-                'bg-blue-50 box-border border border-blue-100 rounded text-blue-800',
-                'text-[0.9em] h-[1.3em] px-1 flex flex-col justify-center items-center',
+                "box-border border rounded ml-2",
+                "text-blue-600 border-blue-400",
+                "dark:text-stone-400 dark:border-stone-600",
+                "text-[0.9em] h-[1.3em] px-1 flex flex-col justify-center items-center",
             )}
         >
             {type}
@@ -38,7 +40,7 @@ export default async function TypeView({ className, name, input, spath, models }
         }
         return (
             <HoverCard openDelay={0} closeDelay={0}>
-                <HoverCardTrigger asChild className="data-[state=open]:bg-blue-100 rounded px-1.5">
+                <HoverCardTrigger asChild className="data-[state=open]:bg-blue-100 data-[state=open]:dark:bg-stone-900 rounded px-1.5">
                     {link}
                 </HoverCardTrigger>
                 {model && (
@@ -53,7 +55,7 @@ export default async function TypeView({ className, name, input, spath, models }
                         <h4 className="uppercase font-normal text-xs mt-3 mb-1 text-gray-600">
                             Example
                         </h4>
-                        <pre className="text-xs bg-gray-100 px-2 py-1">
+                        <pre className="text-xs bg-gray-100 dark:bg-stone-900 px-2 py-1">
                             {JSON.stringify(makeExample(model, models), null, 2)}
                         </pre>
                     </HoverCardContent>
@@ -82,21 +84,21 @@ export default async function TypeView({ className, name, input, spath, models }
     )
 
     const _Object = ({ properties }: { properties: Record<string, any> }) => (
-        <div className="border px-3 p-1 pb-2 mr-4 rounded bg-white flex flex-col">
+        <div className="border pl-1.5 pt-0.5 pb-1 pr-0.5 rounded flex flex-col">
             {Object.entries(properties).map(([name, type], i) => (
                 <div
                     key={`${name}${i}`}
-                    className="flex flex-row gap-3 items-baseline p-0 h-[1.4em]"
+                    className="flex flex-row items-baseline p-0 h-[1.4em]"
                 >
                     <code className="text-[0.9em]">{name}</code>
-                    <span className="text-gray-300 h-[1.4em]">&ndash;</span>
+                    <span className="text-gray-300 h-[1.4em] ml-2">&ndash;</span>
                     <TypeView input={type} spath={spath} models={models} />
                 </div>
             ))}
         </div>
     )
 
-    if (input.type === 'void') {
+    if (input.type === "void") {
         return
     }
 
@@ -104,20 +106,20 @@ export default async function TypeView({ className, name, input, spath, models }
         body = <_Reference refName={input.$ref} />
     } else if (input.anyOf) {
         body = <_AnyOf types={input.anyOf} />
-    } else if (input.type === 'object') {
+    } else if (input.type === "object") {
         if (input.properties) {
             body = <_Object properties={input.properties} />
         } else if (input.patternProperties) {
             body = <_Object properties={input.patternProperties} />
         }
-    } else if (input.type === 'array') {
+    } else if (input.type === "array") {
         body = <_Array items={input.items} />
     } else {
         body = <_BasicType type={input.type} />
     }
     return (
-        <div className={cn('flex flex-row text-sm items-baseline', className)}>
-            {name && <div className="min-w-[3.5em] text-gray-600 italic text-xs">{name}</div>}
+        <div className={cn("flex flex-row text-sm items-baseline gap-1", className)}>
+            {name && <div className="min-w-[3.5em] text-muted-foreground italic text-xs">{name}</div>}
             {body}
         </div>
     )

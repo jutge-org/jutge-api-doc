@@ -7,7 +7,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
     const tree = modules(dir.root)
 
     return (
-        <SidebarProvider className="mt-[var(--topbar-height)]">
+        <SidebarProvider>
             <AppSidebar className="mt-[var(--topbar-height)]" tree={tree} />
             <SidebarInset>{children}</SidebarInset>
         </SidebarProvider>

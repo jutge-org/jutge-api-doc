@@ -91,6 +91,8 @@ body {
         --sidebar-border: 240 3.7% 15.9%;
         --sidebar-ring: 217.2 91.2% 59.8%;
 
+        --secondary-background: 240 3.7% 9.9%;
+
         --chart-1: 220 70% 50%;
         --chart-2: 160 60% 45%;
         --chart-3: 30 80% 55%;
@@ -154,7 +156,7 @@ body {
     }
 
     .markdown p {
-        @apply my-2 prose prose-sm;
+        @apply my-2;
     }
 
     .markdown pre {

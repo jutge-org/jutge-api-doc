@@ -1,3 +1,4 @@
+import { CodeBlock } from "@/components/code-block"
 import PageWidth from "@/components/page-width"
 import {
     Select,
@@ -8,8 +9,6 @@ import {
 } from "@/components/ui/select"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import Link from "next/link"
-import type { BundledLanguage } from "shiki"
-import { codeToHtml } from "shiki"
 
 export default function Page() {
     return (
@@ -22,17 +21,16 @@ export default function Page() {
 
 const Banner = () => (
     <div className="w-full h-[20em] flex flex-col justify-center items-center gap-6">
-        <h1 className="text-[3.2em]">Accedeix directament a</h1>
-        <h1 className="text-[3.2em] text-green-600">la funcionalitat del Jutge</h1>
+        <h1 className="text-[3.2em]">Script Jutge.org's services</h1>
+        <h1 className="text-[3.2em] text-green-600">with your language of choice</h1>
         <div></div>
         <p className="max-w-[36em] text-center font-bold">
-            Fes programes que interactuen amb{" "}
+            Write programs to interact with{" "}
             <Link href="https://jutge.org" className="text-blue-800">
                 Jutge.org
             </Link>
-            , ja sigui per obtenir informació, per configurar automàticament cursos, o moltes altres
-            coses. <br />
-            Hi ha clients per Python, Typescript, Javascript, PHP i fins i tot C++.
+            , to obtain information, configure things automatially, and much more. <br />
+            Clients for Python, Typescript, Javascript, PHP and even C++.
         </p>
     </div>
 )
@@ -68,20 +66,6 @@ const Demo = async () => {
             </Tabs>
         </>
     )
-}
-
-interface Props {
-    children: string
-    lang: BundledLanguage
-}
-
-async function CodeBlock(props: Props) {
-    const out = await codeToHtml(props.children, {
-        lang: props.lang,
-        theme: "github-dark",
-    })
-
-    return <div className="code-block max-h-[25em] overflow-y-scroll" dangerouslySetInnerHTML={{ __html: out }} />
 }
 
 async function loadCode(filename: string) {

@@ -1,3 +1,4 @@
+import ThemedBody from "@/components/theme/themed-body"
 import { cn } from "@/lib/utils"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
@@ -18,11 +19,11 @@ export default async function RootLayout({
 }>) {
     return (
         <html lang="en">
-            <body className={cn(inter.className, "bg-zinc-50 flex flex-col")}>
+            <ThemedBody className={cn(inter.className, "flex flex-col")}>
                 <Header />
                 <div className="mt-[var(--topbar-height)]"></div>
                 <div>{children}</div>
-            </body>
+            </ThemedBody>
         </html>
     )
 }
