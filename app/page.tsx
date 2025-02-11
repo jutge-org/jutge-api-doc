@@ -1,3 +1,4 @@
+import { loadCode } from "@/actions/load-code"
 import { CodeBlock } from "@/components/code-block"
 import PageWidth from "@/components/page-width"
 import {
@@ -21,7 +22,7 @@ export default function Page() {
 
 const Banner = () => (
     <div className="w-full h-[20em] flex flex-col justify-center items-center gap-6">
-        <h1 className="text-[3.2em]">Script Jutge.org's services</h1>
+        <h1 className="text-[3.2em]">Script Jutge.org&apos;s services</h1>
         <h1 className="text-[3.2em] text-green-600">with your language of choice</h1>
         <div></div>
         <p className="max-w-[36em] text-center font-bold">
@@ -66,10 +67,4 @@ const Demo = async () => {
             </Tabs>
         </>
     )
-}
-
-async function loadCode(filename: string) {
-    const url = new URL(`http://localhost:3000/code/${filename}`)
-    const res = await fetch(url)
-    return res.text()
 }

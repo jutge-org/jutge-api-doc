@@ -10,20 +10,17 @@ interface Props {
     lang: BundledLanguage
 }
 
-export function CodeBlock(props: Props) {
+export function CodeBlock({ children, lang }: Props) {
     const { mode } = useTheme()
 
     const [html, setHtml] = useState<string | null>(null)
 
-    const highlightCode = async () =>
-        codeToHtml(props.children, {
-            lang: props.lang,
-            theme: mode === "dark" ? "slack-dark" : "one-light",
-        })
-
     useEffect(() => {
-        highlightCode().then(setHtml)
-    })
+        codeToHtml(children, {
+            lang: lang,
+            theme: mode === "dark" ? "slack-dark" : "one-light",
+        }).then(setHtml)
+    }, [lang, children, mode])
 
     return (
         <div
