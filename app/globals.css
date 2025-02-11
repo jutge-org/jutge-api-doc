@@ -147,6 +147,9 @@ body {
     .markdown h1 {
         @apply pb-2;
     }
+    .markdown h2 {
+        @apply mt-10;
+    }
 
     .markdown a {
         @apply text-blue-700 underline;
