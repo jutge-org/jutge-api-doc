@@ -30,7 +30,7 @@ export default async function TypeView({ className, name, input, spath, models }
 
     const _Reference = ({ refName }: { refName: string }) => {
         const link = (
-            <div className="text-blue-900 text-[0.9em] font-semibold cursor-pointer">
+            <div className="text-blue-900 dark:text-blue-600 text-[0.9em] font-semibold cursor-pointer">
                 <code>{input.$ref}</code>
             </div>
         )
@@ -94,7 +94,7 @@ export default async function TypeView({ className, name, input, spath, models }
     )
 
     const _Object = ({ properties }: { properties: Record<string, any> }) => (
-        <div className="border pl-1.5 pt-0.5 pb-1 pr-0.5 rounded flex flex-col">
+        <div className="border dark:border-zinc-700 border-zinc-300 pl-1.5 pt-0.5 pb-1 pr-0.5 rounded flex flex-col">
             {Object.entries(properties).map(([name, type], i) => (
                 <div key={`${name}${i}`} className="flex flex-row items-baseline p-0 h-[1.4em]">
                     <code className="text-[0.9em]">{name}</code>
