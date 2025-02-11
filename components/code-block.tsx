@@ -24,7 +24,7 @@ export function CodeBlock({ children, lang }: Props) {
 
     return (
         <div
-            className="code-block max-h-[25em] overflow-y-scroll"
+            className="code-block min-h-[24em]"
             dangerouslySetInnerHTML={{ __html: html ?? "" }}
         />
     )
