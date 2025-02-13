@@ -54,7 +54,7 @@ body {
         --chart-4: 43 74% 66%;
         --chart-5: 27 87% 67%;
 
-        --topbar-height: 2.8rem;
+        --topbar-height: 3rem;
     }
 
     .dark {
@@ -144,15 +144,22 @@ body {
         @apply text-base;
     }
 
+    header a, .sidebar a {
+        @apply no-underline;
+    }
+    a {
+        @apply underline;
+    }
+
+
     .markdown h1 {
         @apply pb-2;
     }
     .markdown h2 {
         @apply mt-10;
     }
-
     .markdown a {
-        @apply text-blue-700 underline;
+        @apply text-blue-700 dark:text-blue-200 underline;
     }
     .markdown a.button {
         @apply text-primary-foreground no-underline;

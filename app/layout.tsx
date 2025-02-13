@@ -1,3 +1,4 @@
+import Footer from "@/components/footer"
 import ThemedBody from "@/components/theme/themed-body"
 import { cn } from "@/lib/utils"
 import type { Metadata } from "next"
@@ -19,10 +20,11 @@ export default async function RootLayout({
 }>) {
     return (
         <html lang="en">
-            <ThemedBody className={cn(inter.className, "flex flex-col")}>
+            <ThemedBody className={cn(inter.className, "flex flex-col min-h-screen")}>
                 <Header />
                 <div className="mt-[var(--topbar-height)]"></div>
-                <div>{children}</div>
+                <div className="flex-1">{children}</div>
+                <Footer />
             </ThemedBody>
         </html>
     )

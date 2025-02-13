@@ -24,7 +24,7 @@ export function CodeBlock({ children, lang }: Props) {
 
     return (
         <div
-            className="code-block min-h-[24em]"
+            className="code-block"
             dangerouslySetInnerHTML={{ __html: html ?? "" }}
         />
     )

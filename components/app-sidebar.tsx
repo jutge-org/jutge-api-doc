@@ -1,4 +1,4 @@
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import {
     Sidebar,
     SidebarContent,
@@ -6,20 +6,19 @@ import {
     SidebarGroup,
     SidebarGroupContent,
     SidebarGroupLabel,
-    SidebarHeader,
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
     SidebarMenuSub,
     SidebarMenuSubButton,
     SidebarMenuSubItem,
-} from '@/components/ui/sidebar'
-import { Item, type Tree } from '@/lib/api-dir'
-import { ChevronDown, Cog, Package, SquareChevronRight, SquareFunction, Type } from 'lucide-react'
-import Image from 'next/image'
-import Link from 'next/link'
-import * as React from 'react'
-import { NavUser } from './nav-user'
+} from "@/components/ui/sidebar"
+import { Item, type Tree } from "@/lib/api-dir"
+import { ChevronDown, Cog, Package, Type } from "lucide-react"
+import Link from "next/link"
+import * as React from "react"
+import { NavUser } from "./nav-user"
+import { cn } from "@/lib/utils"
 
 type ApiRawItem = {
     name: string
@@ -33,58 +32,58 @@ type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
 
 const clients: Item[] = [
     {
-        name: 'FakeHome',
-        type: 'client',
-        url: '/home',
+        name: "FakeHome",
+        type: "client",
+        url: "/home",
         isActive: false,
     },
     {
-        name: 'Python',
-        type: 'client',
-        url: '/python',
+        name: "Python",
+        type: "client",
+        url: "/python",
         isActive: false,
     },
     {
-        name: 'TypeScript',
-        type: 'client',
-        url: '/typescript',
+        name: "TypeScript",
+        type: "client",
+        url: "/typescript",
         isActive: false,
     },
     {
-        name: 'JavaScript',
-        type: 'client',
-        url: '/javascript',
+        name: "JavaScript",
+        type: "client",
+        url: "/javascript",
         isActive: false,
     },
     {
-        name: 'C++',
-        type: 'client',
-        url: '/cpp',
+        name: "C++",
+        type: "client",
+        url: "/cpp",
         isActive: false,
     },
     {
-        name: 'PHP',
-        type: 'client',
-        url: '/php',
+        name: "PHP",
+        type: "client",
+        url: "/php",
         isActive: false,
     },
 ]
 
 const user = {
-    name: 'guest',
-    email: 'guest@example.com',
-    avatar: '/avatars/shadcn.jpg',
+    name: "guest",
+    email: "guest@example.com",
+    avatar: "/avatars/shadcn.jpg",
 }
 
 const apiRaw = [
-    { name: 'Notebook', url: '/notebook' },
-    { name: 'Raw Directory', url: '/api/dir' },
+    { name: "Notebook", url: "/notebook" },
+    { name: "Raw Directory", url: "/api/dir" },
 ]
 
 export function AppSidebar({ ...props }: AppSidebarProps) {
     const { tree } = props
     return (
-        <Sidebar {...props}>
+        <Sidebar {...props} className={cn("sidebar", props.className)}>
             <SidebarContent>
                 <Directory tree={tree} />
                 <ApiRaw apiRaw={apiRaw} />
@@ -94,50 +93,6 @@ export function AppSidebar({ ...props }: AppSidebarProps) {
                 <NavUser user={user} />
             </SidebarFooter>
         </Sidebar>
-    )
-}
-
-function Header() {
-    return (
-        <SidebarHeader>
-            <SidebarMenu>
-                <SidebarMenuItem>
-                    <SidebarMenuButton size="lg" asChild>
-                        <Link href="/">
-                            <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                                <Image src="/jutge.png" width={64} height={64} alt="" />
-                            </div>
-                            <div className="grid flex-1 text-left text-sm leading-tight">
-                                <span className="truncate font-semibold">API Documentation</span>
-                                <span className="truncate text-xs">Jutge.org</span>
-                            </div>
-                        </Link>
-                    </SidebarMenuButton>
-                </SidebarMenuItem>
-            </SidebarMenu>
-        </SidebarHeader>
-    )
-}
-
-function Clients({ clients }: { clients: Item[] }) {
-    return (
-        <SidebarGroup>
-            <SidebarGroupLabel>API Clients</SidebarGroupLabel>
-            <SidebarGroupContent>
-                <SidebarMenu>
-                    {clients.map((item, index) => (
-                        <SidebarMenuItem key={index}>
-                            <Link download="client" href={item.url}>
-                                <SidebarMenuButton>
-                                    <SquareChevronRight />
-                                    {item.name}
-                                </SidebarMenuButton>
-                            </Link>
-                        </SidebarMenuItem>
-                    ))}
-                </SidebarMenu>
-            </SidebarGroupContent>
-        </SidebarGroup>
     )
 }
 
@@ -179,29 +134,28 @@ function Directory({ tree: treeDir }: { tree: Item[] }) {
 }
 
 function Tree({ item }: { item: Item }) {
-    if (item.type === 'model') {
+    if (item.type === "model") {
         return (
             <SidebarMenuSubItem>
                 <SidebarMenuSubButton href={item.url}>
                     <Type />
-                    {item.name}
-                </SidebarMenuSubButton>
-            </SidebarMenuSubItem>
-        )
-    }
-
-    if (item.type === 'endpoint') {
-        return (
-            <SidebarMenuSubItem>
-                <SidebarMenuSubButton href={item.url}>
-                    <SquareFunction />
                     <span>{item.name}</span>
                 </SidebarMenuSubButton>
             </SidebarMenuSubItem>
         )
     }
 
-    if (item.type === 'module') {
+    if (item.type === "endpoint") {
+        return (
+            <SidebarMenuSubItem>
+                <SidebarMenuSubButton href={item.url}>
+                    <span className="font-mono text-[0.95em]">{item.name}</span>
+                </SidebarMenuSubButton>
+            </SidebarMenuSubItem>
+        )
+    }
+
+    if (item.type === "module") {
         return (
             <Collapsible className="group/collapsible [&[data-state=open]>button>button>svg:first-child]:rotate-90">
                 <SidebarMenuSubItem>
@@ -226,5 +180,5 @@ function Tree({ item }: { item: Item }) {
         )
     }
 
-    console.log('Unknown item type:', item.type)
+    console.log("Unknown item type:", item.type)
 }

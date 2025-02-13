@@ -44,6 +44,7 @@
         "@radix-ui/react-tooltip": "^1.1.8",
         "@shikijs/rehype": "^2.3.2",
         "@tailwindcss/typography": "^0.5.16",
+        "@types/bun": "^1.2.2",
         "@types/mdx": "^2.0.13",
         "chalk": "^5.4.1",
         "class-variance-authority": "^0.7.1",

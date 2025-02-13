@@ -1,9 +1,11 @@
 import { JutgeApiClient } from './jutge_api_client'
-import { login } from './jutge_api_client_extras'
 
 const jutge = new JutgeApiClient()
 
-await login(jutge)
+await jutge.login({ 
+    email: "<your email>", 
+    password: "<your password>"
+})
 
 // Get user's name an uid in the profile.
 const profile = await jutge.student.profile.get()

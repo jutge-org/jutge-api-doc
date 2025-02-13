@@ -30,7 +30,7 @@ export default async function TypeView({ className, name, input, spath, models }
 
     const _Reference = ({ refName }: { refName: string }) => {
         const link = (
-            <div className="text-blue-900 dark:text-blue-600 text-[0.9em] font-semibold cursor-pointer">
+            <div className="text-blue-900 dark:text-blue-300 text-[0.9em] font-semibold cursor-pointer">
                 <code>{input.$ref}</code>
             </div>
         )

@@ -13,10 +13,11 @@ import { useState } from "react"
 
 const samples = [
     { name: "Get the server time", file: "get-server-time" },
-    { name: "Get the list of compilers", file: "compilers" },
-    { name: "Get the \"Hello, World!\" problem", file: "hello-world-problem" },
-    { name: "Get the user profile", file: "user-profile" },
-    { name: "Get problems' status", file: "statuses" },
+    { name: "List the available compilers", file: "compilers" },
+    { name: 'Read the "Hello, World!" problem', file: "hello-world-problem" },
+    { name: "Submit a problem", file: "submit" },
+    { name: "Show the user profile", file: "user-profile" },
+    { name: "Print the status of your problems", file: "statuses" },
 ]
 
 export function CodeSamples({ allCodeSamples }: { allCodeSamples: Record<string, string> }) {
@@ -25,19 +26,22 @@ export function CodeSamples({ allCodeSamples }: { allCodeSamples: Record<string,
     return (
         <>
             <Tabs defaultValue="python" className="max-w-[50em] mx-auto">
-                <div className="flex flex-row justify-between">
-                    <Select value={filename} onValueChange={setFilename}>
-                        <SelectTrigger className="w-[20em]">
-                            <SelectValue placeholder="Choose a sample..." />
-                        </SelectTrigger>
-                        <SelectContent>
-                            {samples.map(({ name, file }) => (
-                                <SelectItem key={name} value={file}>
-                                    {name}
-                                </SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
+                <div className="flex flex-row justify-between items-end">
+                    <div className="flex flex-col gap-1">
+                        <span className="text-sm opacity-50">Choose a sample:</span>
+                        <Select value={filename} onValueChange={setFilename}>
+                            <SelectTrigger className="w-[24em]">
+                                <SelectValue placeholder="Choose a sample..." />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {samples.map(({ name, file }) => (
+                                    <SelectItem key={name} value={file}>
+                                        {name}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    </div>
                     <TabsList>
                         <TabsTrigger value="python">Python</TabsTrigger>
                         <TabsTrigger value="typescript">Typescript</TabsTrigger>
