@@ -36,6 +36,6 @@
   ],
   "exclude": [
     "node_modules",
-    "public/code/tutorial.ts"
+    "public/code/*.ts"
   ]
 }
