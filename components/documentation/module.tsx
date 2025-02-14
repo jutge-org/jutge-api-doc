@@ -36,7 +36,12 @@ export default function Module({ models, module, path, level, className }: Modul
             )}
 
             {endpoints.length > 0 && (
-                <div className={cn("flex flex-col items-start gap-5 pl-4", level > 0 ? "px-0" : "px-4")}>
+                <div
+                    className={cn(
+                        "flex flex-col items-start gap-5 pl-4",
+                        level > 0 ? "px-0" : "px-4",
+                    )}
+                >
                     {/*<Label className="uppercase text-gray-600">Endpoints</Label>*/}
                     {endpoints.map((endpoint) => (
                         <Endpoint
@@ -64,15 +69,17 @@ export default function Module({ models, module, path, level, className }: Modul
             )} */}
 
             <div className={cn("flex flex-col", level > 0 ? "pl-0 gap-6" : "gap-12")}>
-                {submodules.map((submodule: any) => (
-                    <Module
-                        models={models}
-                        key={submodule.name}
-                        module={submodule}
-                        path={path.concat(submodule.name)}
-                        level={level + 1}
-                    />
-                ))}
+                {submodules
+                    .filter((submodule: any) => !submodule.hideFromDoc)
+                    .map((submodule: any) => (
+                        <Module
+                            models={models}
+                            key={submodule.name}
+                            module={submodule}
+                            path={path.concat(submodule.name)}
+                            level={level + 1}
+                        />
+                    ))}
             </div>
         </div>
     )

@@ -14,11 +14,11 @@ import {
     SidebarMenuSubItem,
 } from "@/components/ui/sidebar"
 import { Item, type Tree } from "@/lib/api-dir"
+import { cn } from "@/lib/utils"
 import { ChevronDown, Cog, Package, Type } from "lucide-react"
 import Link from "next/link"
 import * as React from "react"
 import { NavUser } from "./nav-user"
-import { cn } from "@/lib/utils"
 
 type ApiRawItem = {
     name: string
@@ -76,8 +76,8 @@ const user = {
 }
 
 const apiRaw = [
-    { name: "Notebook", url: "/notebook" },
     { name: "Raw Directory", url: "/api/dir" },
+    { name: "Playground", url: "/playground" },
 ]
 
 export function AppSidebar({ ...props }: AppSidebarProps) {

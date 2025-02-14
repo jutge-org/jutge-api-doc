@@ -16,7 +16,7 @@ type Cell = {
     error?: string
 }
 
-export default function NotebookPage() {
+export default function PlaygroundPage() {
     const [cells, setCells] = useState<Cell[]>([
         /*
         {
@@ -165,7 +165,7 @@ export default function NotebookPage() {
         worker.postMessage(message)
     }
 
-    const notebook = (
+    const playground = (
         <div className="flex flex-col gap-0">
             {cells.map((cell, i) => (
                 <div key={i} className="">
@@ -258,7 +258,7 @@ export default function NotebookPage() {
     return (
         <div className="px-4 flex flex-col">
             {top}
-            {notebook}
+            {playground}
             {!ready && (
                 <div className="pl-8 pt-4 pb-32">
                     <LoaderIcon className="animate-spin text-red-500" />

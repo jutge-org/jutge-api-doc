@@ -13,7 +13,6 @@ import {
     navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
 import { cn } from "@/lib/utils"
-import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import React from "react"
@@ -57,10 +56,10 @@ export default function Header() {
                         </NavigationMenuItem>
 
                         <Link
-                            href="/docs"
+                            href="/documentation"
                             className={cn(
                                 "border-b-2 border-b-transparent h-[var(--topbar-height)] flex items-center",
-                                pathname.startsWith("/docs") && "border-b-black",
+                                pathname.startsWith("/documentation") && "border-b-black",
                             )}
                         >
                             <NavigationMenuLink className={navigationMenuTriggerStyle()} asChild>
@@ -68,14 +67,25 @@ export default function Header() {
                             </NavigationMenuLink>
                         </Link>
                         <Link
-                            href="/notebook"
+                            href="/playground"
                             className={cn(
                                 "border-b-2 border-b-transparent h-[var(--topbar-height)] flex items-center",
-                                pathname.startsWith("/notebook") && "border-b-black",
+                                pathname.startsWith("/playground") && "border-b-black",
                             )}
                         >
                             <NavigationMenuLink className={navigationMenuTriggerStyle()} asChild>
                                 <div>Playground</div>
+                            </NavigationMenuLink>
+                        </Link>
+                        <Link
+                            href="/about"
+                            className={cn(
+                                "border-b-2 border-b-transparent h-[var(--topbar-height)] flex items-center",
+                                pathname.startsWith("/about") && "border-b-black",
+                            )}
+                        >
+                            <NavigationMenuLink className={navigationMenuTriggerStyle()} asChild>
+                                <div>About</div>
                             </NavigationMenuLink>
                         </Link>
                     </NavigationMenuList>
@@ -105,12 +115,14 @@ const ClientItem = React.forwardRef<React.ElementRef<"a">, React.ComponentPropsW
                         )}
                         {...props}
                     >
+                        {/* Ho he comentat perquè crec que queda molt infantil.
                         <Image
                             src={`/logos/${id}.svg`}
                             width={42}
                             height={32}
                             alt={`${title} logo`}
                         />
+                        */}
                         <div className="flex flex-col flex-1">
                             <div className="text-sm font-medium leading-none">{title}</div>
                             <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">

@@ -9,8 +9,8 @@ import "./globals.css"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-    title: "Jutge.org API Documentation",
-    description: "Jutge.org API documentation",
+    title: "Jutge.org API",
+    description: "Jutge.org API",
 }
 
 export default async function RootLayout({
