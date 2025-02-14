@@ -19,11 +19,11 @@ import { usePathname } from "next/navigation"
 import React from "react"
 
 const clients: { title: string; id: string; description: string }[] = [
-    { title: "Python", id: "python", description: "Client en Python" },
-    { title: "Typescript", id: "typescript", description: "Client en Typescript" },
-    { title: "Javascript", id: "javascript", description: "Client en Javascript" },
-    { title: "PHP", id: "php", description: "Client en PHP" },
-    { title: "C++", id: "cpp", description: "Client en C++" },
+    { title: "Python", id: "python", description: "Python client" },
+    { title: "TypeScript", id: "typescript", description: "TypeScript client" },
+    { title: "JavaScript", id: "javascript", description: "JavaScript client" },
+    { title: "PHP", id: "php", description: "PHP client" },
+    { title: "C++", id: "cpp", description: "C++ client" },
 ]
 
 export default function Header() {
@@ -50,9 +50,7 @@ export default function Header() {
                                             id={client.id}
                                             title={client.title}
                                             href={`/clients/${client.id}`}
-                                        >
-                                            {client.description}
-                                        </ClientItem>
+                                        ></ClientItem>
                                     ))}
                                 </ul>
                             </NavigationMenuContent>

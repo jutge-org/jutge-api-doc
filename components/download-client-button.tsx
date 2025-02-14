@@ -8,10 +8,12 @@ type Props = {
 }
 export default function DownloadClientButton({ filename, href }: Props) {
     return (
-        <Button asChild>
-            <Link href={href} className="button">
-                <Download /> {filename}
-            </Link>
-        </Button>
+        <div className="ml-8 my-6">
+            <Button asChild>
+                <Link href={href} className="button">
+                    <Download /> {filename}
+                </Link>
+            </Button>
+        </div>
     )
 }
