@@ -1,0 +1,24 @@
+import Warning from "@/components/warning";
+import DownloadClientButton from "@/components/download-client-button";
+
+<Warning>This client is under development</Warning>
+
+# C++ client
+
+The C++ client offers a way to interact with the API of Jutge.org using the C++ programming language.
+
+## Download
+
+The C++ client is currently distributed as a single C++ file you must include:
+
+<DownloadClientButton 
+    href="/api/clients/cpp" filename="jutge_api_client.cpp" />
+
+In order to use it you need to download some header only libraries: [yhirose/cpp-httplib](https://github.com/yhirose/cpp-httplib), and [nlohmann/json](https://github.com/nlohmann/json).
+
+Compilation, then, would go like this:
+
+```bash
+g++ -std=c++20 program.cpp -l ssl -l crypto
+```
+

@@ -47,7 +47,16 @@ body {
         --sidebar-accent-foreground: 240 5.9% 10%;
         --sidebar-border: 220 13% 91%;
         --sidebar-ring: 217.2 91.2% 59.8%;
+
+        --chart-1: 12 76% 61%;
+        --chart-2: 173 58% 39%;
+        --chart-3: 197 37% 24%;
+        --chart-4: 43 74% 66%;
+        --chart-5: 27 87% 67%;
+
+        --topbar-height: 3rem;
     }
+
     .dark {
         --background: 240 10% 3.9%;
         --foreground: 0 0% 98%;
@@ -81,6 +90,14 @@ body {
         --sidebar-accent-foreground: 240 4.8% 95.9%;
         --sidebar-border: 240 3.7% 15.9%;
         --sidebar-ring: 217.2 91.2% 59.8%;
+
+        --secondary-background: 240 3.7% 9.9%;
+
+        --chart-1: 220 70% 50%;
+        --chart-2: 160 60% 45%;
+        --chart-3: 30 80% 55%;
+        --chart-4: 280 65% 60%;
+        --chart-5: 340 75% 55%;
     }
 }
 
@@ -92,14 +109,71 @@ body {
         @apply bg-background text-foreground;
     }
 
-    .debug, .debug-1 {
+    .debug,
+    .debug-1 {
         @apply border-red-500 border-2;
     }
-    .debug-1 {
-        @apply border;
+    .debug-2 {
+        @apply border-blue-500 border-2;
     }
-    h1, h2, h3, h4, h5 {
+    .debug-3 {
+        @apply border-green-500 border-2;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5 {
         @apply font-bold;
     }
-    
+
+    h1 {
+        @apply text-3xl;
+    }
+    h2 {
+        @apply text-2xl mt-4 mb-1;
+    }
+    h3 {
+        @apply text-xl;
+    }
+    h4 {
+        @apply text-lg;
+    }
+    h5 {
+        @apply text-base;
+    }
+
+    header a, .sidebar a {
+        @apply no-underline;
+    }
+    a {
+        @apply underline;
+    }
+
+
+    .markdown h1 {
+        @apply pb-2;
+    }
+    .markdown h2 {
+        @apply mt-10;
+    }
+    .markdown a {
+        @apply text-blue-700 dark:text-blue-200 underline;
+    }
+    .markdown a.button {
+        @apply text-primary-foreground no-underline;
+    }
+
+    .markdown p {
+        @apply my-2;
+    }
+
+    .markdown pre {
+        @apply px-3 rounded-sm py-1 overflow-x-auto text-sm;
+    }
+
+    .code-block pre {
+        @apply px-3 rounded-sm py-1 overflow-x-auto text-sm min-h-[25rem];
+    }
 }

@@ -1,26 +1,16 @@
-import { AppSidebar } from '@/components/app-sidebar'
-import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar'
-import { getApiDir } from '@/lib/api-dir'
-import { modules } from '@/lib/api-dir'
-import type { Metadata } from 'next'
-import localFont from 'next/font/local'
-import './globals.css'
-import Header from './header'
+import Footer from "@/components/footer"
+import ThemedBody from "@/components/theme/themed-body"
+import { cn } from "@/lib/utils"
+import type { Metadata } from "next"
+import { Inter } from "next/font/google"
+import Header from "../components/header/header"
+import "./globals.css"
 
-const geistSans = localFont({
-    src: './fonts/GeistVF.woff',
-    variable: '--font-geist-sans',
-    weight: '100 900',
-})
-const geistMono = localFont({
-    src: './fonts/GeistMonoVF.woff',
-    variable: '--font-geist-mono',
-    weight: '100 900',
-})
+const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-    title: 'Jutge.org API Documentation',
-    description: 'Jutge.org API documentation',
+    title: "Jutge.org API",
+    description: "Jutge.org API",
 }
 
 export default async function RootLayout({
@@ -28,20 +18,14 @@ export default async function RootLayout({
 }: Readonly<{
     children: React.ReactNode
 }>) {
-    const dir = await getApiDir()
-    const tree = modules(dir.root)
-
     return (
         <html lang="en">
-            <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-                <SidebarProvider>
-                    <AppSidebar tree={tree} />
-                    <SidebarInset>
-                        <Header />
-                        {children}
-                    </SidebarInset>
-                </SidebarProvider>
-            </body>
+            <ThemedBody className={cn(inter.className, "flex flex-col min-h-screen")}>
+                <Header />
+                <div className="mt-[var(--topbar-height)]"></div>
+                <div className="flex-1">{children}</div>
+                <Footer />
+            </ThemedBody>
         </html>
     )
 }
