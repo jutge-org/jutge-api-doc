@@ -76,8 +76,7 @@ const user = {
 }
 
 const apiRaw = [
-    { name: "Raw Directory", url: "/api/dir" },
-    { name: "Playground", url: "/playground" },
+    { name: "Directory JSON File", url: "/api/dir" },
 ]
 
 export function AppSidebar({ ...props }: AppSidebarProps) {
@@ -99,7 +98,7 @@ export function AppSidebar({ ...props }: AppSidebarProps) {
 function ApiRaw({ apiRaw: items }: { apiRaw: ApiRawItem[] }) {
     return (
         <SidebarGroup>
-            <SidebarGroupLabel>API Tools</SidebarGroupLabel>
+            <SidebarGroupLabel>API Raw Files</SidebarGroupLabel>
             <SidebarGroupContent>
                 <SidebarMenu>
                     {items.map((item, index) => (
