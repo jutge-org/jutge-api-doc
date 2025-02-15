@@ -6,7 +6,7 @@ export default async function Page() {
     const { models, root } = await getApiDir()
     return (
         <PageWidth>
-            <div className="flex flex-col p-4">
+            <div className="flex flex-col p-4 gap-8">
                 <Module models={models} module={root} path={[]} level={0} className="w-[60em]" />
             </div>
         </PageWidth>
