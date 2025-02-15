@@ -18,6 +18,11 @@ const nextConfig: NextConfig = {
         ]
     },
     pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
+    logging: {
+        fetches: {
+            fullUrl: true,
+        },
+    },
 }
 
 const withMDX = createMDX({
