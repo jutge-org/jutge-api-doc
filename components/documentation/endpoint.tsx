@@ -24,15 +24,17 @@ export default function Endpoint({ endpoint, spath, models }: EndpointProps) {
             )}
             <div className="flex flex-col gap-0.5 mt-0">
                 <TypeView name="input" input={endpoint.input} spath={spath} models={models} />
-                <TypeView name="output" input={endpoint.output} spath={spath} models={models} />
                 {endpoint.ifiles !== "none" && (
-                    <div className="text-xs italic text-muted-foreground">
-                        input files: <b>{endpoint.ifiles}</b>
+                    <div className="text-xs">
+                        <span className=" text-muted-foreground italic mr-2">input files</span>
+                        <span className="font-bold">{endpoint.ifiles}</span>
                     </div>
                 )}
+                <TypeView name="output" input={endpoint.output} spath={spath} models={models} />
                 {endpoint.ofiles !== "none" && (
-                    <div className="text-xs italic text-muted-foreground">
-                        output files: <b>{endpoint.ofiles}</b>
+                    <div className="text-xs">
+                        <span className=" text-muted-foreground italic mr-2">output files</span>
+                        <span className="font-bold">{endpoint.ofiles}</span>
                     </div>
                 )}
             </div>

@@ -18,9 +18,12 @@ export default async function TypeView({ className, name, input, spath, models }
     const _BasicType = ({ type }: { type: string }) => (
         <div
             className={cn(
+                /*
                 "box-border border rounded ml-2",
                 "text-blue-600 border-blue-400",
                 "dark:text-stone-400 dark:border-stone-600",
+                */
+                "font-mono font-bold",
                 "text-[0.9em] h-[1.3em] px-1 flex flex-col justify-center items-center",
             )}
         >
@@ -87,14 +90,21 @@ export default async function TypeView({ className, name, input, spath, models }
     )
 
     const _Array = ({ items }: { items: any }) => (
-        <div className="flex flex-row items-baseline gap-2">
-            <span className="text-gray-700 italic text-xs">Array of</span>
+        <div className="flex flex-row items-baseline gap-0 ml-1">
+            <span className="text-gray-700 font-bold font-mono text-xs">array of</span>
             <TypeView input={items} spath={spath} models={models} />
         </div>
     )
 
+    const _Dict = ({ properties }: { properties: any }) => (
+        <div className="flex flex-row items-baseline gap-0 ml-1">
+            <span className="text-gray-700 font-bold font-mono text-xs">dict of</span>
+            <TypeView input={properties} spath={spath} models={models} />
+        </div>
+    )
+
     const _Object = ({ properties }: { properties: Record<string, any> }) => (
-        <div className="border dark:border-zinc-700 border-zinc-300 pl-1.5 pt-0.5 pb-1 pr-0.5 rounded flex flex-col">
+        <div className="no-border dark:border-zinc-700 border-zinc-300 pl-1.5 pt-0.5 pb-1 pr-0.5 rounded flex flex-col">
             {Object.entries(properties).map(([name, type], i) => (
                 <div key={`${name}${i}`} className="flex flex-row items-baseline p-0 h-[1.4em]">
                     <code className="text-[0.9em]">{name}</code>
@@ -117,7 +127,7 @@ export default async function TypeView({ className, name, input, spath, models }
         if (input.properties) {
             body = <_Object properties={input.properties} />
         } else if (input.patternProperties) {
-            body = <_Object properties={input.patternProperties} />
+            body = <_Dict properties={input.patternProperties["^(.*)$"]} />
         }
     } else if (input.type === "array") {
         body = <_Array items={input.items} />
