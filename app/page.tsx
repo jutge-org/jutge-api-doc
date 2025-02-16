@@ -1,9 +1,5 @@
 "use client"
 
-import { loadAllSamples } from "@/actions/load-code"
-import { CodeSamples } from "@/components/landing/code-samples"
-import Hero from "@/components/landing/hero"
-import PageWidth from "@/components/page-width"
 import { Button } from "@/components/ui/button"
 import { motion } from "framer-motion"
 import {
@@ -14,6 +10,7 @@ import {
     TerminalIcon,
 } from "lucide-react"
 
+/*
 export async function OldPage() {
     const allCodeSamples = await loadAllSamples()
 
@@ -24,6 +21,7 @@ export async function OldPage() {
         </PageWidth>
     )
 }
+    */
 
 export default function Page() {
     return <BackgroundPaths />
@@ -76,7 +74,7 @@ function FloatingPaths({ position }: { position: number }) {
     )
 }
 
-export function BackgroundPaths() {
+function BackgroundPaths() {
     return (
         <div className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-white dark:bg-neutral-950">
             <div className="absolute inset-0">

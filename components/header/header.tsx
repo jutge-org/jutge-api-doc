@@ -78,6 +78,17 @@ export default function Header() {
                             </NavigationMenuLink>
                         </Link>
                         <Link
+                            href="/faqs"
+                            className={cn(
+                                "border-b-2 border-b-transparent h-[var(--topbar-height)] flex items-center",
+                                pathname.startsWith("/playground") && "border-b-black",
+                            )}
+                        >
+                            <NavigationMenuLink className={navigationMenuTriggerStyle()} asChild>
+                                <div>FAQs</div>
+                            </NavigationMenuLink>
+                        </Link>
+                        <Link
                             href="/about"
                             className={cn(
                                 "border-b-2 border-b-transparent h-[var(--topbar-height)] flex items-center",

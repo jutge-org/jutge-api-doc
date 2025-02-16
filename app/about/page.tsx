@@ -39,8 +39,8 @@ function ProfileCard({ name, university, githubUrl, imageUrl, fallback }: Profil
 export default function AboutPage() {
     return (
         <div className="mt-8 mx-32">
-            <p className="text-2xl font-bold pb-4">About</p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <h1 className="">Credits</h1>
+            <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
                 <ProfileCard
                     name="Pau Fernández"
                     university="Universitat Politècnica de Catalunya"
