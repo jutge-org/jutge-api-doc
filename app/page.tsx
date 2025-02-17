@@ -5,10 +5,12 @@ import { motion } from "framer-motion"
 import {
     BookOpenIcon,
     FileCodeIcon,
+    FileQuestionIcon,
     PyramidIcon,
     SquareTerminalIcon,
     TerminalIcon,
 } from "lucide-react"
+import Link from "next/link"
 
 /*
 export async function OldPage() {
@@ -77,10 +79,12 @@ function FloatingPaths({ position }: { position: number }) {
 function BackgroundPaths() {
     return (
         <div className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-white dark:bg-neutral-950">
-            <div className="absolute inset-0">
-                <FloatingPaths position={1} />
-                <FloatingPaths position={-1} />
-            </div>
+            {false && (
+                <div className="absolute inset-0">
+                    <FloatingPaths position={1} />
+                    <FloatingPaths position={-1} />
+                </div>
+            )}
 
             <div className="relative z-10 container mx-auto px-4 md:px-6 text-center">
                 <motion.div
@@ -110,44 +114,66 @@ function BackgroundPaths() {
                         Clients available for Python, TypeScript, JavaScript, PHP and even C++.
                     </p>
 
-                    <div className="flex flex-row gap-8">
-                        <Button
-                            className="p-6 md:p-8 rounded-full"
-                            variant="default"
-                            size="icon"
-                            title="Clients"
-                        >
-                            <PyramidIcon />
-                        </Button>
-                        <Button
-                            className="p-6 md:p-8 rounded-full"
-                            variant="default"
-                            size="icon"
-                            title="Documentation"
-                        >
-                            <BookOpenIcon />
-                        </Button>
-                        <Button
-                            className="p-6 md:p-8 rounded-full"
-                            variant="default"
-                            size="icon"
-                            title="Examples"
-                        >
-                            <FileCodeIcon />
-                        </Button>
-                        <Button
-                            className="p-6 md:p-8 rounded-full"
-                            variant="default"
-                            size="icon"
-                            title="Playground"
-                        >
-                            <TerminalIcon />
-                        </Button>
-                    </div>
+                    <MyButtons />
 
                     <div className="pb-64"></div>
                 </motion.div>
             </div>
         </div>
+    )
+}
+
+type MyButtonType = {
+    href: string
+    text: string
+    icon: any
+}
+
+const myButtons: MyButtonType[] = [
+    {
+        href: "clients",
+        text: "Clients",
+        icon: <PyramidIcon />,
+    },
+    {
+        href: "documentation",
+        text: "Documentation",
+        icon: <BookOpenIcon />,
+    },
+    {
+        href: "playground",
+        text: "Playground",
+        icon: <TerminalIcon />,
+    },
+    {
+        href: "examples",
+        text: "Examples",
+        icon: <FileCodeIcon />,
+    },
+    {
+        href: "faqs",
+        text: "FAQs",
+        icon: <FileQuestionIcon />,
+    },
+]
+
+function MyButtons() {
+    return (
+        <div className={`grid grid-cols-${myButtons.length}`}>
+            {myButtons.map((myButton) => MyButton({ myButton }))}
+        </div>
+    )
+}
+
+function MyButton({ myButton }: { myButton: MyButtonType }) {
+    return (
+        <Link href={myButton.href} key={myButton.href}>
+            <div className="flex flex-col gap-2 items-center">
+                <Button variant="default" size="icon" className="rounded-full p-6">
+                    {myButton.icon}
+                </Button>
+                <div className="text-sm">{myButton.text}</div>
+            </div>
+        </Link>
     )
 }

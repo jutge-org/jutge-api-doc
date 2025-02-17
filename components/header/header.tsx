@@ -36,7 +36,7 @@ export default function Header() {
                     <NavigationMenuList>
                         <NavigationMenuItem
                             className={cn(
-                                "border-b-2 border-b-transparent h-[var(--topbar-height)] flex items-center",
+                                "border-b-4 border-b-transparent h-[var(--topbar-height)] flex items-center",
                                 pathname.startsWith("/clients") && "border-b-black",
                             )}
                         >
@@ -58,7 +58,7 @@ export default function Header() {
                         <Link
                             href="/documentation"
                             className={cn(
-                                "border-b-2 border-b-transparent h-[var(--topbar-height)] flex items-center",
+                                "border-b-4 border-b-transparent h-[var(--topbar-height)] flex items-center",
                                 pathname.startsWith("/documentation") && "border-b-black",
                             )}
                         >
@@ -69,7 +69,7 @@ export default function Header() {
                         <Link
                             href="/playground"
                             className={cn(
-                                "border-b-2 border-b-transparent h-[var(--topbar-height)] flex items-center",
+                                "border-b-4 border-b-transparent h-[var(--topbar-height)] flex items-center",
                                 pathname.startsWith("/playground") && "border-b-black",
                             )}
                         >
@@ -78,10 +78,21 @@ export default function Header() {
                             </NavigationMenuLink>
                         </Link>
                         <Link
+                            href="/examples"
+                            className={cn(
+                                "border-b-4 border-b-transparent h-[var(--topbar-height)] flex items-center",
+                                pathname.startsWith("/examples") && "border-b-black",
+                            )}
+                        >
+                            <NavigationMenuLink className={navigationMenuTriggerStyle()} asChild>
+                                <div>Examples</div>
+                            </NavigationMenuLink>
+                        </Link>
+                        <Link
                             href="/faqs"
                             className={cn(
-                                "border-b-2 border-b-transparent h-[var(--topbar-height)] flex items-center",
-                                pathname.startsWith("/playground") && "border-b-black",
+                                "border-b-4 border-b-transparent h-[var(--topbar-height)] flex items-center",
+                                pathname.startsWith("/faqs") && "border-b-black",
                             )}
                         >
                             <NavigationMenuLink className={navigationMenuTriggerStyle()} asChild>
@@ -91,7 +102,7 @@ export default function Header() {
                         <Link
                             href="/about"
                             className={cn(
-                                "border-b-2 border-b-transparent h-[var(--topbar-height)] flex items-center",
+                                "border-b-4 border-b-transparent h-[var(--topbar-height)] flex items-center",
                                 pathname.startsWith("/about") && "border-b-black",
                             )}
                         >

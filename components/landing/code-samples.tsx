@@ -25,10 +25,9 @@ export function CodeSamples({ allCodeSamples }: { allCodeSamples: Record<string,
 
     return (
         <>
-            <Tabs defaultValue="python" className="max-w-[50em] mx-auto">
+            <Tabs defaultValue="python" className="max-w-[80ch] mx-auto">
                 <div className="flex flex-row justify-between items-end">
                     <div className="flex flex-col gap-1">
-                        <span className="text-sm opacity-50">Choose a sample:</span>
                         <Select value={filename} onValueChange={setFilename}>
                             <SelectTrigger className="w-[24em]">
                                 <SelectValue placeholder="Choose a sample..." />

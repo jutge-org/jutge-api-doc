@@ -144,13 +144,13 @@ body {
         @apply text-base;
     }
 
-    header a, .sidebar a {
+    header a,
+    .sidebar a {
         @apply no-underline;
     }
     a {
         @apply underline;
     }
-
 
     .markdown h1 {
         @apply pb-2;
@@ -174,6 +174,6 @@ body {
     }
 
     .code-block pre {
-        @apply px-3 rounded-sm py-1 overflow-x-auto text-sm min-h-[25rem];
+        @apply p-3 rounded-sm overflow-x-auto text-sm min-h-[25rem];
     }
 }

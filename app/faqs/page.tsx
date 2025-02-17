@@ -71,9 +71,7 @@ export default function FaqPage() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5 }}
                         className="max-w-2xl mx-auto text-center mb-12"
-                    >
-                        <h1 className="pt-4">Frequently Asked Questions</h1>
-                    </motion.div>
+                    ></motion.div>
 
                     <div className="max-w-2xl mx-auto space-y-2">
                         {faqs.map((faq, index) => (

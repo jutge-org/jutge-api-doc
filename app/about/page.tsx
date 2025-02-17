@@ -1,6 +1,31 @@
+import PageWidth from "@/components/page-width"
 import { Card, CardContent } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar"
 import { GithubIcon, GripIcon } from "lucide-react"
+
+export default function AboutPage() {
+    return (
+        <PageWidth className="pt-6">
+            <h1 className="">Credits</h1>
+            <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
+                <ProfileCard
+                    name="Pau Fernández"
+                    university="Universitat Politècnica de Catalunya"
+                    githubUrl="https://github.com/pauek/"
+                    imageUrl="/pauek.png"
+                    fallback="PF"
+                />
+                <ProfileCard
+                    name="Jordi Petit"
+                    university="Universitat Politècnica de Catalunya"
+                    githubUrl="https://github.com/jordi-petit/"
+                    imageUrl="/jpetit.png"
+                    fallback="JP"
+                />
+            </div>{" "}
+        </PageWidth>
+    )
+}
 
 interface ProfileCardProps {
     name: string
@@ -33,29 +58,5 @@ function ProfileCard({ name, university, githubUrl, imageUrl, fallback }: Profil
                 </div>
             </CardContent>
         </Card>
-    )
-}
-
-export default function AboutPage() {
-    return (
-        <div className="mt-8 mx-32">
-            <h1 className="">Credits</h1>
-            <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
-                <ProfileCard
-                    name="Pau Fernández"
-                    university="Universitat Politècnica de Catalunya"
-                    githubUrl="https://github.com/pauek/"
-                    imageUrl="/pauek.png"
-                    fallback="PF"
-                />
-                <ProfileCard
-                    name="Jordi Petit"
-                    university="Universitat Politècnica de Catalunya"
-                    githubUrl="https://github.com/jordi-petit/"
-                    imageUrl="/jpetit.png"
-                    fallback="JP"
-                />
-            </div>
-        </div>
     )
 }
