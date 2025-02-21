@@ -26,7 +26,7 @@ export default function PlaygroundPage() {
     const [isPasswordMode, setIsPasswordMode] = useState(false)
     const [prompt, setPrompt] = useState<string>("Please enter a string value")
 
-    const workerRef = useRef(mkWorker())
+    const workerRef = useRef(newWorker())
     const editorRef = useRef(null)
 
     // send a ping to startup the worker, because it is damm slow
@@ -130,9 +130,12 @@ export default function PlaygroundPage() {
         monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
             diagnosticCodesToIgnore: [1108, 2304, 1375, 1378, 2554],
         })
+        if (i != cells.length - 1) {
+            // editor.setPosition({ lineNumber: 1, column: 1 })
+        }
     }
 
-    function mkWorker() {
+    function newWorker() {
         try {
             return new Worker(new URL("@/lib/worker.ts", import.meta.url))
         } catch (e) {
@@ -164,6 +167,11 @@ export default function PlaygroundPage() {
         worker.postMessage(message)
     }
 
+    function height(code: string) {
+        const lines = Math.max(Math.min(code.split("\n").length, 15), 1)
+        return `${lines * 18}px`
+    }
+
     const playground = (
         <>
             <div className="flex flex-col gap-0">
@@ -171,7 +179,7 @@ export default function PlaygroundPage() {
                     <div key={i} className="">
                         <div key={i} className="flex flex-col gap-0">
                             <div className="text-xs pt-2 pb-2">Input {i + 1}</div>
-                            <div className={`ml-6 h-32`}>
+                            <div className={`ml-6`}>
                                 <div
                                     className={`border-spacing-2 rounded-lg ${ready && i == cells.length - 1 ? "border-gray-600 border-4" : "border-gray-100 border-2"} p-2`}
                                 >
@@ -179,7 +187,9 @@ export default function PlaygroundPage() {
                                         theme="vs-light"
                                         defaultLanguage="typescript"
                                         defaultValue=""
-                                        height={"100px"}
+                                        height={
+                                            i == cells.length - 1 ? "100px" : height(cells[i].input)
+                                        }
                                         options={{
                                             minimap: { enabled: false },
                                             lineNumbers: "off",
@@ -202,7 +212,7 @@ export default function PlaygroundPage() {
 
                             {cell.outputs.length != 0 && (
                                 <div className="flex flex-col gap-2">
-                                    <div className="text-xs pt-0 pb-2">Output {i + 1}</div>
+                                    <div className="text-xs pt-2 pb-2">Output {i + 1}</div>
 
                                     {cell.outputs.map((output, j) => (
                                         <OutputArea key={`${i}:${j}`} output={output} index={j} />
@@ -222,41 +232,8 @@ export default function PlaygroundPage() {
 
             <p className="text-xs pb-2">Help</p>
             <div className="pl-6 pb-0">
-                <div className="border-spacing-2 rounded-lg border-gray-100 border-2 p-2 prose prose-sm prose-code:before:hidden prose-code:after:hidden max-w-none">
-                    <ul>
-                        <li>
-                            Use <kbd>⌘⏎</kbd> or <kbd>^⏎</kbd> to run the code of the last cell.
-                        </li>
-                        <li>
-                            Use <code>return</code> to return a result and use <code>last</code> to
-                            use the last returned value.
-                        </li>
-                        <li>
-                            Available objects:
-                            <ul>
-                                <li>
-                                    <code>j</code>: variable with a{" "}
-                                    <code>new JutgeApiClient()</code> object.
-                                </li>
-                                <li>
-                                    <code>input</code>: async function that reads a string and
-                                    returns it.
-                                </li>
-                                <li>
-                                    <code>print</code>: async function that prints an object (do not
-                                    use console.log!).
-                                </li>
-                                <li>
-                                    <code>chart</code>: async function that charts a list of
-                                    numbers.
-                                </li>
-                                <li>
-                                    <code>login</code>: async function that asks email and password
-                                    and logs the Jutge client in.
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
+                <div className="border-spacing-2 rounded-lg border-gray-100 border-2 p-2 ">
+                    <Help />
                 </div>
             </div>
         </>
@@ -295,20 +272,21 @@ function OutputArea({ output, index }: { output: Message; index: number }) {
         error: "E",
     }
 
+    const text =
+        typeof output.info === "string" ? output.info : JSON.stringify(output.info, null, 4)
+
+    const lines = Math.min(Math.max(text.split("\n").length, 1), 15)
+
     let content = (
-        <div className="grow h-18">
+        <div className="grow">
             <div
                 className={`border-spacing-2 rounded-lg ${output.type == "error" ? "border-red-500" : "border-gray-100"} border-2 p-2`}
             >
                 <Editor
                     theme="vs-light"
                     defaultLanguage="json"
-                    defaultValue={
-                        typeof output.info === "string"
-                            ? output.info
-                            : JSON.stringify(output.info, null, 4)
-                    }
-                    height={"80px"}
+                    defaultValue={text}
+                    height={`${lines * 18}px`}
                     options={{
                         minimap: { enabled: false },
                         lineNumbers: "off",
@@ -352,6 +330,45 @@ function OutputArea({ output, index }: { output: Message; index: number }) {
                 {`[${label[output.type]}${index + 1}]`}
             </div>
             {content}
+        </div>
+    )
+}
+
+function Help() {
+    return (
+        <div className="text-sm prose prose-code:before:hidden prose-code:after:hidden max-w-none">
+            <ul>
+                <li>
+                    Use <kbd>⌘⏎</kbd> or <kbd>^⏎</kbd> to run the code of the last cell.
+                </li>
+                <li>
+                    Use <code>return</code> to return a result and use <code>last</code> to use the
+                    last returned value.
+                </li>
+                <li>
+                    Available objects:
+                    <ul>
+                        <li>
+                            <code>j</code>: variable with a <code>new JutgeApiClient()</code>{" "}
+                            object.
+                        </li>
+                        <li>
+                            <code>input</code>: async function that reads a string and returns it.
+                        </li>
+                        <li>
+                            <code>print</code>: async function that prints an object (do not use
+                            console.log!).
+                        </li>
+                        <li>
+                            <code>chart</code>: async function that charts a list of numbers.
+                        </li>
+                        <li>
+                            <code>login</code>: async function that asks email and password and logs
+                            the <code>j</code> Jutge client in.
+                        </li>
+                    </ul>
+                </li>
+            </ul>
         </div>
     )
 }
