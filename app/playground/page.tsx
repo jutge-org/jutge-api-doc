@@ -1,5 +1,6 @@
 "use client"
 
+import { useTheme } from "@/components/theme/hook"
 import { ChartConfig, ChartContainer } from "@/components/ui/chart"
 import { InputDialog } from "@/components/ui/input-dialog"
 import type { Message } from "@/lib/worker"
@@ -28,6 +29,8 @@ export default function PlaygroundPage() {
 
     const workerRef = useRef(newWorker())
     const editorRef = useRef(null)
+
+    const { mode } = useTheme()
 
     // send a ping to startup the worker, because it is damm slow
     useEffect(() => {
@@ -181,10 +184,10 @@ export default function PlaygroundPage() {
                             <div className="text-xs pt-2 pb-2">Input {i + 1}</div>
                             <div className={`ml-6`}>
                                 <div
-                                    className={`border-spacing-2 rounded-lg ${ready && i == cells.length - 1 ? "border-gray-600 border-4" : "border-gray-100 border-2"} p-2`}
+                                    className={`border-spacing-2 rounded-lg ${ready && i == cells.length - 1 ? "border-gray-600 border-4" : "border-gray-100 border-2"} p-2 dark:bg-[#1e1e1e]`}
                                 >
                                     <Editor
-                                        theme="vs-light"
+                                        theme={`vs-${mode}`}
                                         defaultLanguage="typescript"
                                         defaultValue=""
                                         height={
@@ -277,13 +280,15 @@ function OutputArea({ output, index }: { output: Message; index: number }) {
 
     const lines = Math.min(Math.max(text.split("\n").length, 1), 15)
 
+    const { mode } = useTheme()
+
     let content = (
         <div className="grow">
             <div
-                className={`border-spacing-2 rounded-lg ${output.type == "error" ? "border-red-500" : "border-gray-100"} border-2 p-2`}
+                className={`border-spacing-2 rounded-lg ${output.type == "error" ? "border-red-500" : "border-gray-100"} border-2 p-2  dark:bg-[#1e1e1e]`}
             >
                 <Editor
-                    theme="vs-light"
+                    theme={`vs-${mode}`}
                     defaultLanguage="json"
                     defaultValue={text}
                     height={`${lines * 18}px`}
@@ -326,7 +331,7 @@ function OutputArea({ output, index }: { output: Message; index: number }) {
 
     return (
         <div className="pl-6 w-full flex flex-row gap-4">
-            <div className="pt-2 w-8 text-xs text-left text-gray-800">
+            <div className="pt-2 w-8 text-xs text-left text-gray-800 dark:text-gray-200">
                 {`[${label[output.type]}${index + 1}]`}
             </div>
             {content}
@@ -336,7 +341,7 @@ function OutputArea({ output, index }: { output: Message; index: number }) {
 
 function Help() {
     return (
-        <div className="text-sm prose prose-code:before:hidden prose-code:after:hidden max-w-none">
+        <div className="text-sm prose dark:prose-invert prose-code:before:hidden prose-code:after:hidden max-w-none">
             <ul>
                 <li>
                     Use <kbd>⌘⏎</kbd> or <kbd>^⏎</kbd> to run the code of the last cell.

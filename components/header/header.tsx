@@ -29,7 +29,7 @@ export default function Header() {
     const pathname = usePathname()
 
     return (
-        <header className="bg-background fixed top-0 left-0 right-0 px-3 border-b pt-[2px] flex flex-row items-stretch z-50">
+        <header className="bg-background fixed top-0 left-0 right-0 px-3 pt-2 mb-8 flex flex-row items-stretch z-50">
             <PageWidth className="flex flex-row items-stretch gap-2">
                 <Logo />
                 <NavigationMenu>
@@ -37,7 +37,8 @@ export default function Header() {
                         <NavigationMenuItem
                             className={cn(
                                 "border-b-4 border-b-transparent h-[var(--topbar-height)] flex items-center",
-                                pathname.startsWith("/clients") && "border-b-black",
+                                pathname.startsWith("/clients") &&
+                                    "border-b-black dark:border-b-white",
                             )}
                         >
                             <NavigationMenuTrigger>Clients</NavigationMenuTrigger>
@@ -59,7 +60,8 @@ export default function Header() {
                             href="/documentation"
                             className={cn(
                                 "border-b-4 border-b-transparent h-[var(--topbar-height)] flex items-center",
-                                pathname.startsWith("/documentation") && "border-b-black",
+                                pathname.startsWith("/documentation") &&
+                                    "border-b-black dark:border-b-white",
                             )}
                         >
                             <NavigationMenuLink className={navigationMenuTriggerStyle()} asChild>
@@ -70,7 +72,8 @@ export default function Header() {
                             href="/playground"
                             className={cn(
                                 "border-b-4 border-b-transparent h-[var(--topbar-height)] flex items-center",
-                                pathname.startsWith("/playground") && "border-b-black",
+                                pathname.startsWith("/playground") &&
+                                    "border-b-black dark:border-b-white",
                             )}
                         >
                             <NavigationMenuLink className={navigationMenuTriggerStyle()} asChild>
@@ -81,7 +84,8 @@ export default function Header() {
                             href="/examples"
                             className={cn(
                                 "border-b-4 border-b-transparent h-[var(--topbar-height)] flex items-center",
-                                pathname.startsWith("/examples") && "border-b-black",
+                                pathname.startsWith("/examples") &&
+                                    "border-b-black dark:border-b-white",
                             )}
                         >
                             <NavigationMenuLink className={navigationMenuTriggerStyle()} asChild>
@@ -92,7 +96,8 @@ export default function Header() {
                             href="/faqs"
                             className={cn(
                                 "border-b-4 border-b-transparent h-[var(--topbar-height)] flex items-center",
-                                pathname.startsWith("/faqs") && "border-b-black",
+                                pathname.startsWith("/faqs") &&
+                                    "border-b-black dark:border-b-white",
                             )}
                         >
                             <NavigationMenuLink className={navigationMenuTriggerStyle()} asChild>
@@ -103,7 +108,8 @@ export default function Header() {
                             href="/about"
                             className={cn(
                                 "border-b-4 border-b-transparent h-[var(--topbar-height)] flex items-center",
-                                pathname.startsWith("/about") && "border-b-black",
+                                pathname.startsWith("/about") &&
+                                    "border-b-black dark:border-b-white",
                             )}
                         >
                             <NavigationMenuLink className={navigationMenuTriggerStyle()} asChild>
