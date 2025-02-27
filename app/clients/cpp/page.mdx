@@ -19,6 +19,6 @@ In order to use it you need to download some header only libraries: [yhirose/cpp
 Compilation, then, would go like this:
 
 ```bash
-g++ -std=c++20 program.cpp -l ssl -l crypto
+g++ -std=c++20 -lssl -lcrypto -o program *.cc 
 ```
 
