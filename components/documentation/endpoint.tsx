@@ -1,6 +1,6 @@
 import TypeView from "@/components/documentation/type-view"
 import EndpointBackgroundFlash from "@/components/endpoint-background-flash"
-import { ApiEndpoint, ApiModel } from "@/lib/api-dir"
+import type { ApiEndpoint, ApiModel } from "@/lib/api/types"
 import ActorIcon from "../actor-icon"
 
 type EndpointProps = {

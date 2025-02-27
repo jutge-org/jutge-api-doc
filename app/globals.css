@@ -182,3 +182,14 @@ body {
         @apply p-3 rounded-sm overflow-x-auto text-sm min-h-[25rem];
     }
 }
+
+
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+    }
+  body {
+    @apply bg-background text-foreground;
+    }
+}

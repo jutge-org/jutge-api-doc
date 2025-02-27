@@ -1,4 +1,4 @@
-import { ApiModel, ApiModule } from "@/lib/api-dir"
+import type { ApiModel, ApiModule } from "@/lib/api/types"
 import { cn } from "@/lib/utils"
 import { Package } from "lucide-react"
 import Endpoint from "./endpoint"

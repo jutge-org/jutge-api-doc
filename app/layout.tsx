@@ -5,6 +5,7 @@ import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import Header from "../components/header/header"
 import "./globals.css"
+import { getApiDir } from "@/lib/api/dir"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -18,10 +19,11 @@ export default async function RootLayout({
 }: Readonly<{
     children: React.ReactNode
 }>) {
+    const directory = await getApiDir();
     return (
         <html lang="en">
             <ThemedBody className={cn(inter.className, "flex flex-col min-h-screen")}>
-                <Header />
+                <Header directory={directory} />
                 <div className="mt-[var(--topbar-height)]"></div>
                 <div className="flex-1">{children}</div>
                 <Footer />

@@ -11,6 +11,7 @@ import {
     NavigationMenuList,
     NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu"
+import type { ApiDir } from "@/lib/api/types"
 import { cn } from "@/lib/utils"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
@@ -26,7 +27,7 @@ const clients: { title: string; id: string; description: string }[] = [
     { title: "C++", id: "cpp", description: "C++ client" },
 ]
 
-export default function Header() {
+export default function Header({ directory }: { directory: ApiDir }) {
     const pathname = usePathname()
 
     const _MenuOption = ({ path, name }: { path: string; name: string }) => {
@@ -91,7 +92,10 @@ export default function Header() {
                 </NavigationMenu>
 
                 <div className="flex-1" />
-                <SearchBar className="hidden lg:flex lg:flex-col lg:justify-center border-b-2 border-transparent" />
+                <SearchBar
+                    directory={directory}
+                    className="hidden lg:flex lg:flex-col lg:justify-center pb-[2px]"
+                />
                 <ThemeSwitcher />
             </PageWidth>
         </header>

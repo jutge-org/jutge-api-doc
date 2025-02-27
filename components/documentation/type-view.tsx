@@ -1,5 +1,6 @@
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
-import { ApiModel, makeExample } from "@/lib/api-dir"
+import { makeExample } from "@/lib/api/dir"
+import { ApiModel } from "@/lib/api/types"
 import { cn } from "@/lib/utils"
 import React from "react"
 import YAML from "yaml"
