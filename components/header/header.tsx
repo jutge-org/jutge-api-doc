@@ -16,6 +16,7 @@ import { cn } from "@/lib/utils"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import React from "react"
+import SearchBar from "./search-bar"
 
 const clients: { title: string; id: string; description: string }[] = [
     { title: "Python", id: "python", description: "Python client" },
@@ -28,8 +29,24 @@ const clients: { title: string; id: string; description: string }[] = [
 export default function Header() {
     const pathname = usePathname()
 
+    const _MenuOption = ({ path, name }: { path: string; name: string }) => {
+        return (
+            <Link
+                href={path}
+                className={cn(
+                    "border-b-2 border-b-transparent h-[var(--topbar-height)] flex items-center",
+                    pathname.startsWith(path) && "border-b-black",
+                )}
+            >
+                <NavigationMenuLink className={navigationMenuTriggerStyle()} asChild>
+                    <div>{name}</div>
+                </NavigationMenuLink>
+            </Link>
+        )
+    }
+
     return (
-        <header className="bg-background fixed top-0 left-0 right-0 px-3 pt-2 mb-8 flex flex-row items-stretch z-50">
+        <header className="bg-background fixed top-0 left-0 right-0 px-3 mb-8 flex flex-row items-stretch z-50">
             <PageWidth className="flex flex-row items-stretch gap-2">
                 <Logo />
                 <NavigationMenu>
@@ -56,69 +73,16 @@ export default function Header() {
                             </NavigationMenuContent>
                         </NavigationMenuItem>
 
-                        <Link
-                            href="/documentation"
-                            className={cn(
-                                "border-b-4 border-b-transparent h-[var(--topbar-height)] flex items-center",
-                                pathname.startsWith("/documentation") &&
-                                    "border-b-black dark:border-b-white",
-                            )}
-                        >
-                            <NavigationMenuLink className={navigationMenuTriggerStyle()} asChild>
-                                <div>Documentation</div>
-                            </NavigationMenuLink>
-                        </Link>
-                        <Link
-                            href="/playground"
-                            className={cn(
-                                "border-b-4 border-b-transparent h-[var(--topbar-height)] flex items-center",
-                                pathname.startsWith("/playground") &&
-                                    "border-b-black dark:border-b-white",
-                            )}
-                        >
-                            <NavigationMenuLink className={navigationMenuTriggerStyle()} asChild>
-                                <div>Playground</div>
-                            </NavigationMenuLink>
-                        </Link>
-                        <Link
-                            href="/examples"
-                            className={cn(
-                                "border-b-4 border-b-transparent h-[var(--topbar-height)] flex items-center",
-                                pathname.startsWith("/examples") &&
-                                    "border-b-black dark:border-b-white",
-                            )}
-                        >
-                            <NavigationMenuLink className={navigationMenuTriggerStyle()} asChild>
-                                <div>Examples</div>
-                            </NavigationMenuLink>
-                        </Link>
-                        <Link
-                            href="/faqs"
-                            className={cn(
-                                "border-b-4 border-b-transparent h-[var(--topbar-height)] flex items-center",
-                                pathname.startsWith("/faqs") &&
-                                    "border-b-black dark:border-b-white",
-                            )}
-                        >
-                            <NavigationMenuLink className={navigationMenuTriggerStyle()} asChild>
-                                <div>FAQs</div>
-                            </NavigationMenuLink>
-                        </Link>
-                        <Link
-                            href="/about"
-                            className={cn(
-                                "border-b-4 border-b-transparent h-[var(--topbar-height)] flex items-center",
-                                pathname.startsWith("/about") &&
-                                    "border-b-black dark:border-b-white",
-                            )}
-                        >
-                            <NavigationMenuLink className={navigationMenuTriggerStyle()} asChild>
-                                <div>About</div>
-                            </NavigationMenuLink>
-                        </Link>
+                        <_MenuOption path="/documentation" name="Documentation" />
+                        <_MenuOption path="/playground" name="Playground" />
+                        <_MenuOption path="/examples" name="Examples" />
+                        <_MenuOption path="/faqs" name="FAQs" />
+                        <_MenuOption path="/about" name="About" />
                     </NavigationMenuList>
                 </NavigationMenu>
-                <div className="flex-1"></div>
+
+                <div className="flex-1" />
+                <SearchBar />
                 <ThemeSwitcher />
             </PageWidth>
         </header>
@@ -143,14 +107,6 @@ const ClientItem = React.forwardRef<React.ElementRef<"a">, React.ComponentPropsW
                         )}
                         {...props}
                     >
-                        {/* Ho he comentat perquè crec que queda molt infantil.
-                        <Image
-                            src={`/logos/${id}.svg`}
-                            width={42}
-                            height={32}
-                            alt={`${title} logo`}
-                        />
-                        */}
                         <div className="flex flex-col flex-1">
                             <div className="text-sm font-medium leading-none">{title}</div>
                             <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
