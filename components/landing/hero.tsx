@@ -23,7 +23,7 @@ export default function Hero({ className }: Props) {
             </div>
 
             <div className="flex flex-col gap-2">
-                <h1 className="text-4xl sm:text-6xl md:text-7xl tracking-tight">
+                <h1 className="text-5xl sm:text-6xl md:text-7xl tracking-tight">
                     Script Jutge.org
                 </h1>
                 <p className="max-w-[30em] md:text-lg/6 text-center">
