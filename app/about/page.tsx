@@ -14,7 +14,7 @@ export default function AboutPage() {
                     system with more than 6 million submissions.
                 </p>
                 <p>
-                    This API was developed in the context of the "Galàxia d'Aprenentatge", a UPC
+                    This API was developed in the context of the &quot;Galàxia d&apos;Aprenentatge&quot;, a UPC
                     project.
                 </p>
                 <section>
