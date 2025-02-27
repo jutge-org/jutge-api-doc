@@ -35,7 +35,7 @@ export default function Header() {
                 href={path}
                 className={cn(
                     "border-b-2 border-b-transparent h-[var(--topbar-height)] flex items-center",
-                    pathname.startsWith(path) && "border-b-black",
+                    pathname.startsWith(path) && "border-b-primary",
                 )}
             >
                 <NavigationMenuLink className={navigationMenuTriggerStyle()} asChild>
@@ -46,7 +46,7 @@ export default function Header() {
     }
 
     return (
-        <header className="bg-background fixed top-0 left-0 right-0 px-3 mb-8 flex flex-row items-stretch z-50">
+        <header className="fixed h-14 top-0 left-0 right-0 px-3 mb-8 flex flex-row items-stretch z-50 border-b border-muted bg-background">
             <PageWidth className="flex flex-row items-stretch gap-2">
                 <Logo />
                 <NavigationMenu>
@@ -58,9 +58,9 @@ export default function Header() {
                                     "border-b-black dark:border-b-white",
                             )}
                         >
-                            <NavigationMenuTrigger>Clients</NavigationMenuTrigger>
+                            <NavigationMenuTrigger className="mt-0.5">Clients</NavigationMenuTrigger>
                             <NavigationMenuContent>
-                                <ul className="flex flex-col gap-3 p-2 md:grid-cols-1 min-w-[16em]">
+                                <ul className="flex flex-col gap-3 p-2 md:grid-cols-1 min-w-[14em]">
                                     {clients.map((client) => (
                                         <ClientItem
                                             key={client.id}
@@ -75,7 +75,6 @@ export default function Header() {
 
                         <_MenuOption path="/documentation" name="Documentation" />
                         <_MenuOption path="/playground" name="Playground" />
-                        <_MenuOption path="/examples" name="Examples" />
                         <_MenuOption path="/faqs" name="FAQs" />
                         <_MenuOption path="/about" name="About" />
                     </NavigationMenuList>
