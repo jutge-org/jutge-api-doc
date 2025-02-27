@@ -2,8 +2,7 @@
 
 import PageWidth from "@/components/page-width"
 import { cn } from "@/lib/utils"
-import { ChevronDown } from "lucide-react"
-import { AnimatePresence, motion } from "motion/react"
+import { ChevronDown, ChevronUp } from "lucide-react"
 import { useState } from "react"
 
 interface FaqItem {
@@ -63,16 +62,10 @@ export default function FaqPage() {
     // based on https://kokonutui.com/docs/components/faq
 
     return (
-        <PageWidth className="mx-auto pt-2">
+        <PageWidth className="mx-auto pt-2 min-h-screen">
             <section className="w-full bg-linear-to-b from-transparent via-gray-50/50 to-transparent dark:from-transparent dark:via-white/[0.02] dark:to-transparent">
                 <div className="container mx-auto">
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5 }}
-                        className="max-w-2xl mx-auto text-center mb-12"
-                    ></motion.div>
-
+                    <div className="max-w-2xl mx-auto text-center mb-12"></div>
                     <div className="max-w-2xl mx-auto space-y-2">
                         {faqs.map((faq, index) => (
                             <FaqElement key={index} {...faq} index={index} />
@@ -88,14 +81,7 @@ function FaqElement({ question, answer, index }: FaqItem) {
     const [isOpen, setIsOpen] = useState(false)
 
     return (
-        <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-                duration: 0.3,
-                delay: index * 0.15,
-                ease: "easeOut",
-            }}
+        <div
             className={cn(
                 "group rounded-lg border-[0.5px] border-gray-200/50 dark:border-gray-800/50",
                 "transition-all duration-200 ease-in-out",
@@ -118,73 +104,27 @@ function FaqElement({ question, answer, index }: FaqItem) {
                 >
                     {question}
                 </h3>
-                <motion.div
-                    animate={{
-                        rotate: isOpen ? 180 : 0,
-                        scale: isOpen ? 1.1 : 1,
-                    }}
-                    transition={{
-                        duration: 0.3,
-                        ease: "easeInOut",
-                    }}
+                <div
                     className={cn(
                         "p-0.5 rounded-full shrink-0",
                         "transition-colors duration-200",
                         isOpen ? "text-primary" : "text-gray-400 dark:text-gray-500",
                     )}
                 >
-                    <ChevronDown className="h-4 w-4" />
-                </motion.div>
+                    {isOpen ? (
+                        <ChevronUp className="h-4 w-4" />
+                    ) : (
+                        <ChevronDown className="h-4 w-4" />
+                    )}
+                </div>
             </button>
-            <AnimatePresence initial={false}>
-                {isOpen && (
-                    <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{
-                            height: "auto",
-                            opacity: 1,
-                            transition: {
-                                height: {
-                                    duration: 0.4,
-                                    ease: [0.04, 0.62, 0.23, 0.98],
-                                },
-                                opacity: {
-                                    duration: 0.25,
-                                    delay: 0.1,
-                                },
-                            },
-                        }}
-                        exit={{
-                            height: 0,
-                            opacity: 0,
-                            transition: {
-                                height: {
-                                    duration: 0.3,
-                                    ease: "easeInOut",
-                                },
-                                opacity: {
-                                    duration: 0.25,
-                                },
-                            },
-                        }}
-                    >
-                        <div className="px-6 pb-4 pt-2">
-                            <motion.p
-                                initial={{ y: -8, opacity: 0 }}
-                                animate={{ y: 0, opacity: 1 }}
-                                exit={{ y: -8, opacity: 0 }}
-                                transition={{
-                                    duration: 0.3,
-                                    ease: "easeOut",
-                                }}
-                                className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed"
-                            >
-                                {answer}
-                            </motion.p>
-                        </div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
-        </motion.div>
+            {isOpen && (
+                <div className="px-6 pb-4 pt-2">
+                    <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                        {answer}
+                    </p>
+                </div>
+            )}
+        </div>
     )
 }
