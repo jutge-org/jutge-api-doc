@@ -1,5 +1,6 @@
 "use client"
 
+import PageWidth from "@/components/page-width"
 import { useTheme } from "@/components/theme/hook"
 import { ChartConfig, ChartContainer } from "@/components/ui/chart"
 import { InputDialog } from "@/components/ui/input-dialog"
@@ -175,74 +176,72 @@ export default function PlaygroundPage() {
         return `${lines * 18}px`
     }
 
-    const playground = (
-        <>
-            <div className="flex flex-col gap-0">
-                {cells.map((cell, i) => (
-                    <div key={i} className="">
-                        <div key={i} className="flex flex-col gap-0">
-                            <div className="text-xs pt-2 pb-2">Input {i + 1}</div>
-                            <div className={`ml-6`}>
-                                <div
-                                    className={`border-spacing-2 rounded-lg ${ready && i == cells.length - 1 ? "border-gray-600 border-4" : "border-gray-100 border-2"} p-2 dark:bg-[#1e1e1e]`}
-                                >
-                                    <Editor
-                                        theme={`vs-${mode}`}
-                                        defaultLanguage="typescript"
-                                        defaultValue=""
-                                        height={
-                                            i == cells.length - 1 ? "100px" : height(cells[i].input)
-                                        }
-                                        options={{
-                                            minimap: { enabled: false },
-                                            lineNumbers: "off",
-                                            glyphMargin: false,
-                                            folding: false,
-                                            // https://stackoverflow.com/questions/53448735/is-there-a-way-to-completely-hide-the-gutter-of-monaco-editor
-                                            // Undocumented see https://github.com/Microsoft/vscode/issues/30795#issuecomment-410998882
-                                            lineDecorationsWidth: 0,
-                                            lineNumbersMinChars: 0,
-                                            renderLineHighlight: "none",
-                                            readOnly: i != cells.length - 1,
-                                        }}
-                                        onChange={(value, event) => onChange(value || "", i)}
-                                        onMount={(editor, monaco) =>
-                                            handleEditorDidMount(editor, monaco, i)
-                                        }
-                                    />
-                                </div>
-                            </div>
-
-                            {cell.outputs.length != 0 && (
-                                <div className="flex flex-col gap-2">
-                                    <div className="text-xs pt-2 pb-2">Output {i + 1}</div>
-
-                                    {cell.outputs.map((output, j) => (
-                                        <OutputArea key={`${i}:${j}`} output={output} index={j} />
-                                    ))}
-                                </div>
-                            )}
-                        </div>
-                    </div>
-                ))}
-            </div>
-        </>
-    )
-
-    const top = (
+    const _Top = () => (
         <>
             <h1 className="pb-4">Playground</h1>
 
             <p className="text-xs pb-2">Help</p>
             <div className="pl-6 pb-0">
-                <div className="border-spacing-2 rounded-lg border-gray-100 border-2 p-2 ">
+                <div className="border-spacing-2 rounded-lg border-gray-100 border-2 p-2">
                     <Help />
                 </div>
             </div>
         </>
     )
 
-    const dialog = (
+    const _Playground = () => (
+        <div className="flex flex-col gap-0">
+            {cells.map((cell, i) => (
+                <div key={i} className="">
+                    <div key={i} className="flex flex-col gap-0">
+                        <div className="text-xs pt-2 pb-2">Input {i + 1}</div>
+                        <div className={`ml-6`}>
+                            <div
+                                className={`border-spacing-2 rounded-lg ${ready && i == cells.length - 1 ? "border-gray-600 border-4" : "border-gray-100 border-2"} p-2 dark:bg-[#1e1e1e]`}
+                            >
+                                <Editor
+                                    theme={`vs-${mode}`}
+                                    defaultLanguage="typescript"
+                                    defaultValue=""
+                                    height={
+                                        i == cells.length - 1 ? "100px" : height(cells[i].input)
+                                    }
+                                    options={{
+                                        minimap: { enabled: false },
+                                        lineNumbers: "off",
+                                        glyphMargin: false,
+                                        folding: false,
+                                        // https://stackoverflow.com/questions/53448735/is-there-a-way-to-completely-hide-the-gutter-of-monaco-editor
+                                        // Undocumented see https://github.com/Microsoft/vscode/issues/30795#issuecomment-410998882
+                                        lineDecorationsWidth: 0,
+                                        lineNumbersMinChars: 0,
+                                        renderLineHighlight: "none",
+                                        readOnly: i != cells.length - 1,
+                                    }}
+                                    onChange={(value, event) => onChange(value || "", i)}
+                                    onMount={(editor, monaco) =>
+                                        handleEditorDidMount(editor, monaco, i)
+                                    }
+                                />
+                            </div>
+                        </div>
+
+                        {cell.outputs.length != 0 && (
+                            <div className="flex flex-col gap-2">
+                                <div className="text-xs pt-2 pb-2">Output {i + 1}</div>
+
+                                {cell.outputs.map((output, j) => (
+                                    <OutputArea key={`${i}:${j}`} output={output} index={j} />
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                </div>
+            ))}
+        </div>
+    )
+
+    const _Dialog = () => (
         <InputDialog
             isOpen={isDialogOpen}
             onClose={handleCloseDialog}
@@ -253,17 +252,17 @@ export default function PlaygroundPage() {
     )
 
     return (
-        <div className="px-4 flex flex-col">
-            {top}
-            {playground}
+        <PageWidth className="pt-6 px-2 md:px-0">
+            <_Top />
+            <_Playground />
             {!ready && (
                 <div className="pl-8 pt-4 pb-32">
                     <LoaderIcon className="animate-spin text-red-500" />
                 </div>
             )}
             <div className="mb-16" />
-            {dialog}
-        </div>
+            <_Dialog />
+        </PageWidth>
     )
 }
 

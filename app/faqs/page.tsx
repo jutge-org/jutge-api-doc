@@ -62,15 +62,13 @@ export default function FaqPage() {
     // based on https://kokonutui.com/docs/components/faq
 
     return (
-        <PageWidth className="mx-auto pt-2 min-h-screen">
-            <section className="w-full bg-linear-to-b from-transparent via-gray-50/50 to-transparent dark:from-transparent dark:via-white/[0.02] dark:to-transparent">
-                <div className="container mx-auto">
-                    <div className="max-w-2xl mx-auto text-center mb-12"></div>
-                    <div className="max-w-2xl mx-auto space-y-2">
-                        {faqs.map((faq, index) => (
-                            <FaqElement key={index} {...faq} index={index} />
-                        ))}
-                    </div>
+        <PageWidth className="pt-6 px-2 md:px-0">
+            <h1>Frequently Asked Questions</h1>
+            <section className="mt-6">
+                <div className="max-w-2xl space-y-2">
+                    {faqs.map((faq, index) => (
+                        <FaqElement key={index} {...faq} index={index} />
+                    ))}
                 </div>
             </section>
         </PageWidth>

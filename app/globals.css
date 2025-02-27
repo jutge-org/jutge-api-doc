@@ -117,7 +117,7 @@ body {
         @apply border-blue-500 border-2;
     }
     .debug-3 {
-        @apply border-green-500 border-2;
+        @apply border-green-500 border;
     }
 
     h1,
@@ -143,6 +143,11 @@ body {
     h5 {
         @apply text-base;
     }
+
+    p + p {
+        @apply mt-2;
+    }
+
 
     header a,
     .sidebar a {

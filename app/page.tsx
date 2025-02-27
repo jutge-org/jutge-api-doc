@@ -7,7 +7,7 @@ export default async function Page() {
     const allCodeSamples = await loadAllSamples()
 
     return (
-        <PageWidth className="mx-auto pt-2">
+        <PageWidth className="mx-auto pt-2 px-2 md:px-0">
             <Hero />
             <CodeSamples allCodeSamples={allCodeSamples} />
         </PageWidth>

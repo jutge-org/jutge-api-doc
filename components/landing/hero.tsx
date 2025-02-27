@@ -24,17 +24,17 @@ export default function Hero({ className }: Props) {
 
             <div className="flex flex-col gap-2">
                 <h1 className="text-4xl sm:text-6xl md:text-7xl tracking-tight">
-                    Script{" "}
+                    Script Jutge.org
+                </h1>
+                <p className="max-w-[30em] md:text-lg/6 text-center">
+                    Write programs to interact with{" "}
                     <Link
                         href="https://jutge.org"
                         className="no-underline text-blue-950 dark:text-blue-200"
                     >
                         Jutge.org
                     </Link>
-                </h1>
-                <p className="max-w-[30em] md:text-lg/6 text-center">
-                    Write programs to interact with Jutge.org: obtain information, test AIs,
-                    configure things automatically...
+                    : obtain information, test AIs, configure things automatically...
                 </p>
             </div>
 
@@ -44,23 +44,38 @@ export default function Hero({ className }: Props) {
                 </h2>
                 <p className="max-w-[35em] md:text-lg text-center">
                     Clients available for{" "}
-                    <Link href="/clients/python" className="no-underline text-blue-950 dark:text-blue-200">
+                    <Link
+                        href="/clients/python"
+                        className="no-underline text-blue-950 dark:text-blue-200"
+                    >
                         Python
                     </Link>
                     ,{" "}
-                    <Link href="/clients/typescript" className="no-underline text-blue-950 dark:text-blue-200">
+                    <Link
+                        href="/clients/typescript"
+                        className="no-underline text-blue-950 dark:text-blue-200"
+                    >
                         TypeScript
                     </Link>
                     ,{" "}
-                    <Link href="/clients/javascript" className="no-underline text-blue-950 dark:text-blue-200">
+                    <Link
+                        href="/clients/javascript"
+                        className="no-underline text-blue-950 dark:text-blue-200"
+                    >
                         JavaScript
                     </Link>
                     ,{" "}
-                    <Link href="/clients/php" className="no-underline text-blue-950 dark:text-blue-200">
+                    <Link
+                        href="/clients/php"
+                        className="no-underline text-blue-950 dark:text-blue-200"
+                    >
                         PHP
                     </Link>{" "}
                     and even{" "}
-                    <Link href="/clients/cpp" className="no-underline text-blue-950 dark:text-blue-200">
+                    <Link
+                        href="/clients/cpp"
+                        className="no-underline text-blue-950 dark:text-blue-200"
+                    >
                         C++
                     </Link>
                     .

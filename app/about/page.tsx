@@ -1,28 +1,42 @@
+import Github from "@/components/icons/Github"
 import PageWidth from "@/components/page-width"
-import { Card, CardContent } from "@/components/ui/card"
+import TextWidth from "@/components/text-width"
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar"
-import { GithubIcon, GripIcon } from "lucide-react"
+import Link from "next/link"
 
 export default function AboutPage() {
     return (
         <PageWidth className="pt-6">
-            <h1 className="">Credits</h1>
-            <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
-                <ProfileCard
-                    name="Pau Fernández"
-                    university="Universitat Politècnica de Catalunya"
-                    githubUrl="https://github.com/pauek/"
-                    imageUrl="/pauek.png"
-                    fallback="PF"
-                />
-                <ProfileCard
-                    name="Jordi Petit"
-                    university="Universitat Politècnica de Catalunya"
-                    githubUrl="https://github.com/jordi-petit/"
-                    imageUrl="/jpetit.png"
-                    fallback="JP"
-                />
-            </div>{" "}
+            <TextWidth>
+                <h1 className="mb-4">About</h1>
+                <p>
+                    This project is part of the Jutge.org platform, a 20+ years old online judge
+                    system with more than 6 million submissions.
+                </p>
+                <p>
+                    This API was developed in the context of the "Galàxia d'Aprenentatge", a UPC
+                    project.
+                </p>
+                <section>
+                    <h2>Credits</h2>
+                    <div className="flex flex-col space-y-4 mt-4">
+                        <ProfileCard
+                            name="Pau Fernández"
+                            university="Universitat Politècnica de Catalunya"
+                            githubUrl="https://github.com/pauek/"
+                            imageUrl="/pauek.png"
+                            fallback="PF"
+                        />
+                        <ProfileCard
+                            name="Jordi Petit"
+                            university="Universitat Politècnica de Catalunya"
+                            githubUrl="https://github.com/jordi-petit/"
+                            imageUrl="/jpetit.png"
+                            fallback="JP"
+                        />
+                    </div>
+                </section>
+            </TextWidth>
         </PageWidth>
     )
 }
@@ -37,26 +51,26 @@ interface ProfileCardProps {
 
 function ProfileCard({ name, university, githubUrl, imageUrl, fallback }: ProfileCardProps) {
     return (
-        <Card className="w-full">
-            <CardContent className="px-4 pt-4 flex flex-row space-x-4">
-                <Avatar className="AvatarRoot">
-                    <AvatarImage src={imageUrl} className="AvatarImage rounded-md" width={96} />
-                    <AvatarFallback>{fallback}</AvatarFallback>
-                </Avatar>
-                <div className="flex flex-col">
-                    <p className="font-bold pb-2 hover:text-chart-1">{name}</p>
-                    <p>
-                        <a href="https://upc.edu" className="flex flex-row items-center gap-2">
-                            <GripIcon size={16} /> {university}
-                        </a>
-                    </p>
-                    <p>
-                        <a href={githubUrl} className="flex flex-row items-center gap-2">
-                            <GithubIcon size={16} /> GitHub
-                        </a>
-                    </p>
-                </div>
-            </CardContent>
-        </Card>
+        <div className="flex flex-row space-x-2 items-center">
+            <Avatar className="AvatarRoot">
+                <AvatarImage src={imageUrl} className="AvatarImage rounded-full" width={56} />
+                <AvatarFallback>{fallback}</AvatarFallback>
+            </Avatar>
+            <div className="flex flex-col">
+                <h5 className="font-bold p-0 m-0 leading-6">{name}</h5>
+                <Link
+                    href="https://www.upc.edu"
+                    className="flex flex-row items-center gap-2 text-xs no-underline"
+                >
+                    {university}
+                </Link>
+                <Link
+                    href={githubUrl}
+                    className="flex flex-row items-center gap-1.5 text-sm no-underline mt-1"
+                >
+                    <Github className="w-4 h-4" /> GitHub
+                </Link>
+            </div>
+        </div>
     )
 }

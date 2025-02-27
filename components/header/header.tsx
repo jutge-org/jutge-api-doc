@@ -10,12 +10,12 @@ import {
     NavigationMenuLink,
     NavigationMenuList,
     NavigationMenuTrigger,
-    navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
 import { cn } from "@/lib/utils"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import React from "react"
+import { Button } from "../ui/button"
 import SearchBar from "./search-bar"
 
 const clients: { title: string; id: string; description: string }[] = [
@@ -38,8 +38,10 @@ export default function Header() {
                     pathname.startsWith(path) && "border-b-primary",
                 )}
             >
-                <NavigationMenuLink className={navigationMenuTriggerStyle()} asChild>
-                    <div>{name}</div>
+                <NavigationMenuLink asChild>
+                    <Button variant="ghost" className="no-underline">
+                        {name}
+                    </Button>
                 </NavigationMenuLink>
             </Link>
         )
@@ -49,7 +51,8 @@ export default function Header() {
         <header
             className={cn(
                 "fixed top-0 left-0 right-0 md:px-3 mb-8",
-                "flex flex-row items-stretch z-50 border-b border-muted bg-background",
+                "flex flex-row items-stretch z-50 border-b border-muted",
+                "backdrop-blur-md",
             )}
         >
             <PageWidth className="px-3 flex flex-row items-stretch gap-2 pt-0.5">
@@ -63,7 +66,7 @@ export default function Header() {
                                     "border-b-black dark:border-b-white",
                             )}
                         >
-                            <NavigationMenuTrigger className="mt-0.5">
+                            <NavigationMenuTrigger className="mt-0.5 bg-transparent">
                                 Clients
                             </NavigationMenuTrigger>
                             <NavigationMenuContent>
