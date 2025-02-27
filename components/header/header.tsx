@@ -46,8 +46,13 @@ export default function Header() {
     }
 
     return (
-        <header className="fixed h-14 top-0 left-0 right-0 px-3 mb-8 flex flex-row items-stretch z-50 border-b border-muted bg-background">
-            <PageWidth className="flex flex-row items-stretch gap-2">
+        <header
+            className={cn(
+                "fixed top-0 left-0 right-0 px-3 mb-8",
+                "flex flex-row items-stretch z-50 border-b border-muted bg-background",
+            )}
+        >
+            <PageWidth className="flex flex-row items-stretch gap-2 pt-1">
                 <Logo />
                 <NavigationMenu>
                     <NavigationMenuList>
@@ -58,7 +63,9 @@ export default function Header() {
                                     "border-b-black dark:border-b-white",
                             )}
                         >
-                            <NavigationMenuTrigger className="mt-0.5">Clients</NavigationMenuTrigger>
+                            <NavigationMenuTrigger className="mt-0.5">
+                                Clients
+                            </NavigationMenuTrigger>
                             <NavigationMenuContent>
                                 <ul className="flex flex-col gap-3 p-2 md:grid-cols-1 min-w-[14em]">
                                     {clients.map((client) => (
