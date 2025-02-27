@@ -23,7 +23,7 @@ export default function Hero({ className }: Props) {
             </div>
 
             <div className="flex flex-col gap-2">
-                <h1 className="text-3xl sm:text-6xl md:text-7xl tracking-tight">
+                <h1 className="text-4xl sm:text-6xl md:text-7xl tracking-tight">
                     Script{" "}
                     <Link
                         href="https://jutge.org"
@@ -39,7 +39,7 @@ export default function Hero({ className }: Props) {
             </div>
 
             <div className="flex flex-col gap-1">
-                <h2 className="text-2xl sm:text-4xl md:text-5xl tracking-tight">
+                <h2 className="text-3xl sm:text-4xl md:text-5xl tracking-tight">
                     Use your favorite language
                 </h2>
                 <p className="max-w-[35em] md:text-lg text-center">

@@ -25,8 +25,8 @@ export function CodeSamples({ allCodeSamples }: { allCodeSamples: Record<string,
 
     return (
         <>
-            <Tabs defaultValue="python" className="max-w-[80ch] mx-auto">
-                <div className="flex flex-row justify-between items-end">
+            <Tabs defaultValue="python" className="max-w-[80ch] mx-auto px-4 md:p-0">
+                <div className="flex flex-col gap-2  md:gap-0 md:flex-row md:justify-between items-center md:items-end">
                     <div className="flex flex-col gap-1">
                         <Select value={filename} onValueChange={setFilename}>
                             <SelectTrigger className="w-[24em]">

@@ -48,11 +48,11 @@ export default function Header() {
     return (
         <header
             className={cn(
-                "fixed top-0 left-0 right-0 px-3 mb-8",
+                "fixed top-0 left-0 right-0 md:px-3 mb-8",
                 "flex flex-row items-stretch z-50 border-b border-muted bg-background",
             )}
         >
-            <PageWidth className="flex flex-row items-stretch gap-2 pt-1">
+            <PageWidth className="px-3 flex flex-row items-stretch gap-2 pt-0.5">
                 <Logo />
                 <NavigationMenu>
                     <NavigationMenuList>
@@ -88,7 +88,7 @@ export default function Header() {
                 </NavigationMenu>
 
                 <div className="flex-1" />
-                <SearchBar />
+                <SearchBar className="hidden lg:flex lg:flex-col lg:justify-center border-b-2 border-transparent" />
                 <ThemeSwitcher />
             </PageWidth>
         </header>
