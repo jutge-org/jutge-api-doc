@@ -1,20 +1,26 @@
 import type { ApiDir, ApiModule, Item } from "./types"
 
 export const searchDirectory = (dir: ApiDir, query: string): Item[] => {
+    const queryWords = query
+        .split(" ")
+        .filter(Boolean)
+        .map((w) => w.trim())
+
     const match = (name: string) => {
-        return name.toLowerCase().includes(query.toLowerCase())
+        return queryWords.every((queryWord) => name.toLowerCase().includes(queryWord))
     }
 
     const search = (mod: ApiModule, path: string[]): Item[] => {
         const results: Item[] = []
+        const spath = path.map((p) => `${p}.`).join("")
         for (const endpoint of mod.endpoints) {
-            if (match(endpoint.name)) {
+            if (match(spath + endpoint.name)) {
                 results.push({
                     name: endpoint.name,
                     url: `/documentation#${path.join(".")}.${endpoint.name}`,
                     type: "endpoint",
                     actor: endpoint.actor,
-                    path: path.map((p) => `${p}.`).join(""),
+                    spath: spath,
                 })
             }
         }
@@ -37,7 +43,7 @@ export const searchDirectory = (dir: ApiDir, query: string): Item[] => {
         if (a.name !== b.name) {
             return a.name.localeCompare(b.name)
         } else {
-            return a.path.localeCompare(b.path)
+            return a.spath.localeCompare(b.spath)
         }
     })
     return results

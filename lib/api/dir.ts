@@ -20,7 +20,7 @@ export function models(mod: ApiDir, path: string[]): Item[] {
             name: name,
             url: `#${path.join(".")}.${name}`,
             type: "model",
-            path: path.map((p) => `${p}.`).join(""),
+            spath: path.map((p) => `${p}.`).join(""),
             isActive: false,
         })
     }
@@ -33,7 +33,7 @@ export function endpoints(mod: ApiModule, path: string[]): Item[] {
             name: endpoint.name,
             url: `#${path.join(".")}.${endpoint.name}`,
             type: "endpoint",
-            path: path.map((p) => `${p}.`).join(""),
+            spath: path.map((p) => `${p}.`).join(""),
             actor: endpoint.actor,
             isActive: false,
         }
