@@ -1,4 +1,4 @@
-import type { Item, ApiDir, ApiModule } from "./types"
+import type { ApiDir, ApiModule, Item } from "./types"
 
 export const searchDirectory = (dir: ApiDir, query: string): Item[] => {
     const match = (name: string) => {
@@ -14,7 +14,7 @@ export const searchDirectory = (dir: ApiDir, query: string): Item[] => {
                     url: `/documentation#${path.join(".")}.${endpoint.name}`,
                     type: "endpoint",
                     actor: endpoint.actor,
-                    path: path.map(p => `${p}.`).join("")
+                    path: path.map((p) => `${p}.`).join(""),
                 })
             }
         }
@@ -32,5 +32,13 @@ export const searchDirectory = (dir: ApiDir, query: string): Item[] => {
         return results
     }
 
-    return search(dir.root, [])
+    const results = search(dir.root, [])
+    results.sort((a, b) => {
+        if (a.name !== b.name) {
+            return a.name.localeCompare(b.name)
+        } else {
+            return a.path.localeCompare(b.path)
+        }
+    })
+    return results
 }
