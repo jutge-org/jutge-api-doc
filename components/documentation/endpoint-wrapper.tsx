@@ -7,7 +7,7 @@ type EndpointBackgroundFlashProps = {
     id: string
     children: React.ReactNode
 }
-export default function EndpointBackgroundFlash({ id, children }: EndpointBackgroundFlashProps) {
+export default function EndpointWrapper({ id, children }: EndpointBackgroundFlashProps) {
     const [hash, setHash] = useState("")
 
     const onHashChange = () => {
@@ -23,12 +23,12 @@ export default function EndpointBackgroundFlash({ id, children }: EndpointBackgr
     return (
         <div
             className={cn(
-                "px-4 py-2 pt-0.5 flex flex-col items-start",
+                "w-full px-4 py-2 pt-0.5 flex flex-col",
                 "relative rounded",
                 hash === `#${id}` && "outline outline-accent",
             )}
         >
-            <div id={id} className="absolute -top-[15em] -left-10"></div>
+            <div id={id} className="absolute -top-[15em] left-0"></div>
             {children}
         </div>
     )
