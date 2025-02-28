@@ -1,22 +1,23 @@
 "use client"
 
-import {
-    Sheet,
-    SheetContent,
-    SheetDescription,
-    SheetHeader,
-    SheetTitle,
-    SheetTrigger,
-} from "@/components/ui/sheet"
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { cn } from "@/lib/utils"
 import { MenuIcon } from "lucide-react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { Button } from "../ui/button"
-import { menuOptions } from "./header"
+import { clients, menuOptions } from "./header"
 
 export default function MobileMenu({ className }: { className?: string }) {
     const [open, setOpen] = useState(false)
+    const router = useRouter()
+
+    const go = (href: string) => () => {
+        setOpen(false)
+        router.push(href)
+    }
+
     return (
         <div className={cn(className, "z-50")}>
             <Sheet open={open} onOpenChange={setOpen}>
@@ -32,28 +33,37 @@ export default function MobileMenu({ className }: { className?: string }) {
                     </div>
                 </SheetTrigger>
                 <SheetContent side="bottom" className="max-w-[30em] mx-auto">
-                    <SheetHeader>
+                    <SheetHeader className="mb-4">
                         <SheetTitle className="text-center">Jutge.org API</SheetTitle>
-                        <SheetDescription className="pb-24">
-                            <Button
-                                variant="link"
-                                onClick={() => setOpen(false)}
-                                className="w-full"
-                            >
-                                <Link href="/">Home</Link>
-                            </Button>
-                            {menuOptions.map((option) => (
-                                <Button
-                                    variant="link"
-                                    key={option.path}
-                                    className="w-full"
-                                    onClick={() => setOpen(false)}
-                                >
-                                    <Link href={option.path}>{option.name}</Link>
-                                </Button>
-                            ))}
-                        </SheetDescription>
                     </SheetHeader>
+                    <div className="grid grid-cols-2 gap-2">
+                        <Button variant="secondary" onClick={go("/")} className="h-16">
+                            Home
+                        </Button>
+                        {menuOptions.map((option) => (
+                            <Button
+                                variant="secondary"
+                                key={option.path}
+                                className="h-16"
+                                onClick={go(option.path)}
+                            >
+                                {option.name}
+                            </Button>
+                        ))}
+                    </div>
+                    <div className="font-semibold text-lg mt-10 mb-2 text-foreground">Clients</div>
+                    <div className="grid grid-cols-3 gap-2">
+                        {clients.map((client) => (
+                            <Button
+                                variant="secondary"
+                                key={client.id}
+                                className="h-16"
+                                onClick={go(`/clients/${client.id}`)}
+                            >
+                                {client.title}
+                            </Button>
+                        ))}
+                    </div>
                 </SheetContent>
             </Sheet>
         </div>
