@@ -14,6 +14,7 @@ export const searchDirectory = (dir: ApiDir, query: string): Item[] => {
                     url: `/documentation#${path.join(".")}.${endpoint.name}`,
                     type: "endpoint",
                     actor: endpoint.actor,
+                    path: path.map(p => `${p}.`).join("")
                 })
             }
         }

@@ -8,7 +8,6 @@ import { searchDirectory } from "@/lib/api/search"
 import type { ApiDir, Item } from "@/lib/api/types"
 import { cn } from "@/lib/utils"
 import { SearchIcon } from "lucide-react"
-import { useRouter } from "next/navigation"
 import { ChangeEventHandler, useEffect, useRef, useState } from "react"
 
 type Props = {
@@ -16,8 +15,6 @@ type Props = {
     className?: string
 }
 export default function SearchBar({ directory, className }: Props) {
-    const router = useRouter()
-
     const [dialogOpen, setDialogOpen] = useState(false)
     const [search, setSearch] = useState("")
     const [selected, setSelected] = useState(-1)
@@ -88,7 +85,9 @@ export default function SearchBar({ directory, className }: Props) {
                     >
                         <SearchIcon className="text-primary mr-1" />
                         <span className="opacity-50">Search documentation...</span>
-                        <Badge className="ml-1 px-1 py-0.5 bg-accent text-white hover:bg-accent">Ctrl K</Badge>
+                        <Badge className="ml-1 px-1 py-0.5 bg-accent text-white hover:bg-accent">
+                            Ctrl K
+                        </Badge>
                     </Button>
                 </DialogTrigger>
                 <DialogContent className="min-w-[40em] h-[30em] p-0 flex flex-col justify-start gap-0 overflow-clip">
@@ -98,18 +97,30 @@ export default function SearchBar({ directory, className }: Props) {
                         value={search}
                         onChange={onChange}
                     />
-                    <div ref={resultsRef} className="flex-1 flex flex-col overflow-y-scroll gap-1 p-1">
+                    <div
+                        ref={resultsRef}
+                        className="flex-1 flex flex-col overflow-y-scroll gap-1 p-1"
+                    >
                         {results.map((result, index) => (
                             <div
                                 key={`${result.type}:${result.url}`}
                                 className={cn(
                                     "font-mono flex flex-row items-center px-2 py-1.5 pb-1 rounded-sm",
                                     "hover:outline outline-accent outline-offset-1 cursor-pointer",
-                                    index === selected && "bg-accent text-foreground hover:bg-accent text-white",
+                                    index === selected &&
+                                        "bg-accent text-foreground hover:bg-accent text-white",
                                 )}
                                 onClick={clickOption(index)}
                             >
-                                {result.name}
+                                <span
+                                    className={cn(
+                                        "text-muted-foreground text-[0.92rem]",
+                                        index === selected && "text-muted",
+                                    )}
+                                >
+                                    {result.path}
+                                </span>
+                                <span className="font-semibold">{result.name}</span>
                             </div>
                         ))}
                     </div>

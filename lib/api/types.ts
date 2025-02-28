@@ -43,6 +43,7 @@ export type Item = {
     name: string
     url: string
     type: string
+    path: string
     actor?: string
     isActive?: boolean
     items?: Item[]
