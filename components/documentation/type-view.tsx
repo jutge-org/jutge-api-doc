@@ -92,14 +92,14 @@ export default async function TypeView({ className, name, input, spath, models }
 
     const _Array = ({ items }: { items: any }) => (
         <div className="flex flex-row items-baseline gap-0 ml-1">
-            <span className="text-gray-700 font-bold font-mono text-xs">array of</span>
+            <span className="text-muted-foreground font-bold font-mono text-xs mr-0.5">array of</span>
             <TypeView input={items} spath={spath} models={models} />
         </div>
     )
 
     const _Dict = ({ properties }: { properties: any }) => (
         <div className="flex flex-row items-baseline gap-0 ml-1">
-            <span className="text-gray-700 font-bold font-mono text-xs">dict of</span>
+            <span className="text-muted-foreground font-bold font-mono text-xs">dict of</span>
             <TypeView input={properties} spath={spath} models={models} />
         </div>
     )
