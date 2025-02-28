@@ -126,7 +126,7 @@ export default function SearchBar({ directory, className }: Props) {
                     </div>
                 </DialogContent>
             </Dialog>
-            <Button variant="ghost" onClick={() => setDialogOpen(true)} className="w-10">
+            <Button variant="ghost" onClick={() => setDialogOpen(true)} className="w-10 md:hidden">
                 <SearchIcon className="text-primary" />
             </Button>
         </div>
