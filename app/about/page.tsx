@@ -84,19 +84,19 @@ function ProfileCard({
                 </Link>
                 <div className="flex flex-row gap-1 items-center mt-1 text-gray-500">
                     {home && (
-                        <Link href={home} className="hover:text-primary">
+                        <Link href={home} className="hover:text-accent">
                             <Home className="w-4 h-4" />
                         </Link>
                     )}
                     {github && (
-                        <Link href={github} className="hover:text-primary">
+                        <Link href={github} className="hover:text-accent">
                             <Github className="w-4 h-4" />
                         </Link>
                     )}
                     {x && (
                         <Link
                             href={x}
-                            className="flex flex-row items-center gap-1.5 text-sm no-underline hover:text-primary"
+                            className="flex flex-row items-center gap-1.5 text-sm no-underline hover:text-accent"
                         >
                             <X className="w-4 h-4" />
                         </Link>
@@ -104,7 +104,7 @@ function ProfileCard({
                     {bluesky && (
                         <Link
                             href={bluesky}
-                            className="flex flex-row items-center gap-1.5 text-sm no-underline hover:text-primary"
+                            className="flex flex-row items-center gap-1.5 text-sm no-underline hover:text-accent"
                         >
                             <Bluesky className="w-4 h-4" />
                         </Link>
