@@ -35,7 +35,7 @@ export default function Header({ directory }: { directory: ApiDir }) {
             <Link
                 href={path}
                 className={cn(
-                    "border-b-2 border-b-transparent h-[var(--topbar-height)] flex items-center",
+                    "border-b-2 border-b-transparent md:h-[var(--topbar-height)] flex items-center",
                     pathname.startsWith(path) && "border-b-primary",
                 )}
             >
@@ -58,11 +58,11 @@ export default function Header({ directory }: { directory: ApiDir }) {
         >
             <PageWidth className="px-3 flex flex-row items-stretch gap-2 pt-0.5">
                 <Logo />
-                <NavigationMenu>
+                <NavigationMenu className="hidden md:block">
                     <NavigationMenuList>
                         <NavigationMenuItem
                             className={cn(
-                                "border-b-4 border-b-transparent h-[var(--topbar-height)] flex items-center",
+                                "border-b-4 border-b-transparent md:h-[var(--topbar-height)] flex items-center",
                                 pathname.startsWith("/clients") &&
                                     "border-b-black dark:border-b-white",
                             )}
