@@ -40,7 +40,7 @@ export default function Header({ directory }: { directory: ApiDir }) {
                 )}
             >
                 <NavigationMenuLink asChild>
-                    <Button variant="ghost" className="no-underline">
+                    <Button variant="ghost" className="no-underline hover:text-white">
                         {name}
                     </Button>
                 </NavigationMenuLink>
@@ -67,7 +67,7 @@ export default function Header({ directory }: { directory: ApiDir }) {
                                     "border-b-black dark:border-b-white",
                             )}
                         >
-                            <NavigationMenuTrigger className="mt-0.5 bg-transparent">
+                            <NavigationMenuTrigger className="mt-0.5 bg-transparent hover:text-white">
                                 Clients
                             </NavigationMenuTrigger>
                             <NavigationMenuContent>
@@ -121,7 +121,7 @@ const ClientItem = React.forwardRef<React.ElementRef<"a">, React.ComponentPropsW
                         {...props}
                     >
                         <div className="flex flex-col flex-1">
-                            <div className="text-sm font-medium leading-none">{title}</div>
+                            <div className="text-sm font-medium leading-none hover:text-white">{title}</div>
                             <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
                                 {children}
                             </p>

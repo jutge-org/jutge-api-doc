@@ -30,7 +30,7 @@ export default function Hero({ className }: Props) {
                     Write programs to interact with{" "}
                     <Link
                         href="https://jutge.org"
-                        className="no-underline text-blue-950 dark:text-blue-200"
+                        className="no-underline text-accent-foreground"
                     >
                         Jutge.org
                     </Link>
@@ -46,35 +46,35 @@ export default function Hero({ className }: Props) {
                     Clients available for{" "}
                     <Link
                         href="/clients/python"
-                        className="no-underline text-blue-950 dark:text-blue-200"
+                        className="no-underline text-accent-foreground"
                     >
                         Python
                     </Link>
                     ,{" "}
                     <Link
                         href="/clients/typescript"
-                        className="no-underline text-blue-950 dark:text-blue-200"
+                        className="no-underline text-accent-foreground"
                     >
                         TypeScript
                     </Link>
                     ,{" "}
                     <Link
                         href="/clients/javascript"
-                        className="no-underline text-blue-950 dark:text-blue-200"
+                        className="no-underline text-accent-foreground"
                     >
                         JavaScript
                     </Link>
                     ,{" "}
                     <Link
                         href="/clients/php"
-                        className="no-underline text-blue-950 dark:text-blue-200"
+                        className="no-underline text-accent-foreground"
                     >
                         PHP
                     </Link>{" "}
                     and even{" "}
                     <Link
                         href="/clients/cpp"
-                        className="no-underline text-blue-950 dark:text-blue-200"
+                        className="no-underline text-accent-foreground"
                     >
                         C++
                     </Link>
