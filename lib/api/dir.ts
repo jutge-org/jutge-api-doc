@@ -49,7 +49,7 @@ export function modules(mod: ApiModule, parentPath: string[] = []): Item[] {
                 name: submod.name,
                 url: `#${path.join(".")}`,
                 type: "module",
-                path: path.map((p) => `${p}.`).join(""),
+                spath: path.map((p) => `${p}.`).join(""),
                 auth: submod.actor,
                 isActive: false,
                 items: [...endpoints(submod, path), ...modules(submod, path)],
