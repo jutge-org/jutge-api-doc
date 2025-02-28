@@ -20,6 +20,7 @@ export function models(mod: ApiDir, path: string[]): Item[] {
             name: name,
             url: `#${path.join(".")}.${name}`,
             type: "model",
+            path: path.map((p) => `${p}.`).join(""),
             isActive: false,
         })
     }
@@ -32,6 +33,7 @@ export function endpoints(mod: ApiModule, path: string[]): Item[] {
             name: endpoint.name,
             url: `#${path.join(".")}.${endpoint.name}`,
             type: "endpoint",
+            path: path.map((p) => `${p}.`).join(""),
             actor: endpoint.actor,
             isActive: false,
         }
@@ -47,6 +49,7 @@ export function modules(mod: ApiModule, parentPath: string[] = []): Item[] {
                 name: submod.name,
                 url: `#${path.join(".")}`,
                 type: "module",
+                path: path.map((p) => `${p}.`).join(""),
                 auth: submod.actor,
                 isActive: false,
                 items: [...endpoints(submod, path), ...modules(submod, path)],
