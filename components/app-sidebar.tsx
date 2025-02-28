@@ -121,7 +121,7 @@ export function AppSidebar({ ...props }: AppSidebarProps) {
                 <SidebarMenuSubButton
                     href={item.url}
                     className={cn(
-                        "hover:outline-accent outline-offset-1",
+                        "hover:outline-accent outline-offset-0",
                         highlight ? "bg-accent hover:bg-accent" : "",
                     )}
                 >
