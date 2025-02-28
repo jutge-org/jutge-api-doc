@@ -23,10 +23,10 @@ export default function Hero({ className }: Props) {
             </div>
 
             <div className="flex flex-col gap-2">
-                <h1 className="text-5xl sm:text-6xl md:text-7xl tracking-tight">
+                <h1 className="text-4xl sm:text-6xl md:text-7xl tracking-tight">
                     Script Jutge.org
                 </h1>
-                <p className="max-w-[30em] md:text-lg/6 text-center">
+                <p className="px-4 md:px-0 lg:max-w-[30em] md:text-lg/6 text-center">
                     Write programs to interact with{" "}
                     <Link
                         href="https://jutge.org"
@@ -39,10 +39,10 @@ export default function Hero({ className }: Props) {
             </div>
 
             <div className="flex flex-col gap-1">
-                <h2 className="text-3xl sm:text-4xl md:text-5xl tracking-tight">
+                <h2 className="text-2xl sm:text-4xl md:text-5xl tracking-tight">
                     Use your favorite language
                 </h2>
-                <p className="max-w-[35em] md:text-lg text-center">
+                <p className="px-4 md:px-0 lg:max-w-[35em] md:text-lg text-center">
                     Clients available for{" "}
                     <Link
                         href="/clients/python"
