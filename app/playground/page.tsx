@@ -1,7 +1,6 @@
 "use client"
 
 import PageWidth from "@/components/page-width"
-import TextWidth from "@/components/text-width"
 import { useTheme } from "@/components/theme/hook"
 import { ChartConfig, ChartContainer } from "@/components/ui/chart"
 import { InputDialog } from "@/components/ui/input-dialog"
@@ -40,7 +39,7 @@ export default function PlaygroundPage() {
         if (pingSent) return
         setPingSent(true)
         sendToWorker({ type: "ping", info: "" })
-    }, [pingSent])
+    }, [])
 
     // when cells change, scroll to bottom of page
     useEffect(() => {
@@ -94,23 +93,24 @@ export default function PlaygroundPage() {
             setIsDialogOpen(true)
         }
 
-        if (!window.Worker) return
+        if (!window.Worker) {
+            return
+        }
         const worker = workerRef.current
-        if (!worker) return
+        if (!worker) {
+            return
+        }
         worker.onmessage = (e: MessageEvent<Message>) => {
             console.log("received", e.data)
             switch (e.data.type) {
                 case "pong":
                     return receivePong(e.data)
-
                 case "print":
                 case "chart":
                     return receiveData(e.data)
-
                 case "eval":
                 case "error":
                     return receiveEval(e.data)
-
                 case "input":
                     return receiveInput(e.data)
             }
@@ -144,15 +144,15 @@ export default function PlaygroundPage() {
         try {
             return new Worker(new URL("@/lib/worker.ts", import.meta.url))
         } catch (e) {
+            console.error("Error creating worker", e)
             return null
         }
     }
 
     function onChange(value: string, i: number) {
         setCells((prev) => {
-            const copy = [...prev]
-            copy[i].input = value
-            return copy
+            console.log("setCells", value, i)
+            return prev.map((cell, j) => (j == i ? { ...cell, input: value } : cell))
         })
     }
 
@@ -167,6 +167,7 @@ export default function PlaygroundPage() {
     }
 
     function sendToWorker(message: Message) {
+        console.log("sendToWorker", message)
         const worker = workerRef.current
         if (!worker) return
         worker.postMessage(message)
@@ -180,9 +181,8 @@ export default function PlaygroundPage() {
     const _Top = () => (
         <>
             <h1 className="pb-4">Playground</h1>
-
             <p className="text-xs pb-2">Help</p>
-            <div className="pl-6 pb-0">
+            <div className="pb-0">
                 <div className="border-spacing-2 rounded-lg border-gray-100 border-2 p-2">
                     <Help />
                 </div>
@@ -193,50 +193,42 @@ export default function PlaygroundPage() {
     const _Playground = () => (
         <div className="flex flex-col gap-0">
             {cells.map((cell, i) => (
-                <div key={i} className="">
-                    <div key={i} className="flex flex-col gap-0">
-                        <div className="text-xs pt-2 pb-2">Input {i + 1}</div>
-                        <div className={`ml-6`}>
-                            <div
-                                className={`border-spacing-2 rounded-lg ${ready && i == cells.length - 1 ? "border-gray-600 border-4" : "border-gray-100 border-2"} p-2 dark:bg-[#1e1e1e]`}
-                            >
-                                <Editor
-                                    theme={`vs-${mode}`}
-                                    defaultLanguage="typescript"
-                                    defaultValue=""
-                                    height={
-                                        i == cells.length - 1 ? "100px" : height(cells[i].input)
-                                    }
-                                    options={{
-                                        minimap: { enabled: false },
-                                        lineNumbers: "off",
-                                        glyphMargin: false,
-                                        folding: false,
-                                        // https://stackoverflow.com/questions/53448735/is-there-a-way-to-completely-hide-the-gutter-of-monaco-editor
-                                        // Undocumented see https://github.com/Microsoft/vscode/issues/30795#issuecomment-410998882
-                                        lineDecorationsWidth: 0,
-                                        lineNumbersMinChars: 0,
-                                        renderLineHighlight: "none",
-                                        readOnly: i != cells.length - 1,
-                                    }}
-                                    onChange={(value, event) => onChange(value || "", i)}
-                                    onMount={(editor, monaco) =>
-                                        handleEditorDidMount(editor, monaco, i)
-                                    }
-                                />
-                            </div>
-                        </div>
-
-                        {cell.outputs.length != 0 && (
-                            <div className="flex flex-col gap-2">
-                                <div className="text-xs pt-2 pb-2">Output {i + 1}</div>
-
-                                {cell.outputs.map((output, j) => (
-                                    <OutputArea key={`${i}:${j}`} output={output} index={j} />
-                                ))}
-                            </div>
-                        )}
+                <div key={i} className="flex flex-col gap-0">
+                    <div className="text-xs pt-2 pb-2">Input {i + 1}</div>
+                    <div
+                        className={`border-spacing-2 rounded-lg ${ready && i == cells.length - 1 ? "border-gray-600 border-4" : "border-gray-100 border-2"} p-2 dark:bg-[#1e1e1e]`}
+                    >
+                        <Editor
+                            theme={`vs-${mode}`}
+                            defaultLanguage="typescript"
+                            defaultValue=""
+                            height={i == cells.length - 1 ? "100px" : height(cells[i].input)}
+                            options={{
+                                minimap: { enabled: false },
+                                lineNumbers: "off",
+                                glyphMargin: false,
+                                folding: false,
+                                // https://stackoverflow.com/questions/53448735/is-there-a-way-to-completely-hide-the-gutter-of-monaco-editor
+                                // Undocumented see https://github.com/Microsoft/vscode/issues/30795#issuecomment-410998882
+                                lineDecorationsWidth: 0,
+                                lineNumbersMinChars: 0,
+                                renderLineHighlight: "none",
+                                readOnly: i != cells.length - 1,
+                            }}
+                            onChange={(value, event) => onChange(value || "", i)}
+                            onMount={(editor, monaco) => handleEditorDidMount(editor, monaco, i)}
+                        />
                     </div>
+
+                    {cell.outputs.length != 0 && (
+                        <div className="flex flex-col gap-2">
+                            <div className="text-xs pt-2 pb-2">Output {i + 1}</div>
+
+                            {cell.outputs.map((output, j) => (
+                                <OutputArea key={`${i}:${j}`} output={output} index={j} />
+                            ))}
+                        </div>
+                    )}
                 </div>
             ))}
         </div>
@@ -254,7 +246,7 @@ export default function PlaygroundPage() {
 
     return (
         <PageWidth className="pt-6 px-2 md:px-0">
-            <TextWidth>
+            <div className="px-4 md:px-0 pt-4">
                 <_Top />
                 <_Playground />
                 {!ready && (
@@ -264,7 +256,7 @@ export default function PlaygroundPage() {
                 )}
                 <div className="mb-16" />
                 <_Dialog />
-            </TextWidth>
+            </div>
         </PageWidth>
     )
 }
