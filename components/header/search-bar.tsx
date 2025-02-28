@@ -88,7 +88,7 @@ export default function SearchBar({ directory, className }: Props) {
                     >
                         <SearchIcon className="text-primary mr-1" />
                         <span className="opacity-50">Search documentation...</span>
-                        <Badge className="ml-1 px-1 py-0.5 opacity-60">Ctrl K</Badge>
+                        <Badge className="ml-1 px-1 py-0.5 bg-accent text-white hover:bg-accent">Ctrl K</Badge>
                     </Button>
                 </DialogTrigger>
                 <DialogContent className="min-w-[40em] h-[30em] p-0 flex flex-col justify-start gap-0 overflow-clip">
@@ -98,14 +98,14 @@ export default function SearchBar({ directory, className }: Props) {
                         value={search}
                         onChange={onChange}
                     />
-                    <div ref={resultsRef} className="flex-1 flex flex-col overflow-y-scroll gap-1">
+                    <div ref={resultsRef} className="flex-1 flex flex-col overflow-y-scroll gap-1 p-1">
                         {results.map((result, index) => (
                             <div
                                 key={`${result.type}:${result.url}`}
                                 className={cn(
-                                    "font-mono flex flex-row items-center px-2 py-1.5 pb-1",
-                                    "hover:bg-secondary cursor-pointer",
-                                    index === selected && "bg-foreground text-background",
+                                    "font-mono flex flex-row items-center px-2 py-1.5 pb-1 rounded-sm",
+                                    "hover:outline outline-accent outline-offset-1 cursor-pointer",
+                                    index === selected && "bg-accent text-foreground hover:bg-accent text-white",
                                 )}
                                 onClick={clickOption(index)}
                             >
