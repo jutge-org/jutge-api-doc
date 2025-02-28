@@ -13,12 +13,17 @@ export default function Endpoint({ endpoint, spath, models }: EndpointProps) {
         <EndpointWrapper id={`${spath}.${endpoint.name}`}>
             <h2 className="mt-1.5 m-0 leading-snug">
                 <div className="flex flex-row gap-2 items-start">
-                    <code className="flex flex-wrap items-baseline mt-0.5">
+                    <code className="flex flex-wrap items-baseline mt-0.5 leading-tight">
                         <span className="text-[0.95rem] text-muted-foreground">{spath}.</span>
-                        <span className="text-[1.05rem] font-semibold break-all">
-                            {endpoint.name}
-                        </span>
-                        <ActorIcon actor={endpoint.actor} className="relative -bottom-0.5 -right-1" />
+                        <div className="flex flex-row items-center">
+                            <span className="text-[1.05rem] font-semibold break-all">
+                                {endpoint.name}
+                                <ActorIcon
+                                    actor={endpoint.actor}
+                                    className="relative -bottom-0.5 -right-1"
+                                />
+                            </span>
+                        </div>
                     </code>
                 </div>
             </h2>

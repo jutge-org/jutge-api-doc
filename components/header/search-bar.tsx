@@ -90,7 +90,7 @@ export default function SearchBar({ directory, className }: Props) {
                         </Badge>
                     </Button>
                 </DialogTrigger>
-                <DialogContent className="w-full lg:min-w-[40em] h-[30em] p-0 flex flex-col justify-start gap-0">
+                <DialogContent className="w-5/6 mx-auto lg:min-w-[40em] h-[30em] p-0 flex flex-col justify-start gap-0">
                     <DialogTitle className="hidden">Search Documentation</DialogTitle>
                     <Input
                         className="h-12 debug border-none rounded-t-md rounded-b-none shrink-0 pr-12 m-0 mb-[1px]"
