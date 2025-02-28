@@ -25,7 +25,7 @@ export default async function TypeView({ className, name, input, spath, models }
                 "dark:text-stone-400 dark:border-stone-600",
                 */
                 "font-mono font-bold",
-                "text-[0.9em] h-[1.3em] px-1 flex flex-col justify-center items-center",
+                "text-[0.9em] h-[1.1em] px-0.5 flex flex-col justify-center items-center",
             )}
         >
             {type}
@@ -54,19 +54,20 @@ export default async function TypeView({ className, name, input, spath, models }
                 {model && (
                     <HoverCardContent
                         className={cn(
-                            "p-4 border-black dark:border-white relative flex flex-col w-auto min-w-[22em]",
+                            "p-4 border-black dark:border-white relative flex flex-col",
                             "[&_div.up]:data-[side=top]:hidden [&_div.down]:data-[side=bottom]:hidden",
+                            "w-[24em]",
                         )}
                     >
                         <div className="up absolute -top-2.5 h-2.5 left-0 right-0 flex flex-row justify-center">
                             <HoverCardTip side="up" />
                         </div>
-                        <h3 className="font-semibold mb-2 font-mono">{refName}</h3>
+                        <h3 className="font-semibold mb-2 font-mono break-all">{refName}</h3>
                         <TypeView input={model} spath={spath} models={models} />
                         <h4 className="uppercase font-normal text-xs mt-3 mb-1 text-gray-600">
                             Example
                         </h4>
-                        <pre className="text-xs bg-gray-100 dark:bg-stone-900 px-2 py-1">
+                        <pre className="text-xs bg-gray-100 dark:bg-stone-900 px-2 py-1 overflow-x-auto">
                             {JSON.stringify(makeExample(model, models), null, 2)}
                         </pre>
                         <div className="down absolute -bottom-2 h-2.5 left-0 right-0 flex flex-row justify-center">
@@ -79,7 +80,7 @@ export default async function TypeView({ className, name, input, spath, models }
     }
 
     const _AnyOf = ({ types }: { types: any[] }) => (
-        <div className="flex flex-row items-center gap-1">
+        <div className="flex flex-wrap items-baseline gap-1 gap-y-0">
             <TypeView input={types[0]} spath={spath} models={models} />
             {types.slice(1).map((type, i) => (
                 <React.Fragment key={`${type.type}${i}`}>
@@ -92,27 +93,44 @@ export default async function TypeView({ className, name, input, spath, models }
 
     const _Array = ({ items }: { items: any }) => (
         <div className="flex flex-row items-baseline gap-0 ml-1">
-            <span className="text-muted-foreground font-bold font-mono text-xs mr-0.5">array of</span>
+            <span className="text-muted-foreground font-bold font-mono text-xs mr-0.5">
+                array of
+            </span>
             <TypeView input={items} spath={spath} models={models} />
         </div>
     )
 
     const _Dict = ({ properties }: { properties: any }) => (
         <div className="flex flex-row items-baseline gap-0 ml-1">
-            <span className="text-muted-foreground font-bold font-mono text-xs">dict of</span>
+            <span className="text-muted-foreground font-bold font-mono text-xs mr-0.5">
+                dict of
+            </span>
             <TypeView input={properties} spath={spath} models={models} />
         </div>
     )
 
     const _Object = ({ properties }: { properties: Record<string, any> }) => (
-        <div className="no-border dark:border-zinc-700 border-zinc-300 pl-1.5 pt-0.5 pb-1 pr-0.5 rounded flex flex-col">
-            {Object.entries(properties).map(([name, type], i) => (
-                <div key={`${name}${i}`} className="flex flex-row items-baseline p-0 h-[1.4em]">
-                    <code className="text-[0.9em]">{name}</code>
-                    <span className="text-gray-300 h-[1.4em] ml-2">&ndash;</span>
-                    <TypeView input={type} spath={spath} models={models} />
-                </div>
-            ))}
+        <div
+            className={cn(
+                "no-border dark:border-zinc-700 border-zinc-300",
+                "pl-1.5 pt-0.5 pb-1 pr-0.5 rounded flex flex-col overflow-x-auto",
+            )}
+        >
+            <table>
+                <tbody>
+                    {Object.entries(properties).map(([name, type], i) => (
+                        <tr key={`${name}${i}`} className="align-baseline border-t border-b">
+                            <td className="text-[0.9em] flex flex-row shrink-0 items-center mr-3">
+                                {name}
+                            </td>
+                            {/* <span className="text-gray-300 h-[1.4em] ml-2">&ndash;</span> */}
+                            <td>
+                                <TypeView input={type} spath={spath} models={models} />
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
         </div>
     )
 
