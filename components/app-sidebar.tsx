@@ -35,7 +35,7 @@ type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
 const apiRaw = [{ name: "Directory JSON File", url: "/api/dir" }]
 
 export function AppSidebar({ ...props }: AppSidebarProps) {
-    const pathname = usePathname();
+    const pathname = usePathname()
     const [selected, setSelected] = useState("")
     const [openset, setOpenSet] = useState(new Set<string>())
 
@@ -71,7 +71,7 @@ export function AppSidebar({ ...props }: AppSidebarProps) {
             const path = parts.slice(0, i + 1).join(".")
             paths.push(path)
         }
-        setOpenSet(new Set(paths))
+        setOpenSet((prev) => new Set([...prev, ...paths]))
 
         addEventListener("popstate", onPopState)
         addEventListener("hashchange", onHashChange)
@@ -114,20 +114,18 @@ export function AppSidebar({ ...props }: AppSidebarProps) {
         )
     }
 
-    const Endpoint = ({ item }: { item: Item }) => {
-        const highlight = item.name === selected.split(".").slice(-1)[0]
+    const Endpoint = ({ item, path }: { item: Item; path: string }) => {
+        const highlight = path === selected
         return (
             <SidebarMenuSubItem>
                 <SidebarMenuSubButton
                     href={item.url}
-                    className={cn(highlight ? "bg-foreground hover:bg-foreground" : "")}
+                    className={cn(
+                        "hover:outline-accent outline-offset-1",
+                        highlight ? "bg-accent hover:bg-accent" : "",
+                    )}
                 >
-                    <span
-                        className={cn(
-                            "font-mono text-[0.95em]",
-                            highlight ? "text-background" : "",
-                        )}
-                    >
+                    <span className={cn("font-mono text-[0.95em]", highlight ? "text-white" : "")}>
                         {item.name}
                     </span>
                 </SidebarMenuSubButton>
@@ -149,7 +147,7 @@ export function AppSidebar({ ...props }: AppSidebarProps) {
             case "module":
                 return <Module item={item} path={path} />
             case "endpoint":
-                return <Endpoint item={item} />
+                return <Endpoint item={item} path={path} />
             case "model":
                 return <Model item={item} />
             default:
