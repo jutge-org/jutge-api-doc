@@ -31,7 +31,7 @@ export default async function TypeView({ className, name, input, spath, models }
             <TypeView input={types[0]} spath={spath} models={models} />
             {types.slice(1).map((type, i) => (
                 <React.Fragment key={`${type.type}${i}`}>
-                    <span className="italic text-xs text-gray-600">or</span>
+                    <span className="italic text-xs text-muted-foreground">or</span>
                     <TypeView input={type} spath={spath} models={models} />
                 </React.Fragment>
             ))}
