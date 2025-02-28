@@ -89,7 +89,7 @@ export function AppSidebar({ ...props }: AppSidebarProps) {
                 onOpenChange={openModule(path)}
             >
                 <SidebarMenuSubItem>
-                    <CollapsibleTrigger className="w-full">
+                    <CollapsibleTrigger>
                         <SidebarMenuSubButton>
                             <Package />
                             {item.name}

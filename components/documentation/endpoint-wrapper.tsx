@@ -23,9 +23,9 @@ export default function EndpointWrapper({ id, children }: EndpointBackgroundFlas
     return (
         <div
             className={cn(
-                "w-full px-4 py-2 pt-0.5 flex flex-col",
-                "relative rounded",
-                hash === `#${id}` && "outline outline-accent",
+                "px-4 py-2 pt-0.5 flex flex-col",
+                "relative md:rounded",
+                hash === `#${id}` && "border-[0.2em] border-accent md:outline md:outline-accent",
             )}
         >
             <div id={id} className="absolute -top-[15em] left-0"></div>

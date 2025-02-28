@@ -22,9 +22,9 @@ export default function Module({ models, module, path, level, className }: Modul
                     id={spath}
                     className={cn(
                         level > 0
-                            ? "dark:bg-secondary-background bg-stone-50 py-2.5 rounded-lg"
+                            ? "dark:bg-secondary-background bg-stone-50 py-2.5 md:rounded-lg"
                             : "",
-                        "flex flex-col w-full max-w-[45em]",
+                        "flex flex-col items-stretch max-w-[45em]",
                         className,
                     )}
                 >
@@ -43,7 +43,7 @@ export default function Module({ models, module, path, level, className }: Modul
                     {endpoints.length > 0 && (
                         <div
                             className={cn(
-                                "flex flex-col w-full items-stretch gap-1 pl-4",
+                                "flex flex-col items-stretch gap-1 pl-4",
                                 level > 0 ? "px-0" : "px-4",
                             )}
                         >
