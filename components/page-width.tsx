@@ -8,7 +8,7 @@ export default function PageWidth({ className, children }: Props) {
     return (
         <div
             className={cn(
-                "w-full md:max-w-[50em] lg:min-w-[60em] xl:min-w-[70em] 2xl:min-w-[80em] mx-auto",
+                "w-full md:max-w-[50em] lg:max-w-[60em] xl:max-w-[70em] 2xl:max-w-[80em] lg:mx-auto ",
                 className,
             )}
         >
