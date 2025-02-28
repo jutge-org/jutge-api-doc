@@ -1,6 +1,7 @@
 "use client"
 
 import PageWidth from "@/components/page-width"
+import TextWidth from "@/components/text-width"
 import { useTheme } from "@/components/theme/hook"
 import { ChartConfig, ChartContainer } from "@/components/ui/chart"
 import { InputDialog } from "@/components/ui/input-dialog"
@@ -253,15 +254,17 @@ export default function PlaygroundPage() {
 
     return (
         <PageWidth className="pt-6 px-2 md:px-0">
-            <_Top />
-            <_Playground />
-            {!ready && (
-                <div className="pl-8 pt-4 pb-32">
-                    <LoaderIcon className="animate-spin text-red-500" />
-                </div>
-            )}
-            <div className="mb-16" />
-            <_Dialog />
+            <TextWidth>
+                <_Top />
+                <_Playground />
+                {!ready && (
+                    <div className="pl-8 pt-4 pb-32">
+                        <LoaderIcon className="animate-spin text-red-500" />
+                    </div>
+                )}
+                <div className="mb-16" />
+                <_Dialog />
+            </TextWidth>
         </PageWidth>
     )
 }

@@ -1,6 +1,7 @@
 "use client"
 
 import PageWidth from "@/components/page-width"
+import TextWidth from "@/components/text-width"
 import { cn } from "@/lib/utils"
 import { ChevronDown, ChevronUp } from "lucide-react"
 import { useState } from "react"
@@ -62,15 +63,17 @@ export default function FaqPage() {
     // based on https://kokonutui.com/docs/components/faq
 
     return (
-        <PageWidth className="pt-6 px-2 md:px-0">
-            <h1>Frequently Asked Questions</h1>
-            <section className="mt-6">
-                <div className="max-w-2xl space-y-2">
-                    {faqs.map((faq, index) => (
-                        <FaqElement key={index} {...faq} index={index} />
-                    ))}
-                </div>
-            </section>
+        <PageWidth>
+            <TextWidth>
+                <h1>Frequently Asked Questions</h1>
+                <section className="mt-6">
+                    <div className="max-w-2xl space-y-2">
+                        {faqs.map((faq, index) => (
+                            <FaqElement key={index} {...faq} index={index} />
+                        ))}
+                    </div>
+                </section>
+            </TextWidth>
         </PageWidth>
     )
 }

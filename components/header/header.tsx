@@ -11,20 +11,29 @@ import {
     NavigationMenuList,
     NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu"
+
 import type { ApiDir } from "@/lib/api/types"
 import { cn } from "@/lib/utils"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import React from "react"
 import { Button } from "../ui/button"
+import MobileMenu from "./mobile-menu"
 import SearchBar from "./search-bar"
 
-const clients: { title: string; id: string; description: string }[] = [
+export const clients: { title: string; id: string; description: string }[] = [
     { title: "Python", id: "python", description: "Python client" },
     { title: "TypeScript", id: "typescript", description: "TypeScript client" },
     { title: "JavaScript", id: "javascript", description: "JavaScript client" },
     { title: "PHP", id: "php", description: "PHP client" },
     { title: "C++", id: "cpp", description: "C++ client" },
+]
+
+export const menuOptions: { path: string; name: string }[] = [
+    { path: "/documentation", name: "Documentation" },
+    { path: "/playground", name: "Playground" },
+    { path: "/faqs", name: "FAQs" },
+    { path: "/about", name: "About" },
 ]
 
 export default function Header({ directory }: { directory: ApiDir }) {
@@ -49,54 +58,56 @@ export default function Header({ directory }: { directory: ApiDir }) {
     }
 
     return (
-        <header
-            className={cn(
-                "h-[var(--topbar-height)]",
-                "fixed top-0 left-0 right-0 md:px-3 mb-8",
-                "flex flex-row items-stretch z-50 border-b border-muted",
-                "backdrop-blur-md",
-            )}
-        >
-            <PageWidth className="px-3 flex flex-row items-stretch gap-2 pt-0.5">
-                <Logo />
-                <NavigationMenu className="hidden lg:block">
-                    <NavigationMenuList>
-                        <NavigationMenuItem
-                            className={cn(
-                                "border-b-4 border-b-transparent md:h-[var(--topbar-height)] flex items-center",
-                                pathname.startsWith("/clients") &&
-                                    "border-b-black dark:border-b-white",
-                            )}
-                        >
-                            <NavigationMenuTrigger className="mt-0.5 bg-transparent hover:text-white">
-                                Clients
-                            </NavigationMenuTrigger>
-                            <NavigationMenuContent>
-                                <ul className="flex flex-col gap-3 p-2 md:grid-cols-1 min-w-[14em]">
-                                    {clients.map((client) => (
-                                        <ClientItem
-                                            key={client.id}
-                                            id={client.id}
-                                            title={client.title}
-                                            href={`/clients/${client.id}`}
-                                        ></ClientItem>
-                                    ))}
-                                </ul>
-                            </NavigationMenuContent>
-                        </NavigationMenuItem>
+        <>
+            <header
+                className={cn(
+                    "h-[var(--topbar-height)]",
+                    "fixed top-0 left-0 right-0 md:px-3 mb-8",
+                    "flex flex-row items-stretch z-50 border-b border-muted",
+                    "backdrop-blur-md",
+                )}
+            >
+                <PageWidth className="px-3 flex flex-row items-stretch gap-2 pt-0.5">
+                    <Logo />
+                    <NavigationMenu className="hidden lg:block">
+                        <NavigationMenuList>
+                            <NavigationMenuItem
+                                className={cn(
+                                    "border-b-4 border-b-transparent md:h-[var(--topbar-height)] flex items-center",
+                                    pathname.startsWith("/clients") &&
+                                        "border-b-black dark:border-b-white",
+                                )}
+                            >
+                                <NavigationMenuTrigger className="mt-0.5 bg-transparent hover:text-white">
+                                    Clients
+                                </NavigationMenuTrigger>
+                                <NavigationMenuContent>
+                                    <ul className="flex flex-col gap-3 p-2 md:grid-cols-1 min-w-[14em]">
+                                        {clients.map((client) => (
+                                            <ClientItem
+                                                key={client.id}
+                                                id={client.id}
+                                                title={client.title}
+                                                href={`/clients/${client.id}`}
+                                            ></ClientItem>
+                                        ))}
+                                    </ul>
+                                </NavigationMenuContent>
+                            </NavigationMenuItem>
 
-                        <_MenuOption path="/documentation" name="Documentation" />
-                        <_MenuOption path="/playground" name="Playground" />
-                        <_MenuOption path="/faqs" name="FAQs" />
-                        <_MenuOption path="/about" name="About" />
-                    </NavigationMenuList>
-                </NavigationMenu>
+                            {menuOptions.map((option) => (
+                                <_MenuOption key={option.path} {...option} />
+                            ))}
+                        </NavigationMenuList>
+                    </NavigationMenu>
 
-                <div className="flex-1" />
-                <SearchBar directory={directory} className="pb-[2px]" />
-                <ThemeSwitcher />
-            </PageWidth>
-        </header>
+                    <div className="flex-1" />
+                    <SearchBar directory={directory} className="pb-[2px]" />
+                    <ThemeSwitcher />
+                </PageWidth>
+            </header>
+            <MobileMenu className="lg:hidden" />
+        </>
     )
 }
 

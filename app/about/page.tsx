@@ -9,7 +9,7 @@ import Link from "next/link"
 
 export default function AboutPage() {
     return (
-        <PageWidth className="pt-6">
+        <PageWidth>
             <TextWidth>
                 <h1 className="mb-4">About</h1>
                 <p>
@@ -69,9 +69,9 @@ function ProfileCard({
     x,
 }: ProfileCardProps) {
     return (
-        <div className="flex flex-row space-x-2 items-center">
+        <div className="flex flex-row space-x-3 items-center">
             <Avatar className="AvatarRoot">
-                <AvatarImage src={imageUrl} className="AvatarImage rounded-full" width={56} />
+                <AvatarImage src={imageUrl} className="AvatarImage rounded-full" width={48} />
                 <AvatarFallback>{fallback}</AvatarFallback>
             </Avatar>
             <div className="flex flex-col">
