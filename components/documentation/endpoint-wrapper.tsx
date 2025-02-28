@@ -3,11 +3,11 @@
 import { cn } from "@/lib/utils"
 import { useEffect, useState } from "react"
 
-type EndpointBackgroundFlashProps = {
+type Props = {
     id: string
     children: React.ReactNode
 }
-export default function EndpointWrapper({ id, children }: EndpointBackgroundFlashProps) {
+export default function EndpointWrapper({ id, children }: Props) {
     const [hash, setHash] = useState("")
 
     const onHashChange = () => {
@@ -28,7 +28,7 @@ export default function EndpointWrapper({ id, children }: EndpointBackgroundFlas
                 hash === `#${id}` && "border-[0.2em] border-accent md:outline md:outline-accent md:border-none",
             )}
         >
-            <div id={id} className="absolute -top-[15em] left-0"></div>
+            <div id={id} className="absolute -top-[5em] md:-top-[15em] left-0"></div>
             {children}
         </div>
     )
