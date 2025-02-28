@@ -1,10 +1,8 @@
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
-import { makeExample } from "@/lib/api/dir"
 import { ApiModel } from "@/lib/api/types"
 import { cn } from "@/lib/utils"
 import React from "react"
 import YAML from "yaml"
-import HoverCardTip from "./hover-card-tip"
+import { TypeViewReference } from "./type-view-reference"
 
 type TypeViewProps = {
     className?: string
@@ -19,65 +17,14 @@ export default async function TypeView({ className, name, input, spath, models }
     const _BasicType = ({ type }: { type: string }) => (
         <div
             className={cn(
-                /*
-                "box-border border rounded ml-2",
-                "text-blue-600 border-blue-400",
-                "dark:text-stone-400 dark:border-stone-600",
-                */
                 "font-mono font-bold",
-                "text-[0.9em] h-[1.1em] px-0.5 flex flex-col justify-center items-center",
+                "text-[0.9em] h-[1.1em] px-0.5",
+                "flex flex-col justify-center items-center",
             )}
         >
             {type}
         </div>
     )
-
-    const _Reference = ({ refName }: { refName: string }) => {
-        const link = (
-            <div className="text-blue-900 dark:text-blue-300 text-[0.9em] font-semibold cursor-pointer">
-                <code>{input.$ref}</code>
-            </div>
-        )
-        const model = models.get(refName)
-        if (model === undefined) {
-            console.log(`Model not found: ${refName}`)
-            return link
-        }
-        return (
-            <HoverCard openDelay={0} closeDelay={0}>
-                <HoverCardTrigger
-                    asChild
-                    className="data-[state=open]:bg-blue-100 data-[state=open]:dark:bg-stone-900 rounded px-1.5"
-                >
-                    {link}
-                </HoverCardTrigger>
-                {model && (
-                    <HoverCardContent
-                        className={cn(
-                            "p-4 border-black dark:border-white relative flex flex-col",
-                            "[&_div.up]:data-[side=top]:hidden [&_div.down]:data-[side=bottom]:hidden",
-                            "w-[24em]",
-                        )}
-                    >
-                        <div className="up absolute -top-2.5 h-2.5 left-0 right-0 flex flex-row justify-center">
-                            <HoverCardTip side="up" />
-                        </div>
-                        <h3 className="font-semibold mb-2 font-mono break-all">{refName}</h3>
-                        <TypeView input={model} spath={spath} models={models} />
-                        <h4 className="uppercase font-normal text-xs mt-3 mb-1 text-gray-600">
-                            Example
-                        </h4>
-                        <pre className="text-xs bg-gray-100 dark:bg-stone-900 px-2 py-1 overflow-x-auto">
-                            {JSON.stringify(makeExample(model, models), null, 2)}
-                        </pre>
-                        <div className="down absolute -bottom-2 h-2.5 left-0 right-0 flex flex-row justify-center">
-                            <HoverCardTip side="down" />
-                        </div>
-                    </HoverCardContent>
-                )}
-            </HoverCard>
-        )
-    }
 
     const _AnyOf = ({ types }: { types: any[] }) => (
         <div className="flex flex-wrap items-baseline gap-1 gap-y-0">
@@ -139,7 +86,9 @@ export default async function TypeView({ className, name, input, spath, models }
     }
 
     if (input.$ref) {
-        body = <_Reference refName={input.$ref} />
+        body = (
+            <TypeViewReference refName={input.$ref} input={input} models={models} spath={spath} />
+        )
     } else if (input.anyOf) {
         body = <_AnyOf types={input.anyOf} />
     } else if (input.type === "object") {
