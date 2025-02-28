@@ -92,10 +92,7 @@ export default function Header({ directory }: { directory: ApiDir }) {
                 </NavigationMenu>
 
                 <div className="flex-1" />
-                <SearchBar
-                    directory={directory}
-                    className="hidden lg:flex lg:flex-col lg:justify-center pb-[2px]"
-                />
+                <SearchBar directory={directory} className="pb-[2px]" />
                 <ThemeSwitcher />
             </PageWidth>
         </header>
@@ -121,7 +118,9 @@ const ClientItem = React.forwardRef<React.ElementRef<"a">, React.ComponentPropsW
                         {...props}
                     >
                         <div className="flex flex-col flex-1">
-                            <div className="text-sm font-medium leading-none hover:text-white">{title}</div>
+                            <div className="text-sm font-medium leading-none hover:text-white">
+                                {title}
+                            </div>
                             <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
                                 {children}
                             </p>
