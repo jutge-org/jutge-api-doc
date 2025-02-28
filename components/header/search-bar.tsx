@@ -75,12 +75,12 @@ export default function SearchBar({ directory, className }: Props) {
     }, [selected])
 
     return (
-        <div className={cn("flex flex-col justify-center", className)}>
+        <div className={cn("flex flex-row items-center", className)}>
             <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
                 <DialogTrigger asChild>
                     <Button
                         variant="secondary"
-                        className="font-normal cursor-text"
+                        className="font-normal cursor-text hidden md:flex flex-row"
                         onClick={() => setDialogOpen(true)}
                     >
                         <SearchIcon className="text-primary mr-1" />
@@ -118,7 +118,7 @@ export default function SearchBar({ directory, className }: Props) {
                                         index === selected && "text-muted",
                                     )}
                                 >
-                                    {result.path}
+                                    {result.spath}
                                 </span>
                                 <span className="font-semibold">{result.name}</span>
                             </div>
@@ -126,6 +126,9 @@ export default function SearchBar({ directory, className }: Props) {
                     </div>
                 </DialogContent>
             </Dialog>
+            <Button variant="ghost" onClick={() => setDialogOpen(true)} className="w-10">
+                <SearchIcon className="text-primary" />
+            </Button>
         </div>
     )
 }
