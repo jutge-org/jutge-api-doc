@@ -22,10 +22,10 @@ export default async function RootLayout({
     const directory = await getApiDir();
     return (
         <html lang="en">
-            <ThemedBody className={cn(inter.className, "flex flex-col min-h-screen")}>
+            <ThemedBody className={cn(inter.className, "w-full min-h-screen flex flex-col items-stretch")}>
                 <Header directory={directory} />
                 <div className="mt-[var(--topbar-height)]"></div>
-                <div className="flex-1">{children}</div>
+                <div className="flex-1 w-full">{children}</div>
                 <Footer />
             </ThemedBody>
         </html>
