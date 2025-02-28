@@ -11,18 +11,20 @@ type EndpointProps = {
 export default function Endpoint({ endpoint, spath, models }: EndpointProps) {
     return (
         <EndpointWrapper id={`${spath}.${endpoint.name}`}>
-            <h2 className="flex flex-col items-baseline mt-1.5 m-0 leading-snug">
-                <div className="flex flex-row gap-2 items-center">
-                    <code className="mt-0.5 font-semibold text-[1.05rem]">
-                        <span className="text-muted-foreground text-[0.95rem]">{spath}.</span>
-                        {endpoint.name}
+            <h2 className="mt-1.5 m-0 leading-snug">
+                <div className="flex flex-row gap-2 items-start">
+                    <code className="flex flex-row items-baseline mt-0.5">
+                        <span className="text-[0.95rem] text-muted-foreground">{spath}.</span>
+                        <span className="text-[1.05rem] font-semibold break-all">
+                            {endpoint.name}
+                        </span>
                     </code>
-                    <ActorIcon actor={endpoint.actor} />
+                    <ActorIcon actor={endpoint.actor} className="pt-1" />
                 </div>
             </h2>
             <span className="pt-0.5 font-normal text-sm">{endpoint.summary}</span>
             {endpoint.description && (
-                <div className="text-xs text-muted-foreground max-w-[45em] mt-1.5 mb-1">
+                <div className="text-xs text-muted-foreground mt-1.5 mb-1">
                     <p>{endpoint.description}</p>
                 </div>
             )}
