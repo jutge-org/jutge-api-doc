@@ -8,7 +8,7 @@ export default function Logo({ className }: { className?: string }) {
             <div className="flex aspect-square size-8 items-center justify-center rounded-lg">
                 <Image src="/jutge-logo.svg" width={64} height={64} alt="" />
             </div>
-            <h1 className="text-3xl">API</h1>
+            <h1 className="text-4xl">API</h1>
         </Link>
     )
 }
