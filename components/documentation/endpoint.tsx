@@ -1,5 +1,5 @@
+import EndpointWrapper from "@/components/documentation/endpoint-wrapper"
 import TypeView from "@/components/documentation/type-view"
-import EndpointBackgroundFlash from "@/components/endpoint-background-flash"
 import type { ApiEndpoint, ApiModel } from "@/lib/api/types"
 import ActorIcon from "../actor-icon"
 
@@ -10,19 +10,23 @@ type EndpointProps = {
 }
 export default function Endpoint({ endpoint, spath, models }: EndpointProps) {
     return (
-        <EndpointBackgroundFlash id={`${spath}.${endpoint.name}`}>
-            <h2 className="flex flex-row gap-2 items-center my-0">
-                <code className="mt-0.5 font-semibold text-[1.05rem]">{endpoint.name}</code>
-                <ActorIcon actor={endpoint.actor} />
-                <span className="text-gray-400 font-normal mx-1">&mdash;</span>
-                <span className="pt-0.5 font-normal text-sm">{endpoint.summary}</span>
+        <EndpointWrapper id={`${spath}.${endpoint.name}`}>
+            <h2 className="flex flex-col items-baseline mt-1.5 m-0 leading-snug">
+                <div className="flex flex-row gap-2 items-center">
+                    <code className="mt-0.5 font-semibold text-[1.05rem]">
+                        <span className="text-muted-foreground text-[0.95rem]">{spath}.</span>
+                        {endpoint.name}
+                    </code>
+                    <ActorIcon actor={endpoint.actor} />
+                </div>
             </h2>
+            <span className="pt-0.5 font-normal text-sm">{endpoint.summary}</span>
             {endpoint.description && (
-                <div className="pb-2 text-xs text-muted-foreground max-w-[45em]">
+                <div className="text-xs text-muted-foreground max-w-[45em] mt-1.5 mb-1">
                     <p>{endpoint.description}</p>
                 </div>
             )}
-            <div className="flex flex-col gap-0.5 mt-0">
+            <div className="flex flex-col gap-0.5 mt-1.5">
                 <TypeView name="input" input={endpoint.input} spath={spath} models={models} />
                 {endpoint.ifiles !== "none" && (
                     <div className="text-xs">
@@ -38,6 +42,6 @@ export default function Endpoint({ endpoint, spath, models }: EndpointProps) {
                     </div>
                 )}
             </div>
-        </EndpointBackgroundFlash>
+        </EndpointWrapper>
     )
 }
