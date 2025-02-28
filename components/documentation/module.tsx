@@ -32,7 +32,7 @@ export default function Module({ models, module, path, level, className }: Modul
                         <h1
                             className={cn(
                                 "mb-4 flex flex-row gap-2 font-semibold items-center",
-                                "border-b pb-1 text-[1.75em] pl-3",
+                                "border-b pb-1 text-[1.75em] pl-3 break-all",
                             )}
                         >
                             <Package className={cn("w-6 h-6")} />

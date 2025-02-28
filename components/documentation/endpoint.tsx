@@ -16,8 +16,8 @@ export default function Endpoint({ endpoint, spath, models }: EndpointProps) {
                     <code className="flex flex-wrap items-baseline mt-0.5 leading-tight">
                         <span className="text-[0.95rem] text-muted-foreground">{spath}.</span>
                         <div className="flex flex-row items-center">
-                            <span className="text-[1.05rem] font-semibold break-all">
-                                {endpoint.name}
+                            <span className="text-[1.05rem] font-semibold">
+                                <span className="break-all">{endpoint.name.slice(0, 10)}</span>
                                 <ActorIcon
                                     actor={endpoint.actor}
                                     className="relative -bottom-0.5 -right-1"
@@ -27,7 +27,7 @@ export default function Endpoint({ endpoint, spath, models }: EndpointProps) {
                     </code>
                 </div>
             </h2>
-            <span className="pt-0.5 font-normal text-sm">{endpoint.summary}</span>
+            <div className="pt-0.5 font-normal text-sm">{endpoint.summary}</div>
             {endpoint.description && (
                 <div className="text-xs text-muted-foreground mt-1.5 mb-1">
                     <p>{endpoint.description}</p>

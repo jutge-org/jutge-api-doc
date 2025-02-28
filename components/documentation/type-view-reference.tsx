@@ -1,9 +1,9 @@
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
+import { makeExample } from "@/lib/api/dir"
 import { ApiModel } from "@/lib/api/types"
 import { cn } from "@/lib/utils"
 import HoverCardTip from "./hover-card-tip"
 import TypeView from "./type-view"
-import { makeExample } from "@/lib/api/dir"
 
 type TypeViewProps = {
     refName: string
@@ -16,7 +16,12 @@ type TypeViewProps = {
 
 export const TypeViewReference = ({ refName, className, input, spath, models }: TypeViewProps) => {
     const link = (
-        <div className="text-blue-900 dark:text-blue-300 text-[0.9em] font-semibold cursor-pointer">
+        <div
+            className={cn(
+                "text-blue-900 dark:text-blue-300 text-[0.9em]",
+                "font-semibold cursor-pointer break-all",
+            )}
+        >
             <code>{input.$ref}</code>
         </div>
     )
@@ -29,7 +34,10 @@ export const TypeViewReference = ({ refName, className, input, spath, models }: 
         <HoverCard openDelay={0} closeDelay={0}>
             <HoverCardTrigger
                 asChild
-                className="data-[state=open]:bg-blue-100 data-[state=open]:dark:bg-stone-900 rounded px-1.5"
+                className={cn(
+                    "data-[state=open]:bg-blue-100",
+                    "data-[state=open]:dark:bg-stone-900 rounded px-1.5",
+                )}
             >
                 {link}
             </HoverCardTrigger>
