@@ -28,27 +28,27 @@ export default function SearchBar({ directory, className }: Props) {
     }
 
     const onKeyDown = (e: KeyboardEvent) => {
-        if (!dialogOpen) {
-            // We listen to keys but do not handle them if the idalog is closed
-            return
-        }
         if (e.ctrlKey && e.key === "k") {
             e.preventDefault()
             e.stopPropagation()
             setDialogOpen(true)
-        } else if (e.key === "Escape") {
-            setDialogOpen(false)
-        } else if (e.key === "ArrowDown") {
-            setSelected((prev) => (prev + 1 + results.length) % results.length)
-        } else if (e.key === "ArrowUp") {
-            setSelected((prev) => (prev - 1 + results.length) % results.length)
-        } else if (e.key === "PageDown") {
-            setSelected((prev) => Math.min(prev + 10, results.length - 1))
-        } else if (e.key === "PageUp") {
-            setSelected((prev) => Math.max(prev - 10, 0))
-        } else if (e.key === "Enter") {
-            if (selected >= 0 && selected < results.length) {
-                go(selected)
+        }
+        if (dialogOpen) {
+            // Only process these keys if the dialog is open
+            if (e.key === "Escape") {
+                setDialogOpen(false)
+            } else if (e.key === "ArrowDown") {
+                setSelected((prev) => (prev + 1 + results.length) % results.length)
+            } else if (e.key === "ArrowUp") {
+                setSelected((prev) => (prev - 1 + results.length) % results.length)
+            } else if (e.key === "PageDown") {
+                setSelected((prev) => Math.min(prev + 10, results.length - 1))
+            } else if (e.key === "PageUp") {
+                setSelected((prev) => Math.max(prev - 10, 0))
+            } else if (e.key === "Enter") {
+                if (selected >= 0 && selected < results.length) {
+                    go(selected)
+                }
             }
         }
     }

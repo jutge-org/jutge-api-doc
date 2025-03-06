@@ -1,44 +1,60 @@
 "use client"
 
 import PageWidth from "@/components/page-width"
-import { range } from "@/lib/utils"
+import { cn, range } from "@/lib/utils"
 import { OutputMessage } from "@/lib/worker"
 import { LoaderIcon } from "lucide-react"
-import { useEffect, useLayoutEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import PlaygroundCell from "./playground-cell"
 import Help from "./playground-help"
 import PlaygroundInputDialog from "./playground-input-dialog"
 import { newWorker } from "./worker"
 
 export default function PlaygroundPage() {
-    const [workerReady, setWorkerReady] = useState(false)
-    const [fatalError, setFatalError] = useState<string | null>(null)
-    const [numCells, setNumCells] = useState<number>(1)
+    const [fatalError, setFatalError] = useState<string | undefined>()
+    const [numCells, setNumCells] = useState<number>(0)
 
-    const workerRef = useRef<Worker>()
+    const workerRef = useRef<Worker | undefined>()
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         if (!window.Worker) {
             setFatalError("Your browser does not support Web Workers!")
         }
-    })
-
-    useEffect(() => {
-        const worker = newWorker()
-        worker?.postMessage({ type: "ping", info: null })
-        workerRef.current = worker
     }, [])
 
     useEffect(() => {
-        workerRef.current?.addEventListener("message", ({ data }: MessageEvent<OutputMessage>) => {
-            console.log("Page received", data)
+        workerRef.current = newWorker()
+        setNumCells(1)
+    }, [])
+
+    useEffect(() => {
+        const onWorkerMessage = ({ data }: MessageEvent<OutputMessage>) => {
             switch (data.type) {
-                case "pong":
-                    setWorkerReady(true)
+                case "eval":
+                    console.log("Page received", data)
+                    setNumCells((prev) => prev + 1)
                     break
             }
-        })
+        }
+
+        workerRef.current?.addEventListener("message", onWorkerMessage)
+        return () => workerRef.current?.removeEventListener("message", onWorkerMessage)
     }, [workerRef.current])
+
+    if (fatalError) {
+        return (
+            <PageWidth>
+                <div
+                    className={cn(
+                        "text-destructive border-destructive border-2",
+                        "min-h-24 flex flex-col justify-center items-center",
+                    )}
+                >
+                    {fatalError}
+                </div>
+            </PageWidth>
+        )
+    }
 
     return (
         <PageWidth className="px-4 md:px-0 pt-4">
@@ -46,20 +62,20 @@ export default function PlaygroundPage() {
 
             <Help />
 
-            {workerReady || (
-                <div className="flex justify-center items-center h-96">
-                    <LoaderIcon size={48} />
+            {workerRef.current !== undefined || (
+                <div className="mt-4">
+                    <LoaderIcon className="animate-spin text-accent" />
                 </div>
             )}
 
-            {workerReady && (
+            {workerRef.current && (
                 <div className="flex flex-col gap-0">
                     {range(1, numCells).map((index) => (
                         <PlaygroundCell
                             key={index}
                             worker={workerRef.current}
                             index={index}
-                            isLast={index == numCells}
+                            focus={index == numCells}
                         />
                     ))}
                 </div>

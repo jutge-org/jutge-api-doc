@@ -3,8 +3,8 @@
 import ts from "typescript"
 import { JutgeApiClient } from "./jutge_api_client"
 
-export type InputMessageType = "ping" | "eval" | "input"
-export type OutputMessageType = "pong" | "print" | "chart" | "eval" | "error" | "input"
+export type InputMessageType = "eval" | "input"
+export type OutputMessageType = InputMessageType | "print" | "chart" | "error"
 
 export type InputMessage = {
     type: InputMessageType
@@ -15,23 +15,30 @@ export type InputMessage = {
 export type OutputMessage = {
     type: OutputMessageType
     info: any
+    index?: number
 }
 
 let inputResolver: null | ((value: string | null | PromiseLike<string | null>) => void) = null
 
-self.addEventListener("message", async (event: MessageEvent<InputMessage>) => {
-    const inputMsg = event.data
-    if (inputMsg.type === "ping") {
-        self.postMessage({ type: "pong", info: null })
-    } else if (inputMsg.type === "eval") {
-        const result = await evaluate(inputMsg.info)
-        self.postMessage(result)
-    } else if (inputMsg.type === "input") {
-        if (inputResolver === null) return console.error("inputResolver is null")
-        inputResolver(inputMsg.info)
-        inputResolver = null
-    } else {
-        console.error(`unknown action ${inputMsg.type} (${inputMsg})`)
+self.addEventListener("message", async (e: MessageEvent<InputMessage>) => {
+    console.log(`Worker received`, e.data)
+    const { type, info, index } = e.data
+    switch (type) {
+        case "eval": {
+            const result = await evaluate(info)
+            self.postMessage({ ...result, index })
+            break
+        }
+        case "input": {
+            if (inputResolver === null) {
+                return console.error("inputResolver is null")
+            }
+            inputResolver(info)
+            inputResolver = null
+            break
+        }
+        default:
+            console.error(`unknown action ${type} (${info})`)
     }
 })
 
@@ -108,5 +115,7 @@ function chartFunc(x: any) {
 const jutgeInstance = new JutgeApiClient()
 
 let last: any = undefined
+
+console.log("Worker loaded")
 
 export {}

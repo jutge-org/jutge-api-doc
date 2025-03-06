@@ -3,16 +3,17 @@ import { cn } from "@/lib/utils"
 export default function PlaygroundHelp() {
     return (
         <div>
-            <p className="text-xs pb-1.5">Help</p>
+            <p className="text-xs pb-1.5 text-muted-foreground">HELP</p>
             <div
                 className={cn(
-                    "max-w-none text-sm px-2 py-1.5 border-spacing-2 rounded-lg bg-muted-2",
+                    "max-w-none text-sm px-2 py-1.5 border-spacing-2 rounded-lg bg-muted",
                     "prose dark:prose-invert prose-code:before:hidden prose-code:after:hidden",
                 )}
             >
                 <ul>
                     <li>
-                        Use <kbd>⌘⏎</kbd> or <kbd>^⏎</kbd> to run the code of the last cell.
+                        Use <kbd className="bg-background">⌘⏎</kbd> or{" "}
+                        <kbd className="bg-background">^⏎</kbd> to run the code of the last cell.
                     </li>
                     <li>
                         Use <code>return</code> to return a result and use <code>last</code> to use

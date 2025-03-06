@@ -17,10 +17,10 @@ export default function PlaygroundInputDialog({ worker }: Props) {
     }
 
     const onWorkerMessage = (e: MessageEvent<OutputMessage>) => {
-        console.log(`InputDialog received`, e.data)
         const { type, info } = e.data
         switch (type) {
             case "input":
+                console.log(`InputDialog received`, e.data)
                 setPrompt(info.message)
                 setIsPasswordMode(info.passwordMode)
                 setIsDialogOpen(true)
