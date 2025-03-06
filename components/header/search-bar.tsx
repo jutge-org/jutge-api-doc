@@ -28,6 +28,10 @@ export default function SearchBar({ directory, className }: Props) {
     }
 
     const onKeyDown = (e: KeyboardEvent) => {
+        if (!dialogOpen) {
+            // We listen to keys but do not handle them if the idalog is closed
+            return
+        }
         if (e.ctrlKey && e.key === "k") {
             e.preventDefault()
             e.stopPropagation()
@@ -84,7 +88,7 @@ export default function SearchBar({ directory, className }: Props) {
                         onClick={() => setDialogOpen(true)}
                     >
                         <SearchIcon className="text-primary mr-1" />
-                        <span className="opacity-50">Search documentation...</span>
+                        <span className="opacity-50">Search docs...</span>
                         <Badge className="ml-1 px-1 py-0.5 bg-accent text-white hover:bg-accent">
                             Ctrl K
                         </Badge>

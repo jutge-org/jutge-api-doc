@@ -1,42 +1,51 @@
-'use client'
+"use client"
 
-import ts from 'typescript'
-import { JutgeApiClient } from './jutge_api_client'
+import ts from "typescript"
+import { JutgeApiClient } from "./jutge_api_client"
 
-export type Message = {
-    type: string
+export type InputMessageType = "ping" | "eval" | "input"
+export type OutputMessageType = "pong" | "print" | "chart" | "eval" | "error" | "input"
+
+export type InputMessage = {
+    type: InputMessageType
+    info: any
+    index?: number
+}
+
+export type OutputMessage = {
+    type: OutputMessageType
     info: any
 }
 
 let inputResolver: null | ((value: string | null | PromiseLike<string | null>) => void) = null
 
-self.onmessage = async (event: MessageEvent<Message>) => {
+self.addEventListener("message", async (event: MessageEvent<InputMessage>) => {
     const inputMsg = event.data
-    if (inputMsg.type === 'ping') {
-        self.postMessage({ type: 'pong', info: null })
-    } else if (inputMsg.type === 'eval') {
+    if (inputMsg.type === "ping") {
+        self.postMessage({ type: "pong", info: null })
+    } else if (inputMsg.type === "eval") {
         const result = await evaluate(inputMsg.info)
         self.postMessage(result)
-    } else if (inputMsg.type === 'input') {
-        if (inputResolver === null) return console.error('inputResolver is null')
+    } else if (inputMsg.type === "input") {
+        if (inputResolver === null) return console.error("inputResolver is null")
         inputResolver(inputMsg.info)
         inputResolver = null
     } else {
-        console.error('unknown action', inputMsg.type)
+        console.error(`unknown action ${inputMsg.type} (${inputMsg})`)
     }
-}
+})
 
-async function evaluate(ts_code: string): Promise<Message> {
+async function evaluate(ts_code: string): Promise<OutputMessage> {
     try {
         const js_code = ts.transpile(ts_code, {
             target: ts.ScriptTarget.ES5,
-            lib: ['dom'],
+            lib: ["dom"],
             module: ts.ModuleKind.CommonJS,
         })
         const asyncCode = (0, eval)(
-            ' (async function(login, input, print, chart, j, last, JutgeApiClient) {' +
+            " (async function(login, input, print, chart, j, last, JutgeApiClient) {" +
                 js_code +
-                '\n})',
+                "\n})",
         )
         last = await asyncCode(
             loginFunc,
@@ -47,20 +56,20 @@ async function evaluate(ts_code: string): Promise<Message> {
             last,
             JutgeApiClient,
         )
-        return { type: 'eval', info: last }
+        return { type: "eval", info: last }
     } catch (err) {
         if (err instanceof Error) {
-            return { type: 'error', info: err.message }
+            return { type: "error", info: err.message }
         } else {
-            return { type: 'error', info: JSON.stringify(err) }
+            return { type: "error", info: JSON.stringify(err) }
         }
     }
 }
 
 async function loginFunc(): Promise<boolean> {
-    const email = await inputFunc('Enter your email:')
+    const email = await inputFunc("Enter your email:")
     if (email == null) return false
-    const password = await inputFunc('Enter your password:', true)
+    const password = await inputFunc("Enter your password:", true)
     if (password == null) return false
     try {
         await jutgeInstance.login({ email, password })
@@ -73,15 +82,15 @@ async function loginFunc(): Promise<boolean> {
 
 async function inputFunc(message: string, passwordMode: boolean = false): Promise<string | null> {
     self.postMessage({
-        type: 'input',
+        type: "input",
         info: {
             message,
             passwordMode,
         },
     })
     if (inputResolver !== null) {
-        console.error('oops, inputResolver should be null')
-        return ''
+        console.error("oops, inputResolver should be null")
+        return ""
     }
     return new Promise<string | null>((resolve) => {
         inputResolver = resolve
@@ -89,11 +98,11 @@ async function inputFunc(message: string, passwordMode: boolean = false): Promis
 }
 
 function printFunc(x: any) {
-    self.postMessage({ type: 'print', info: x })
+    self.postMessage({ type: "print", info: x })
 }
 
 function chartFunc(x: any) {
-    self.postMessage({ type: 'chart', info: x })
+    self.postMessage({ type: "chart", info: x })
 }
 
 const jutgeInstance = new JutgeApiClient()
