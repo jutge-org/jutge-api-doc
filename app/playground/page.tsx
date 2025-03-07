@@ -31,11 +31,8 @@ export default function PlaygroundPage() {
 
     useEffect(() => {
         const onWorkerMessage: MessageHandler = ({ data }) => {
-            console.log("onWorkerMessage", data)
             if (data.type === "eval-result") {
-                console.log("eval-result", data.cellIndex, numCells)
                 if (data.cellIndex === numCells) {
-                    console.log("setting numCells")
                     setNumCells((n) => n + 1)
                 }
             }

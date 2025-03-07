@@ -28,14 +28,14 @@ type InputContinuationParam = string | null | PromiseLike<string | null>
 type InputContinuationFunc = (value: InputContinuationParam) => void
 let inputContinuation: InputContinuationFunc | null = null
 
-const setInputContinuation = (continuation: InputContinuationFunc) => {
+const setContinuation = (continuation: InputContinuationFunc) => {
     if (inputContinuation !== null) {
         console.error("Oops, inputContinuation should be null!")
     }
     inputContinuation = continuation
 }
 
-const callInputContinuation = (info: InputContinuationParam) => {
+const callContinuation = (info: InputContinuationParam) => {
     if (inputContinuation === null) {
         return console.error("inputResolver is null")
     }
@@ -67,6 +67,9 @@ async function evaluate(ts_code: string, cellIndex?: number): Promise<OutputMess
             last,
             JutgeApiClient,
         )
+        if (last instanceof Promise) {
+            last = await last
+        }
         return { type: "eval-result", payload: last }
     } catch (err) {
         if (err instanceof Error) {
@@ -98,7 +101,7 @@ async function inputFunc(message: string, passwordMode: boolean = false): Promis
     })
 
     return new Promise<string | null>((resolve) => {
-        setInputContinuation(resolve)
+        setContinuation(resolve)
     })
 }
 
@@ -118,7 +121,7 @@ self.addEventListener("message", async (e: MessageEvent<InputMessage>) => {
             break
         }
         case "input-result": {
-            callInputContinuation(payload)
+            callContinuation(payload)
             break
         }
         default:

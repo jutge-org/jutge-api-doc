@@ -1,5 +1,5 @@
 import { ChartConfig, ChartContainer } from "@/components/ui/chart"
-import { Bar, BarChart } from "recharts"
+import { Bar, BarChart, XAxis, YAxis } from "recharts"
 import ErrorArea from "./error"
 
 export default function ChartArea({ payload }: { payload: any }) {
@@ -14,10 +14,12 @@ export default function ChartArea({ payload }: { payload: any }) {
     const chartConfig = {} satisfies ChartConfig
 
     return (
-        <div className="border-spacing-2 rounded-lg border-gray-100 border-2 p-1.5">
-            <ChartContainer config={chartConfig} className="min-h-[150px] max-w-[300px] w-full">
+        <div className="border-spacing-2 rounded-lg border-gray-100 border-2 p-1.5 w-full">
+            <ChartContainer config={chartConfig} className="max-h-96 mx-auto">
                 <BarChart accessibilityLayer data={chartData}>
-                    <Bar dataKey="y" fill="hsl(var(--chart-1))" radius={4} />
+                    <XAxis />
+                    <YAxis />
+                    <Bar dataKey="y" fill="hsl(var(--accent))" radius={2} />
                 </BarChart>
             </ChartContainer>
         </div>

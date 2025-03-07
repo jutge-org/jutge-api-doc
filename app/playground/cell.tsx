@@ -8,6 +8,7 @@ import {
 } from "@/app/playground/worker"
 import { Textarea } from "@/components/ui/textarea"
 import { cn } from "@/lib/utils"
+import { LoaderIcon } from "lucide-react"
 import { KeyboardEventHandler, useEffect, useRef, useState } from "react"
 import ChartArea from "./areas/chart"
 import ErrorArea from "./areas/error"
@@ -42,14 +43,15 @@ type CellProps = {
 export default function PlaygroundCell({ worker, index, focus }: CellProps) {
     const editorRef = useRef<HTMLTextAreaElement | null>(null)
     const [outputs, setOutputs] = useState<OutputMessage[]>([])
+    const [waitingForResult, setWaitingForResult] = useState(false)
 
     useEffect(() => {
         const onWorkerMessage: MessageHandler = ({ data }: MessageEvent<OutputMessage>) => {
-            console.log("PlaygroundCell: messageHandler", data)
             if (index !== data.cellIndex) {
                 return // Ignore messages sent to other cells
             }
             setOutputs((prev) => [...prev, data])
+            setWaitingForResult(false)
         }
         worker.addEventListener("message", onWorkerMessage)
         return () => worker.removeEventListener("message", onWorkerMessage)
@@ -63,6 +65,7 @@ export default function PlaygroundCell({ worker, index, focus }: CellProps) {
                 payload: editorRef.current?.value || "",
                 cellIndex: index,
             } satisfies InputMessage)
+            setWaitingForResult(true)
         }
     }
 
@@ -97,20 +100,28 @@ export default function PlaygroundCell({ worker, index, focus }: CellProps) {
                         const { component: AreaComponent } = type2AreaInfo[type]
                         const convFn = getConversionFunc(type)
                         const pload = convFn(payload)
-                        return pload && (
-                            <div
-                                key={`${index}:${j}`}
-                                className="pl-4 w-full flex flex-row items-baseline gap-2"
-                            >
-                                <div className="flex flex-row w-6 text-[0.6rem] text-left text-muted-foreground">
-                                    <div className="border border-r-0 w-1 h-3.5 border-muted-foreground" />
-                                    {`${labels[j]}`}
-                                    <div className="border border-l-0 w-1 border-muted-foreground" />
+                        return (
+                            pload && (
+                                <div
+                                    key={`${index}:${j}`}
+                                    className="pl-4 w-full flex flex-row items-baseline gap-2"
+                                >
+                                    <div className="flex flex-row w-6 text-[0.6rem] text-left text-muted-foreground">
+                                        <div className="border border-r-0 w-1 h-3.5 border-muted-foreground" />
+                                        {`${labels[j]}`}
+                                        <div className="border border-l-0 w-1 border-muted-foreground" />
+                                    </div>
+                                    <AreaComponent payload={pload} />
                                 </div>
-                                <AreaComponent payload={pload} />
-                            </div>
+                            )
                         )
                     })}
+                </div>
+            )}
+
+            {waitingForResult && (
+                <div className="mt-4">
+                    <LoaderIcon className="animate-spin text-accent" />
                 </div>
             )}
         </div>

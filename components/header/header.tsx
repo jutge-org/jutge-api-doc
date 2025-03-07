@@ -62,9 +62,8 @@ export default function Header({ directory }: { directory: ApiDir }) {
             <header
                 className={cn(
                     "h-[var(--topbar-height)]",
-                    "fixed top-0 left-0 right-0 md:px-3 mb-8",
+                    "fixed top-0 left-0 right-0 md:px-3 mb-8 bg-background",
                     "flex flex-row items-stretch z-50 border-b border-muted",
-                    "backdrop-blur-md",
                 )}
             >
                 <PageWidth className="px-3 flex flex-row items-stretch gap-2 pt-0.5">
