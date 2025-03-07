@@ -55,12 +55,15 @@ export default function PlaygroundCell({ worker, index, focus }: CellProps) {
     const onKeyDown: KeyboardEventHandler<HTMLTextAreaElement> = (e) => {
         if (e.key === "Enter" && e.ctrlKey) {
             // run!
-            worker.postMessage({
-                type: "eval-request",
-                payload: editorRef.current?.value || "",
-                cellIndex: index,
-            } satisfies InputMessage)
-            setWaitingForResult(true)
+            const payload = editorRef.current?.value
+            if (payload) {
+                worker.postMessage({
+                    type: "eval-request",
+                    payload,
+                    cellIndex: index,
+                } satisfies InputMessage)
+                setWaitingForResult(true)
+            }
         }
     }
 
