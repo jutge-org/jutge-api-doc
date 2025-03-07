@@ -31,8 +31,8 @@ export default function PlaygroundHelp() {
                                 it.
                             </li>
                             <li>
-                                <code>print</code>: async function that prints an object (do not use
-                                console.log!).
+                                <code>print</code>: async function that prints an object (do not use{" "}
+                                <code>console.log</code>!).
                             </li>
                             <li>
                                 <code>chart</code>: async function that charts a list of numbers.

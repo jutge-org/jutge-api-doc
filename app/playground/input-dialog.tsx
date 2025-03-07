@@ -1,26 +1,24 @@
+import { InputMessage, OutputMessage } from "@/app/playground/worker"
 import { InputDialog } from "@/components/ui/input-dialog"
-import { OutputMessage } from "@/lib/worker"
 import { useEffect, useState } from "react"
 
 type Props = {
-    worker: Worker | undefined
+    worker: Worker
 }
 export default function PlaygroundInputDialog({ worker }: Props) {
-    // input dialog vars
     const [isDialogOpen, setIsDialogOpen] = useState(false)
     const [isPasswordMode, setIsPasswordMode] = useState(false)
     const [prompt, setPrompt] = useState<string>("Please enter a string value")
 
-    const onCloseDialog = (info: string | null) => {
+    const onCloseDialog = (payload: string | null) => {
         setIsDialogOpen(false)
-        worker?.postMessage({ type: "input", info })
+        worker.postMessage({ type: "input-result", payload } satisfies InputMessage)
     }
 
     const onWorkerMessage = (e: MessageEvent<OutputMessage>) => {
-        const { type, info } = e.data
+        const { type, payload: info } = e.data
         switch (type) {
-            case "input":
-                console.log(`InputDialog received`, e.data)
+            case "input-request":
                 setPrompt(info.message)
                 setIsPasswordMode(info.passwordMode)
                 setIsDialogOpen(true)
@@ -29,8 +27,8 @@ export default function PlaygroundInputDialog({ worker }: Props) {
     }
 
     useEffect(() => {
-        worker?.addEventListener("message", onWorkerMessage)
-        return () => worker?.removeEventListener("message", onWorkerMessage)
+        worker.addEventListener("message", onWorkerMessage)
+        return () => worker.removeEventListener("message", onWorkerMessage)
     }, [worker])
 
     return (

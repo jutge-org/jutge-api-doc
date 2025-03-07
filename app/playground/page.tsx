@@ -1,45 +1,50 @@
 "use client"
 
+import { MessageHandler } from "@/app/playground/worker"
 import PageWidth from "@/components/page-width"
 import { cn, range } from "@/lib/utils"
-import { OutputMessage } from "@/lib/worker"
 import { LoaderIcon } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
-import PlaygroundCell from "./playground-cell"
-import Help from "./playground-help"
-import PlaygroundInputDialog from "./playground-input-dialog"
-import { newWorker } from "./worker"
+import PlaygroundCell from "./cell"
+import Help from "./help"
+import PlaygroundInputDialog from "./input-dialog"
 
 export default function PlaygroundPage() {
     const [fatalError, setFatalError] = useState<string | undefined>()
     const [numCells, setNumCells] = useState<number>(0)
-
     const workerRef = useRef<Worker | undefined>()
 
     useEffect(() => {
         if (!window.Worker) {
             setFatalError("Your browser does not support Web Workers!")
         }
+        try {
+            const worker = new Worker(new URL("worker.ts", import.meta.url), {
+                name: "playground-worker",
+            })
+            workerRef.current = worker
+            setNumCells(1)
+        } catch (e) {
+            setFatalError("Failed to create a new Worker!")
+        }
     }, [])
 
     useEffect(() => {
-        workerRef.current = newWorker()
-        setNumCells(1)
-    }, [])
-
-    useEffect(() => {
-        const onWorkerMessage = ({ data }: MessageEvent<OutputMessage>) => {
-            switch (data.type) {
-                case "eval":
-                    console.log("Page received", data)
-                    setNumCells((prev) => prev + 1)
-                    break
+        const onWorkerMessage: MessageHandler = ({ data }) => {
+            console.log("onWorkerMessage", data)
+            if (data.type === "eval-result") {
+                console.log("eval-result", data.cellIndex, numCells)
+                if (data.cellIndex === numCells) {
+                    console.log("setting numCells")
+                    setNumCells((n) => n + 1)
+                }
             }
         }
-
-        workerRef.current?.addEventListener("message", onWorkerMessage)
-        return () => workerRef.current?.removeEventListener("message", onWorkerMessage)
-    }, [workerRef.current])
+        if (workerRef.current) {
+            workerRef.current?.addEventListener("message", onWorkerMessage)
+            return () => workerRef.current?.removeEventListener("message", onWorkerMessage)
+        }
+    }, [numCells])
 
     if (fatalError) {
         return (
@@ -69,19 +74,21 @@ export default function PlaygroundPage() {
             )}
 
             {workerRef.current && (
-                <div className="flex flex-col gap-0">
-                    {range(1, numCells).map((index) => (
-                        <PlaygroundCell
-                            key={index}
-                            worker={workerRef.current}
-                            index={index}
-                            focus={index == numCells}
-                        />
-                    ))}
-                </div>
-            )}
+                <>
+                    <div className="flex flex-col gap-0">
+                        {range(1, numCells).map((index) => (
+                            <PlaygroundCell
+                                key={index}
+                                worker={workerRef.current!}
+                                index={index}
+                                focus={index == numCells}
+                            />
+                        ))}
+                    </div>
 
-            <PlaygroundInputDialog worker={workerRef.current} />
+                    <PlaygroundInputDialog worker={workerRef.current} />
+                </>
+            )}
         </PageWidth>
     )
 }
