@@ -1,9 +1,14 @@
 "use client"
 
-import { Textarea } from "@/components/ui/textarea"
-import { cn } from "@/lib/utils"
+import { useTheme } from "@/components/theme/hook"
+import { autocompletion } from "@codemirror/autocomplete"
+import { javascript } from "@codemirror/lang-javascript"
+import { Prec } from "@codemirror/state"
+import { keymap } from "@codemirror/view"
+import { githubDark, githubLight } from "@uiw/codemirror-theme-github"
+import CodeMirror, { basicSetup } from "@uiw/react-codemirror"
 import { LoaderIcon } from "lucide-react"
-import { KeyboardEventHandler, useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import ChartArea from "./areas/chart"
 import ErrorArea from "./areas/error"
 import EvalResultArea from "./areas/eval-result"
@@ -32,17 +37,18 @@ const type2AreaInfo: Record<string, AreaInfo> = {
 
 type CellProps = {
     worker: Worker
-    index: number
+    cellIndex: number
     focus: boolean
 }
-export default function PlaygroundCell({ worker, index, focus }: CellProps) {
-    const editorRef = useRef<HTMLTextAreaElement | null>(null)
+export default function PlaygroundCell({ worker, cellIndex: cellIndex, focus }: CellProps) {
     const [outputs, setOutputs] = useState<OutputMessage[]>([])
     const [waitingForResult, setWaitingForResult] = useState(false)
+    const [input, setInput] = useState("")
+    const { mode } = useTheme()
 
     useEffect(() => {
         const onWorkerMessage: MessageHandler = ({ data }: MessageEvent<OutputMessage>) => {
-            if (index !== data.cellIndex) {
+            if (cellIndex !== data.cellIndex) {
                 return // Ignore messages sent to other cells
             }
             setOutputs((prev) => [...prev, data])
@@ -50,21 +56,20 @@ export default function PlaygroundCell({ worker, index, focus }: CellProps) {
         }
         worker.addEventListener("message", onWorkerMessage)
         return () => worker.removeEventListener("message", onWorkerMessage)
-    }, [worker, index])
+    }, [worker, cellIndex])
 
-    const onKeyDown: KeyboardEventHandler<HTMLTextAreaElement> = (e) => {
-        if (e.key === "Enter" && e.ctrlKey) {
-            // run!
-            const payload = editorRef.current?.value
-            if (payload) {
-                worker.postMessage({
-                    type: "eval-request",
-                    payload,
-                    cellIndex: index,
-                } satisfies InputMessage)
-                setWaitingForResult(true)
-            }
+    const sendCodeToWorker = () => {
+        console.log("sendCode!", input)
+        const payload = input.trim()
+        if (payload) {
+            worker.postMessage({ type: "eval-request", payload, cellIndex } satisfies InputMessage)
+            setWaitingForResult(true)
         }
+    }
+
+    const handleCtrlEnter = () => {
+        sendCodeToWorker()
+        return true
     }
 
     const numbers = new Map<OutputMessageType, number>()
@@ -75,26 +80,48 @@ export default function PlaygroundCell({ worker, index, focus }: CellProps) {
         return `${label}${number}`
     })
 
+    const ctrlEnterKeymap = Prec.high(
+        keymap.of([
+            {
+                key: "Ctrl-Enter",
+                mac: "Cmd-Enter",
+                run: handleCtrlEnter,
+            },
+        ]),
+    )
+
     return (
         <div className="flex flex-row gap-0 w-full">
             <div className="border border-r-0 w-2.5 border-muted" />
             <div className="py-2 grow flex flex-col gap-0">
-                <div className="text-xs pt-0 pb-1.5 text-muted-foreground">INPUT {index}</div>
-                <Textarea
-                    autoFocus={focus}
-                    ref={editorRef}
-                    className={cn(
-                        "h-[8rem] rounded-md font-mono dark:bg-[#1e1e1e]",
-                        "py-1 px-1.5 border-muted border-[3px] focus:border-accent",
-                        "ring-none focus-visible:ring-transparent",
-                    )}
-                    onKeyDown={onKeyDown}
+                <div className="text-xs pt-0 pb-1.5 text-muted-foreground">INPUT {cellIndex}</div>
+                <CodeMirror
+                    className="border border-gray-200 dark:border-gray-700"
+                    value={input}
+                    onChange={setInput}
+                    autoFocus={true}
+                    onCreateEditor={(editor) => {
+                        editor.focus()
+                        editor.dom.scrollIntoView()
+                    }}
+                    basicSetup={false}
+                    theme={mode === "dark" ? githubDark : githubLight}
+                    extensions={[
+                        basicSetup({
+                            lineNumbers: false,
+                            tabSize: 4,
+                            highlightActiveLine: false,
+                        }),
+                        autocompletion(),
+                        javascript(),
+                        ctrlEnterKeymap,
+                    ]}
                 />
 
                 {outputs.length > 0 && (
                     <div className="flex flex-col gap-1">
                         <div className="text-xs pt-2 pb-2 text-muted-foreground">
-                            OUTPUT {index}
+                            OUTPUT {cellIndex}
                         </div>
                         {outputs.map(({ type, payload }, j) => {
                             const { component: AreaComponent } = type2AreaInfo[type]
@@ -102,7 +129,7 @@ export default function PlaygroundCell({ worker, index, focus }: CellProps) {
                             const pload = convFn(payload)
                             return (
                                 <div
-                                    key={`${index}:${j}`}
+                                    key={`${cellIndex}:${j}`}
                                     className="pl-4 w-full flex flex-row items-baseline gap-2"
                                 >
                                     <div className="flex flex-row w-6 text-[0.6rem] text-left text-muted-foreground">

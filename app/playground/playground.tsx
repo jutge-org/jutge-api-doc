@@ -71,7 +71,7 @@ export default function Playground() {
                         <PlaygroundCell
                             key={index}
                             worker={workerRef.current!}
-                            index={index}
+                            cellIndex={index}
                             focus={index == numCells}
                         />
                     ))}
