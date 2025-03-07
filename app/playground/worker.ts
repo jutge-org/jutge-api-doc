@@ -2,30 +2,12 @@
 
 import { JutgeApiClient } from "@/lib/jutge_api_client"
 import ts from "typescript"
+import { InputContinuationFunc, InputContinuationParam, InputMessage, OutputMessage } from "./types"
 
 const jutgeInstance = new JutgeApiClient()
 
 let last: any = undefined
 
-export type InputMessageType = "eval-request" | "input-result"
-export type OutputMessageType = "eval-result" | "input-request" | "print" | "chart" | "error"
-
-export type InputMessage = {
-    type: InputMessageType
-    payload: any
-    cellIndex?: number
-}
-
-export type OutputMessage = {
-    type: OutputMessageType
-    payload: any
-    cellIndex?: number
-}
-
-export type MessageHandler = ({ data }: MessageEvent<OutputMessage>) => void
-
-type InputContinuationParam = string | null | PromiseLike<string | null>
-type InputContinuationFunc = (value: InputContinuationParam) => void
 let inputContinuation: InputContinuationFunc | null = null
 
 const setContinuation = (continuation: InputContinuationFunc) => {
@@ -35,17 +17,32 @@ const setContinuation = (continuation: InputContinuationFunc) => {
     inputContinuation = continuation
 }
 
-const callContinuation = (info: InputContinuationParam) => {
+const callContinuation = async (info: InputContinuationParam) => {
     if (inputContinuation === null) {
         return console.error("inputResolver is null")
     }
-    inputContinuation(info)
+    inputContinuation(await dePromisify(info))
     inputContinuation = null
 }
 
 // Set the type of the first parameter to check for errors
 const postMessage = (message: OutputMessage) => {
     self.postMessage(message)
+}
+
+const dePromisify = async (x: any) => {
+    if (x instanceof Promise) {
+        x = await x
+    } else if (Array.isArray(x)) {
+        for (let i = 0; i < x.length; i++) {
+            x[i] = await dePromisify(x[i])
+        }
+    } else if (typeof x === "object") {
+        for (const prop in x) {
+            x[prop] = await dePromisify(x[prop])
+        }
+    }
+    return x
 }
 
 async function evaluate(ts_code: string, cellIndex?: number): Promise<OutputMessage> {
@@ -67,10 +64,7 @@ async function evaluate(ts_code: string, cellIndex?: number): Promise<OutputMess
             last,
             JutgeApiClient,
         )
-        if (last instanceof Promise) {
-            last = await last
-        }
-        return { type: "eval-result", payload: last }
+        return { type: "eval-result", payload: await dePromisify(last) }
     } catch (err) {
         if (err instanceof Error) {
             return { type: "error", payload: err.message }
@@ -105,12 +99,11 @@ async function inputFunc(message: string, passwordMode: boolean = false): Promis
     })
 }
 
-const printFunc = (cellIndex?: number) => (x: any) => 
-    postMessage({ type: "print", payload: x, cellIndex })
+const printFunc = (cellIndex?: number) => async (x: any) =>
+    postMessage({ type: "print", payload: await dePromisify(x), cellIndex })
 
-
-const chartFunc = (cellIndex?: number) => (x: any) =>
-    postMessage({ type: "chart", payload: x, cellIndex })
+const chartFunc = (cellIndex?: number) => async (x: any) =>
+    postMessage({ type: "chart", payload: await dePromisify(x), cellIndex })
 
 self.addEventListener("message", async (e: MessageEvent<InputMessage>) => {
     const { type, payload, cellIndex } = e.data
@@ -121,7 +114,7 @@ self.addEventListener("message", async (e: MessageEvent<InputMessage>) => {
             break
         }
         case "input-result": {
-            callContinuation(payload)
+            await callContinuation(payload)
             break
         }
         default:

@@ -5,7 +5,7 @@ import JsonView from "react-json-view"
 export default function EvalResultArea({ payload }: { payload: any }) {
     const { mode } = useTheme()
 
-    if (typeof payload === "string") {
+    if (["boolean", "number", "string", "undefined", "null"].includes(typeof payload)) {
         return (
             <pre
                 className={cn(
@@ -13,7 +13,7 @@ export default function EvalResultArea({ payload }: { payload: any }) {
                     "text-xs max-h-[30rem] overflow-y-auto w-full p-1.5",
                 )}
             >
-                {payload}
+                {String(payload)}
             </pre>
         )
     } else {

@@ -1,6 +1,6 @@
 "use client"
 
-import { InputMessage, OutputMessage } from "@/app/playground/worker"
+import type { InputMessage, OutputMessage } from "./types"
 import { Button } from "@/components/ui/button"
 import {
     Dialog,

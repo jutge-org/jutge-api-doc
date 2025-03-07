@@ -1,11 +1,5 @@
 "use client"
 
-import {
-    InputMessage,
-    MessageHandler,
-    OutputMessage,
-    OutputMessageType,
-} from "@/app/playground/worker"
 import { Textarea } from "@/components/ui/textarea"
 import { cn } from "@/lib/utils"
 import { LoaderIcon } from "lucide-react"
@@ -14,6 +8,7 @@ import ChartArea from "./areas/chart"
 import ErrorArea from "./areas/error"
 import EvalResultArea from "./areas/eval-result"
 import PrintArea from "./areas/print"
+import { InputMessage, MessageHandler, OutputMessage, OutputMessageType } from "./types"
 
 const noConversion = (x: any) => x
 
@@ -78,30 +73,31 @@ export default function PlaygroundCell({ worker, index, focus }: CellProps) {
     })
 
     return (
-        <div className="flex flex-col gap-0">
-            <div className="text-xs pt-4 pb-1.5 text-muted-foreground">INPUT {index}</div>
-            <Textarea
-                autoFocus={focus}
-                ref={editorRef}
-                className={cn(
-                    "h-[8rem] rounded-md font-mono dark:bg-[#1e1e1e]",
-                    "py-1 px-1.5 border-muted border-[3px] focus:border-accent",
-                    "ring-none focus-visible:ring-transparent",
-                )}
-                onKeyDown={onKeyDown}
-            />
+        <div className="flex flex-row gap-0 w-full">
+            <div className="border border-r-0 w-2.5 border-muted" />
+            <div className="py-2 grow flex flex-col gap-0">
+                <div className="text-xs pt-0 pb-1.5 text-muted-foreground">INPUT {index}</div>
+                <Textarea
+                    autoFocus={focus}
+                    ref={editorRef}
+                    className={cn(
+                        "h-[8rem] rounded-md font-mono dark:bg-[#1e1e1e]",
+                        "py-1 px-1.5 border-muted border-[3px] focus:border-accent",
+                        "ring-none focus-visible:ring-transparent",
+                    )}
+                    onKeyDown={onKeyDown}
+                />
 
-            {outputs.length > 0 && (
-                <div className="flex flex-col gap-1">
-                    <div className="text-xs pt-2 pb-2 text-muted-foreground">
-                        OUTPUT {index + 1}
-                    </div>
-                    {outputs.map(({ type, payload }, j) => {
-                        const { component: AreaComponent } = type2AreaInfo[type]
-                        const convFn = getConversionFunc(type)
-                        const pload = convFn(payload)
-                        return (
-                            pload && (
+                {outputs.length > 0 && (
+                    <div className="flex flex-col gap-1">
+                        <div className="text-xs pt-2 pb-2 text-muted-foreground">
+                            OUTPUT {index}
+                        </div>
+                        {outputs.map(({ type, payload }, j) => {
+                            const { component: AreaComponent } = type2AreaInfo[type]
+                            const convFn = getConversionFunc(type)
+                            const pload = convFn(payload)
+                            return (
                                 <div
                                     key={`${index}:${j}`}
                                     className="pl-4 w-full flex flex-row items-baseline gap-2"
@@ -114,16 +110,16 @@ export default function PlaygroundCell({ worker, index, focus }: CellProps) {
                                     <AreaComponent payload={pload} />
                                 </div>
                             )
-                        )
-                    })}
-                </div>
-            )}
+                        })}
+                    </div>
+                )}
 
-            {waitingForResult && (
-                <div className="mt-4">
-                    <LoaderIcon className="animate-spin text-accent" />
-                </div>
-            )}
+                {waitingForResult && (
+                    <div className="mt-4">
+                        <LoaderIcon className="animate-spin text-accent" />
+                    </div>
+                )}
+            </div>
         </div>
     )
 }
