@@ -56,7 +56,7 @@ export default function Playground() {
     }
 
     return (
-        <div className="flex flex-col gap-4 w-full">
+        <div className="flex flex-col gap-6 w-full">
             <Help />
 
             {workerRef.current !== undefined || (
