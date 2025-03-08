@@ -1,6 +1,8 @@
 "use client"
 
 import { useTheme } from "@/components/theme/hook"
+import { Button } from "@/components/ui/button"
+import { usePlatform } from "@/lib/hooks"
 import { acceptCompletion, autocompletion } from "@codemirror/autocomplete"
 import { javascript } from "@codemirror/lang-javascript"
 import { Prec } from "@codemirror/state"
@@ -14,8 +16,6 @@ import ErrorArea from "./areas/error"
 import EvalResultArea from "./areas/eval-result"
 import PrintArea from "./areas/print"
 import { InputMessage, MessageHandler, OutputMessage, OutputMessageType } from "./types"
-import { usePlatform } from "@/lib/hooks"
-import { Button } from "@/components/ui/button"
 
 const noConversion = (x: any) => x
 
@@ -131,8 +131,12 @@ export default function PlaygroundCell({ worker, cellIndex: cellIndex, focus }: 
                 />
                 {isMobile && (
                     <div className="flex flex-row justify-end mt-2">
-                        <Button variant="secondary" onClick={sendCodeToWorker} disabled={input.trim() === ""}>
-                           <Play /> Run
+                        <Button
+                            variant="secondary"
+                            onClick={sendCodeToWorker}
+                            disabled={input.trim() === ""}
+                        >
+                            <Play /> Run
                         </Button>
                     </div>
                 )}
