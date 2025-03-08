@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils"
+import PlatformCtrlKbd from "@/components/platform-ctrl-kbd"
 
 export default function PlaygroundHelp() {
     return (
@@ -12,8 +13,7 @@ export default function PlaygroundHelp() {
             >
                 <ul>
                     <li>
-                        Use <kbd className="bg-background">⌘⏎</kbd> or{" "}
-                        <kbd className="bg-background">^⏎</kbd> to run the code of the last cell.
+                        Use <PlatformCtrlKbd keyName="Enter" className="relative bottom-[0.06rem] mx-1" /> to run the code of the last cell.
                     </li>
                     <li>
                         Use <code>return x</code> to show <code>x</code> in the "OUTPUT" area. <code>last</code> contains the previous <code>return</code>ed value.

@@ -9,6 +9,7 @@ import type { ApiDir, Item } from "@/lib/api/types"
 import { cn } from "@/lib/utils"
 import { SearchIcon } from "lucide-react"
 import { ChangeEventHandler, useEffect, useRef, useState } from "react"
+import PlatformCtrlKbd from "../platform-ctrl-kbd"
 
 type Props = {
     directory: ApiDir
@@ -90,7 +91,7 @@ export default function SearchBar({ directory, className }: Props) {
                         <SearchIcon className="text-primary mr-1" />
                         <span className="opacity-50">Search docs...</span>
                         <Badge className="ml-1 px-1 py-0.5 bg-accent text-white hover:bg-accent">
-                            Ctrl K
+                            <PlatformCtrlKbd keyName="K" />
                         </Badge>
                     </Button>
                 </DialogTrigger>
