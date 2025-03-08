@@ -92,8 +92,8 @@ export default function PlaygroundCell({ worker, cellIndex: cellIndex, focus }: 
 
     return (
         <div className="flex flex-row gap-0 w-full">
-            <div className="border border-r-0 w-2.5 border-muted" />
-            <div className="py-2 grow flex flex-col gap-0">
+            <div className="border border-r-0 w-3.5 border-muted" />
+            <div className="py-3 grow flex flex-col gap-0">
                 <div className="text-xs pt-0 pb-1.5 text-muted-foreground">INPUT {cellIndex}</div>
                 <CodeMirror
                     className="border border-gray-200 dark:border-gray-700"
@@ -119,8 +119,8 @@ export default function PlaygroundCell({ worker, cellIndex: cellIndex, focus }: 
                 />
 
                 {outputs.length > 0 && (
-                    <div className="flex flex-col gap-1">
-                        <div className="text-xs pt-2 pb-2 text-muted-foreground">
+                    <div className="flex flex-col gap-1 mt-2">
+                        <div className="text-xs pt-2 pb-0 text-muted-foreground">
                             OUTPUT {cellIndex}
                         </div>
                         {outputs.map(({ type, payload }, j) => {
