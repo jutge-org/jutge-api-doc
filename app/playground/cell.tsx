@@ -148,8 +148,7 @@ export default function PlaygroundCell({ worker, cellIndex: cellIndex, focus }: 
                         </div>
                         {outputs.map(({ type, payload }, j) => {
                             const { component: AreaComponent } = type2AreaInfo[type]
-                            const convFn = getConversionFunc(type)
-                            const pload = convFn(payload)
+                            const pload = getConversionFunc(type).call(undefined, payload)
                             return (
                                 <div
                                     key={`${cellIndex}:${j}`}
