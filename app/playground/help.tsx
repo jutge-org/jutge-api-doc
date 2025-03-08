@@ -11,7 +11,7 @@ const functionMetadata = [
 
 export default function PlaygroundHelp() {
     return (
-        <TextWidth>
+        <div>
             <p className="text-xs mb-2">HELP</p>
             <div
                 className={cn(
@@ -57,6 +57,6 @@ export default function PlaygroundHelp() {
                     </tbody>
                 </table>
             </div>
-        </TextWidth>
+        </div>
     )
 }
