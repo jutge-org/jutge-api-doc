@@ -16,30 +16,29 @@ export default function PlaygroundHelp() {
                         <kbd className="bg-background">^⏎</kbd> to run the code of the last cell.
                     </li>
                     <li>
-                        Use <code>return</code> to return a result and use <code>last</code> to use
-                        the last returned value.
+                        Use <code>return x</code> to show <code>x</code> in the "OUTPUT" area. <code>last</code> contains the previous <code>return</code>ed value.
                     </li>
                     <li>
-                        Available objects:
+                        Access the Jutge client through <code>jutge</code>, which is pre-initialized
+                        with a <code>new JutgeApiClient()</code> object.
+                    </li>
+                    <li>
+                        Available functions, all <em>asynchronous</em>:
                         <ul>
-                            <li>
-                                <code>j</code>: variable with a <code>new JutgeApiClient()</code>{" "}
-                                object.
+                            <li >
+                                <code>input(text: string)</code>: opens a modal (showing <code>text</code>) asking for a string and returns
+                                it. 
                             </li>
                             <li>
-                                <code>input</code>: async function that reads a string and returns
-                                it.
-                            </li>
-                            <li>
-                                <code>print</code>: async function that prints an object (do not use{" "}
+                                <code>print(x: any)</code>: prints an object (do not use{" "}
                                 <code>console.log</code>!).
                             </li>
                             <li>
-                                <code>chart</code>: async function that charts a list of numbers.
+                                <code>chart(data: Array&lt;number&gt;)</code>: charts an array of numbers (<code>data</code>).
                             </li>
                             <li>
-                                <code>login</code>: async function that asks email and password and
-                                logs the <code>j</code> Jutge client in.
+                                <code>login()</code>: asks email and password and
+                                logs the <code>jutge</code> Jutge client in.
                             </li>
                         </ul>
                     </li>
