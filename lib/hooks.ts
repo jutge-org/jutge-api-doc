@@ -2,8 +2,9 @@ import { useEffect, useState } from "react"
 
 type Platform = "linux" | "mac" | "windows" | "<unknown>"
 
-export const usePlatform = (): Platform => {
+export const usePlatform = (): [Platform, boolean] => {
     const [platform, setPlatform] = useState<Platform>("<unknown>")
+    const [isMobile, setIsMobile] = useState(false)
 
     useEffect(() => {
         const platform = (navigator.platform || "").toLowerCase()
@@ -16,13 +17,12 @@ export const usePlatform = (): Platform => {
         } else if (_isPlatform("mac")) {
             setPlatform("mac")
         } else if (_isPlatform("linux")) {
-            setPlatform("mac")
+            setPlatform("linux")
         }
+
+        const isMobile = /android.+mobile|ip(hone|[oa]d)/i.test(userAgent);
+        setIsMobile(isMobile);
     }, [])
 
-    useEffect(() => {
-        console.log("usePlatform:", platform);
-    }, [platform])
-
-    return platform
+    return [platform, isMobile];
 }

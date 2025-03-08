@@ -1,19 +1,21 @@
 "use client"
 
 import { useTheme } from "@/components/theme/hook"
-import { autocompletion } from "@codemirror/autocomplete"
+import { acceptCompletion, autocompletion } from "@codemirror/autocomplete"
 import { javascript } from "@codemirror/lang-javascript"
 import { Prec } from "@codemirror/state"
 import { keymap } from "@codemirror/view"
 import { githubDark, githubLight } from "@uiw/codemirror-theme-github"
 import CodeMirror, { basicSetup } from "@uiw/react-codemirror"
-import { LoaderIcon } from "lucide-react"
+import { LoaderIcon, Play } from "lucide-react"
 import { useEffect, useState } from "react"
 import ChartArea from "./areas/chart"
 import ErrorArea from "./areas/error"
 import EvalResultArea from "./areas/eval-result"
 import PrintArea from "./areas/print"
 import { InputMessage, MessageHandler, OutputMessage, OutputMessageType } from "./types"
+import { usePlatform } from "@/lib/hooks"
+import { Button } from "@/components/ui/button"
 
 const noConversion = (x: any) => x
 
@@ -45,6 +47,7 @@ export default function PlaygroundCell({ worker, cellIndex: cellIndex, focus }: 
     const [waitingForResult, setWaitingForResult] = useState(false)
     const [input, setInput] = useState("")
     const { mode } = useTheme()
+    const [_, isMobile] = usePlatform()
 
     useEffect(() => {
         const onWorkerMessage: MessageHandler = ({ data }: MessageEvent<OutputMessage>) => {
@@ -59,7 +62,6 @@ export default function PlaygroundCell({ worker, cellIndex: cellIndex, focus }: 
     }, [worker, cellIndex])
 
     const sendCodeToWorker = () => {
-        console.log("sendCode!", input)
         const payload = input.trim()
         if (payload) {
             worker.postMessage({ type: "eval-request", payload, cellIndex } satisfies InputMessage)
@@ -80,15 +82,33 @@ export default function PlaygroundCell({ worker, cellIndex: cellIndex, focus }: 
         return `${label}${number}`
     })
 
-    const ctrlEnterKeymap = Prec.high(
+    const customKeymap = Prec.high(
         keymap.of([
             {
                 key: "Ctrl-Enter",
                 mac: "Cmd-Enter",
                 run: handleCtrlEnter,
             },
+            {
+                key: "Tab",
+                run: acceptCompletion,
+            },
         ]),
     )
+
+    const customExtensions = [
+        basicSetup({
+            lineNumbers: false,
+            tabSize: 4,
+            highlightActiveLine: false,
+        }),
+        autocompletion(),
+        javascript({
+            typescript: true,
+            jsx: false,
+        }),
+        customKeymap,
+    ]
 
     return (
         <div className="flex flex-row gap-0 w-full">
@@ -101,22 +121,21 @@ export default function PlaygroundCell({ worker, cellIndex: cellIndex, focus }: 
                     onChange={setInput}
                     autoFocus={true}
                     onCreateEditor={(editor) => {
+                        // This makes new editors both focus and scroll into view
                         editor.focus()
                         editor.dom.scrollIntoView()
                     }}
                     basicSetup={false}
                     theme={mode === "dark" ? githubDark : githubLight}
-                    extensions={[
-                        basicSetup({
-                            lineNumbers: false,
-                            tabSize: 4,
-                            highlightActiveLine: false,
-                        }),
-                        autocompletion(),
-                        javascript(),
-                        ctrlEnterKeymap,
-                    ]}
+                    extensions={customExtensions}
                 />
+                {isMobile && (
+                    <div className="flex flex-row justify-end mt-2">
+                        <Button variant="secondary" onClick={sendCodeToWorker} disabled={input.trim() === ""}>
+                           <Play /> Run
+                        </Button>
+                    </div>
+                )}
 
                 {outputs.length > 0 && (
                     <div className="flex flex-col gap-1 mt-2">
