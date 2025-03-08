@@ -11,7 +11,7 @@ const functionMetadata = [
 
 export default function PlaygroundHelp() {
     return (
-        <div>
+        <TextWidth>
             <p className="text-xs mb-2">HELP</p>
             <div
                 className={cn(
@@ -41,12 +41,12 @@ export default function PlaygroundHelp() {
                 <p className="mt-4 mb-2">
                     Available functions, all <em>asynchronous</em>:
                 </p>
-                <table className="m-0 border-t border-b border-black border-opacity-30">
+                <table className="m-0 border-t border-b dark:border-gray-700 border-gray-400 border-opacity-30">
                     <tbody>
                         {functionMetadata.map(([name, description]) => (
                             <tr
                                 key={name}
-                                className="border-b border-black border-opacity-30 h-min leading-3"
+                                className="border-b dark:border-gray-700 border-gray-400 border-opacity-30 h-min leading-4"
                             >
                                 <td>
                                     <code className="text-[.75rem]">{name}</code>
@@ -57,6 +57,6 @@ export default function PlaygroundHelp() {
                     </tbody>
                 </table>
             </div>
-        </div>
+        </TextWidth>
     )
 }
