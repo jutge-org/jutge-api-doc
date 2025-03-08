@@ -5,7 +5,9 @@ import JsonView from "react-json-view"
 export default function EvalResultArea({ payload }: { payload: any }) {
     const { mode } = useTheme()
 
-    if (["boolean", "number", "string", "undefined", "null"].includes(typeof payload)) {
+    if (typeof payload === "undefined") {
+        return <div></div>
+    } else if (["boolean", "number", "string", "null"].includes(typeof payload)) {
         return (
             <pre
                 className={cn(
