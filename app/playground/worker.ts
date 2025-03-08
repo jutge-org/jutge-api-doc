@@ -52,17 +52,22 @@ async function evaluate(ts_code: string, cellIndex?: number): Promise<OutputMess
             lib: ["dom"],
             module: ts.ModuleKind.CommonJS,
         })
-        const asyncCode = (0, eval)(
-            `(async function(login, input, print, chart, j, last, JutgeApiClient) { ${js_code} \n })`,
+        const asyncFunction = (0, eval)(
+            `(async function(JutgeApiClient, jutge, input, print, chart, login, last, self) { 
+                ${js_code}
+            })`,
         )
-        last = await asyncCode(
-            loginFunc,
+        // Plug the `this` variable (?) // TODO: Still gives error
+        const boundAsyncFunction = asyncFunction.bind(undefined)
+        last = await boundAsyncFunction(
+            JutgeApiClient,
+            jutgeInstance,
             inputFunc,
             printFunc(cellIndex),
             chartFunc(cellIndex),
-            jutgeInstance,
+            loginFunc,
             last,
-            JutgeApiClient,
+            undefined, // self
         )
         return { type: "eval-result", payload: await dePromisify(last) }
     } catch (err) {
