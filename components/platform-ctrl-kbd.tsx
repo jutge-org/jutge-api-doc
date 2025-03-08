@@ -8,13 +8,13 @@ type Props = {
     className?: string
 }
 export default function PlatformCtrlKbd({ keyName, className }: Props) {
-    const platform = usePlatform()
+    const [platform] = usePlatform()
     let ctrlOrCmd =
-        platform === "mac" ? <span className="text-[1rem] relative -bottom-0.5">⌘</span> : "Ctrl"
+        platform === "mac" ? <span className="text-[1rem] relative -bottom-[0.15rem]">⌘</span> : "Ctrl"
     return (
-        <kbd className={cn("text-[0.66rem] font-normal tracking-tighter mx-0.5", className)}>
+        <kbd className={cn("text-[0.66rem] font-bold tracking-tighter mx-0.5", className)}>
             {ctrlOrCmd}
-            <span className="opacity-80 mx-1">+</span>
+            <span className="opacity-90 mx-1">+</span>
             {keyName}
         </kbd>
     )
