@@ -2,7 +2,7 @@ import env from "@/lib/env"
 import { ApiDir, ApiModel, ApiModule, Item } from "./types"
 
 export async function getApiDir(): Promise<ApiDir> {
-    const response = await fetch(`${env.JUTGE_API_URL}/api/dir`)
+    const response = await fetch(`${env.JUTGE_API_URL}/api/dir`, { cache: "force-cache"})
     const result = await response.json()
     return {
         info: result.info,
