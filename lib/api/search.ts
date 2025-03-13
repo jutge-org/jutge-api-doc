@@ -7,7 +7,7 @@ export const searchDirectory = (dir: ApiDir, query: string): Item[] => {
         .map((w) => w.trim())
 
     const match = (name: string) => {
-        return queryWords.every((queryWord) => name.toLowerCase().includes(queryWord))
+        return queryWords.every((queryWord) => name.toLowerCase().includes(queryWord.toLowerCase()))
     }
 
     const search = (mod: ApiModule, path: string[]): Item[] => {
