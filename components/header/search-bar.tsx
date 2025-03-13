@@ -22,7 +22,7 @@ export default function SearchBar({ directory, className }: Props) {
     const [selected, setSelected] = useState(-1)
     const [results, setResults] = useState<Item[]>([])
     const resultsRef = useRef<HTMLDivElement>(null)
-    const [platform, mobile] = usePlatform()
+    const [platform] = usePlatform()
 
     const go = (index: number) => {
         const result = results[index]
