@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils"
 import { SearchIcon } from "lucide-react"
 import { ChangeEventHandler, useEffect, useRef, useState } from "react"
 import PlatformCtrlKbd from "../platform-ctrl-kbd"
+import { usePlatform } from "@/lib/hooks"
 
 type Props = {
     directory: ApiDir
@@ -21,6 +22,7 @@ export default function SearchBar({ directory, className }: Props) {
     const [selected, setSelected] = useState(-1)
     const [results, setResults] = useState<Item[]>([])
     const resultsRef = useRef<HTMLDivElement>(null)
+    const [platform, mobile] = usePlatform()
 
     const go = (index: number) => {
         const result = results[index]
@@ -28,8 +30,17 @@ export default function SearchBar({ directory, className }: Props) {
         setDialogOpen(false)
     }
 
+    const ctrlKPressed = (e: KeyboardEvent) => {
+        if (platform === "mac") {
+            return e.metaKey && e.key === "k"
+        } else if (platform === "windows" || platform === "linux") {
+            return e.ctrlKey && e.key === "k"
+        }
+        return false
+    }
+
     const onKeyDown = (e: KeyboardEvent) => {
-        if (e.ctrlKey && e.key === "k") {
+        if (ctrlKPressed(e)) {
             e.preventDefault()
             e.stopPropagation()
             setDialogOpen(true)
