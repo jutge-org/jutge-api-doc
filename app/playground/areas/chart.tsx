@@ -19,7 +19,7 @@ export default function ChartArea({ payload }: { payload: any }) {
                 <BarChart accessibilityLayer data={chartData}>
                     <XAxis />
                     <YAxis />
-                    <Bar dataKey="y" fill="hsl(var(--accent))" radius={2} />
+                    <Bar dataKey="y" fill="hsl(var(--primary))" radius={2} />
                 </BarChart>
             </ChartContainer>
         </div>

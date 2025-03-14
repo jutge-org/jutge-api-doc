@@ -121,8 +121,8 @@ export function AppSidebar({ ...props }: AppSidebarProps) {
                 <SidebarMenuSubButton
                     href={item.url}
                     className={cn(
-                        "hover:outline-accent outline-offset-0",
-                        highlight ? "bg-accent hover:bg-accent" : "",
+                        "hover:outline-primary outline-offset-0",
+                        highlight ? "bg-primary hover:bg-primary" : "",
                     )}
                 >
                     <span className={cn("font-mono text-[0.95em]", highlight ? "text-white" : "")}>

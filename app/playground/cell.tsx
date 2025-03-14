@@ -168,7 +168,7 @@ export default function PlaygroundCell({ worker, cellIndex: cellIndex, focus }: 
 
                 {waitingForResult && (
                     <div className="mt-4">
-                        <LoaderIcon className="animate-spin text-accent" />
+                        <LoaderIcon className="animate-spin text-primary" />
                     </div>
                 )}
             </div>

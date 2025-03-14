@@ -10,7 +10,7 @@ export default function ThemeSwitcher() {
     return (
         <div className="flex flex-col justify-center">
             <Button
-                className="w-10 hover:text-white"
+                className="w-10"
                 variant="ghost"
                 onClick={() => setMode(mode === "light" ? "dark" : "light")}
             >

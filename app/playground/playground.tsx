@@ -61,7 +61,7 @@ export default function Playground() {
 
             {workerRef.current !== undefined || (
                 <div className="mt-4">
-                    <LoaderIcon className="animate-spin text-accent" />
+                    <LoaderIcon className="animate-spin text-primary" />
                 </div>
             )}
 

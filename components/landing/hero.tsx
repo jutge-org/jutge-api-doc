@@ -27,14 +27,8 @@ export default function Hero({ className }: Props) {
                     Script Jutge.org
                 </h1>
                 <p className="px-4 md:px-0 lg:max-w-[30em] md:text-lg/6 text-center">
-                    Write programs to interact with{" "}
-                    <Link
-                        href="https://jutge.org"
-                        className="no-underline text-accent-foreground"
-                    >
-                        Jutge.org
-                    </Link>
-                    : obtain information, test AIs, configure things automatically...
+                    Write programs to interact with <Link href="https://jutge.org">Jutge.org</Link>:
+                    obtain information, test AIs, configure things automatically...
                 </p>
             </div>
 
@@ -43,42 +37,11 @@ export default function Hero({ className }: Props) {
                     Use your favorite language
                 </h2>
                 <p className="px-4 md:px-0 lg:max-w-[35em] md:text-lg text-center">
-                    Clients available for{" "}
-                    <Link
-                        href="/clients/python"
-                        className="no-underline text-accent-foreground"
-                    >
-                        Python
-                    </Link>
-                    ,{" "}
-                    <Link
-                        href="/clients/typescript"
-                        className="no-underline text-accent-foreground"
-                    >
-                        TypeScript
-                    </Link>
-                    ,{" "}
-                    <Link
-                        href="/clients/javascript"
-                        className="no-underline text-accent-foreground"
-                    >
-                        JavaScript
-                    </Link>
-                    ,{" "}
-                    <Link
-                        href="/clients/php"
-                        className="no-underline text-accent-foreground"
-                    >
-                        PHP
-                    </Link>{" "}
-                    and even{" "}
-                    <Link
-                        href="/clients/cpp"
-                        className="no-underline text-accent-foreground"
-                    >
-                        C++
-                    </Link>
-                    .
+                    Clients available for <Link href="/clients/python">Python</Link>,{" "}
+                    <Link href="/clients/typescript">TypeScript</Link>,{" "}
+                    <Link href="/clients/javascript">JavaScript</Link>,{" "}
+                    <Link href="/clients/php">PHP</Link> and even{" "}
+                    <Link href="/clients/cpp">C++</Link>.
                 </p>
             </div>
         </div>

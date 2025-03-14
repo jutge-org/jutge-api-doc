@@ -25,7 +25,7 @@ export default function EndpointWrapper({ id, children }: Props) {
             className={cn(
                 "px-4 py-2 pt-0.5 flex flex-col",
                 "relative md:rounded",
-                hash === `#${id}` && "border-[0.2em] border-accent md:outline md:outline-accent md:border-none",
+                hash === `#${id}` && "border-[0.2em] border-primary md:outline md:outline-primary md:border-none",
             )}
         >
             <div id={id} className="absolute -top-[5em] md:-top-[15em] left-0"></div>

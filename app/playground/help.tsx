@@ -24,7 +24,7 @@ export default function PlaygroundHelp() {
                         Use{" "}
                         <PlatformCtrlKbd
                             keyName="Enter"
-                            className="relative bottom-[0.06rem] mx-1 bg-accent text-white"
+                            className="relative bottom-[0.06rem] mx-1 bg-primary text-white"
                         />{" "}
                         to run the code in a cell.
                     </li>

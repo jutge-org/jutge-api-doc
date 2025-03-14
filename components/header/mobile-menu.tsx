@@ -24,7 +24,7 @@ export default function MobileMenu({ className }: { className?: string }) {
                     <div
                         className={cn(
                             "fixed bottom-6 right-6 w-14 h-14",
-                            "bg-accent rounded-full",
+                            "bg-primary rounded-full",
                             "shadow-lg grid items-center justify-center",
                         )}
                     >
