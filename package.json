@@ -67,6 +67,7 @@
         "react-highlight": "^0.15.0",
         "react-hook-form": "^7.54.2",
         "react-json-view": "^1.21.3",
+        "react-resizable-panels": "^2.1.7",
         "recharts": "^2.15.1",
         "remark-gfm": "^4.0.1",
         "sonner": "^1.7.4",
@@ -100,5 +101,8 @@
         "useTabs": false,
         "arrowParens": "always",
         "printWidth": 100
+    },
+    "volta": {
+        "node": "22.14.0"
     }
 }
