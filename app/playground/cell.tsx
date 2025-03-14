@@ -2,7 +2,7 @@
 
 import { useTheme } from "@/components/theme/hook"
 import { Button } from "@/components/ui/button"
-import { usePlatform } from "@/lib/hooks"
+import { usePlatform } from "@/hooks/use-platform"
 import { acceptCompletion, autocompletion } from "@codemirror/autocomplete"
 import { javascript } from "@codemirror/lang-javascript"
 import { Prec } from "@codemirror/state"

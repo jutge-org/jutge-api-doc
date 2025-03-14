@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils"
 import { SearchIcon } from "lucide-react"
 import { ChangeEventHandler, useEffect, useRef, useState } from "react"
 import PlatformCtrlKbd from "../platform-ctrl-kbd"
-import { usePlatform } from "@/lib/hooks"
+import { usePlatform } from "@/hooks/use-platform"
 
 type Props = {
     directory: ApiDir

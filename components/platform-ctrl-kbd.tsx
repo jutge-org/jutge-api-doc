@@ -1,6 +1,6 @@
 "use client"
 
-import { usePlatform } from "@/lib/hooks"
+import { usePlatform } from "@/hooks/use-platform"
 import { cn } from "@/lib/utils"
 
 type Props = {
