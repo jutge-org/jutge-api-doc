@@ -1,3 +1,0 @@
-[submodule "api-clients"]
-	path = api-clients
-	url = github.com:jutge-org/jutge-api-clients
