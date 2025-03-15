@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server"
 import * as child_process from "node:child_process"
 import { readFile } from "node:fs/promises"
-import { extname, join, resolve } from "node:path"
+import { basename, extname, join, resolve } from "node:path"
 import { cwd } from "node:process"
 import * as util from "node:util"
 
@@ -44,13 +44,15 @@ type GETParams = {
 export async function GET(_req: NextRequest, { params }: GETParams) {
     const { lang } = await params
 
-    const filename = await generateClient(lang)
-    if (filename === null) {
+    const absolutePath = await generateClient(lang)
+    if (absolutePath === null) {
         return new Response("Error generating client", { status: 500 })
     }
 
-    const extension = extname(filename)
-    const blob = await readFile(filename)
+    const extension = extname(absolutePath)
+    const filename = basename(absolutePath)
+    const blob = await readFile(absolutePath)
+
     return new Response(blob, {
         headers: {
             "Content-Type": extension2mime[extension] || "application/octet-stream",
