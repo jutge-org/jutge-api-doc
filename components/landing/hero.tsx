@@ -37,11 +37,11 @@ export default function Hero({ className }: Props) {
                     Use your favorite language
                 </h2>
                 <p className="px-4 md:px-0 lg:max-w-[35em] md:text-lg text-center">
-                    Clients available for <Link href="/clients/python">Python</Link>,{" "}
-                    <Link href="/clients/typescript">TypeScript</Link>,{" "}
-                    <Link href="/clients/javascript">JavaScript</Link>,{" "}
-                    <Link href="/clients/php">PHP</Link> and even{" "}
-                    <Link href="/clients/cpp">C++</Link>.
+                    Clients available for <Link href="/clients#python">Python</Link>,{" "}
+                    <Link href="/clients#typescript">TypeScript</Link>,{" "}
+                    <Link href="/clients#javascript">JavaScript</Link>,{" "}
+                    <Link href="/clients#php">PHP</Link> and even{" "}
+                    <Link href="/clients#cpp">C++</Link>.
                 </p>
             </div>
         </div>
