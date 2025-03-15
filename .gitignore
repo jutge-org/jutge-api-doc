@@ -35,3 +35,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Ignore the 'generated-clients' folder, which the
+# server uses to keep the generated clients
+generated-clients
