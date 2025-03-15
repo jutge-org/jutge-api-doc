@@ -30,6 +30,7 @@ export const menuOptions: { path: string; name: string }[] = [
     { path: "/clients", name: "Clients" },
     { path: "/documentation", name: "Documentation" },
     { path: "/playground", name: "Playground" },
+    { path: "/cmdline", name: "CLI" },
     { path: "/faqs", name: "FAQs" },
     { path: "/about", name: "About" },
 ]

@@ -1,0 +1,169 @@
+# Command Line Interface (CLI)
+
+To use the API, there is also a command-line interface (CLI) available. The CLI is written in Typescript and can be installed easily using [npm](https://npmjs.com) or [Bun](https://bun.sh):
+
+```bash
+npm install -g @jutge.org/cli
+```
+
+or
+
+```bash
+bun add -g @jutge.org/cli
+```
+
+This will install a binary called **`jutge`** which is the entrypoint for the CLI. 
+
+To update it, just install it again.
+
+## Usage
+
+The CLI itself can be used to get the same documentation [available on this site](/documentation), since it uses the endpoint information (the "directory") and maps endpoints and endpoint groups to commands or subcommands.
+
+For example, just invoking `jutge` produces:
+
+```text
+$ jutge
+Usage: jutge [options] [command]
+
+Jutge.org CLI
+
+Options:
+  -h, --help        display help for command
+
+Commands:
+  login [options]   Login to Jutge.org
+  logout [options]  Logout from Jutge.org
+  auth              Module to provide authentication functions.
+  misc              Module with miscellaneous endpoints
+  tables            Module with quite static tables
+  problems          Module with endpoints related to problems.
+  student           These operations are available to all users, provided they are authenticated.
+  instructor        This module is meant to be used by instructors
+  admin             Module with administration endpoints. Not meant for regular users. It still lacks lots of endpoints
+  testing           Module with testing endpoints. Not meant for regular users.
+  accounts          Manage accounts in this CLI
+  version           Show the Jutge.org/cli version
+  help [command]    display help for command
+```
+
+By invoking "`jutge student`" you receive help about the `student` section of the API:
+
+```text
+  jutge student
+Usage: jutge student [options] [command]
+
+These operations are available to all users, provided they are authenticated.
+
+Options:
+  -h, --help      display help for command
+
+Commands:
+  keys            This module exposes all valid keys for problems, courses and lists that a user can access.
+  profile         This module exposes the user profile.
+  dashboard       <undocumented>
+  submissions     <undocumented>
+  courses         <undocumented>
+  lists           <undocumented>
+  statuses        <undocumented>
+  awards          This module is not yet finished.
+  help [command]  display help for command
+```
+
+Also, the mapping is straightforward, and therefore using the CLI is a good way to get to know the API and its endpoints.
+
+So, before invoking any of the endpoints, you can explore what is available and get help about each endpoint (if available!). Also, appending `--help` to any invocation will give you help, even if you already provided arguments or options, so it is a good way to make sure you are using the CLI correctly.
+
+## Options and Parameters
+
+In general, when an endpoint of the API receives only one piece of data, it will be an argument. For instance, the argument in this call is the award's ID:
+
+```bash
+$ jutge student awards get A0012284589
+```
+
+For endpoints that require specifying several fields, long options (with two dashes) are typically used:
+
+```bash
+jutge instructor queries getCourseProblemSubmissions \
+    --course_nm "PRO3_2028" \
+    --problem_nm "P86886_ca" 
+```
+
+Whenever there are input files to an API call, they are always arguments. For instance, changing your avatar is:
+
+```bash
+$ jutge student profile updateAvatar selfie_at_VLA.png
+```
+
+The argument just indicates a path to a file which will be read and sent to the API.
+
+## Authentication
+
+The CLI can send direct calls to the API to retrieve a token (with `jutge auth login`), but a more user-friendly way is to use the `login`, `logout` and `accounts` subcommands (whih are not to be confused with `auth login` and `auth logout`).
+
+### Logging in
+
+```bash
+jutge login
+```
+
+This will prompt for your email and password. A second execution in the same computer will only prompt for the password since the email will be internally associated with de "default account". Changing that is easy:
+
+```bash
+jutge login -e pedro.botero@infer.no
+```
+
+### Logging out 
+
+```bash
+jutge logout
+```
+
+This will log you out (and discard the token).
+
+### Accounts
+
+Since many professors use more than one account, the CLI allows you to register and manage several accounts. This is done with the `accounts` subcommand:
+
+```text
+$ jutge accounts list
+* default - pedro.botero@infer.no (logged in until 03/14/1592, 05:04:03)
+```
+
+The `*` indicates the active account. Since at the beginning there is only one account (name "default"), it is the active one. You can add more accounts with:
+
+```text
+$ jutge accounts add -e pro3@cs.upc.edu pro3
+Account 'pro3' added.
+```
+
+This will add the "pro3" account with its email. Listing accounts should show:
+
+```text
+$ jutge accounts list
+* default - pedro.botero@infer.no (logged in until 03/14/1592, 05:04:03)
+  pro3 - pro3@cs.upc.edu
+```
+
+If you plan to use the "pro3" account for a while, you can activate it with:
+
+```text
+$ jutge accounts use pro3
+```
+
+You can also use the "pro3" account in just one endpoint call (and therefore keep the currently active account), by using the `-a` option, which is available in all endpoints:
+
+```text
+$ jutge login -a pro3
+$ jutge student profile -a pro3
+```
+
+Once you are done with the "pro3" account, you can remove it:
+
+```text
+$ jutge accounts remove pro3
+Account 'pro3' removed.
+```
+
+The "default" account is always available and cannot be removed.
