@@ -46,7 +46,7 @@ export const TypeViewReference = ({ refName, className, input, spath, models }: 
                     className={cn(
                         className,
                         "p-4 border-foreground relative flex flex-col",
-                        "data-[side=bottom]:[&_.up]:flex data-[side=top]:[&_.down]:flex",
+                        "data-[side=bottom]:[&>.up]:flex data-[side=top]:[&>.down]:flex",
                         "w-[24em]",
                     )}
                 >
