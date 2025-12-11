@@ -44,8 +44,8 @@ export default function Header({ directory }: { directory: ApiDir }) {
                 href={path}
                 tabIndex={-1}
                 className={cn(
-                    "h-[var(--topbar-height)]",
-                    "border-b-[2px] border-b-transparent flex items-center",
+                    "h-(--topbar-height)",
+                    "border-b-2 border-b-transparent flex items-center",
                     pathname.startsWith(path) && "border-b-primary",
                 )}
                 
@@ -78,7 +78,7 @@ export default function Header({ directory }: { directory: ApiDir }) {
                     </NavigationMenu>
 
                     <div className="flex-1" />
-                    <SearchBar directory={directory} className="pb-[2px]" />
+                    <SearchBar directory={directory} className="pb-0.5" />
                     <ThemeSwitcher />
                 </PageWidth>
             </header>

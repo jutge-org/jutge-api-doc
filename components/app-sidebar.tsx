@@ -125,7 +125,7 @@ export function AppSidebar({ ...props }: AppSidebarProps) {
                         highlight ? "bg-primary hover:bg-primary" : "",
                     )}
                 >
-                    <span className={cn("font-mono text-[0.95em]", highlight ? "text-white" : "")}>
+                    <span className={cn("font-mono text-[0.95em]", highlight ? "text-secondary" : "")}>
                         {item.name}
                     </span>
                 </SidebarMenuSubButton>

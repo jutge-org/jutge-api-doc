@@ -22,7 +22,7 @@ export default function Module({ models, module, path, level, className }: Modul
                     id={spath}
                     className={cn(
                         level > 0
-                            ? "dark:bg-secondary-background bg-stone-50 py-2.5 md:rounded-lg"
+                            ? "bg-secondary/60 py-2.5 md:rounded-lg"
                             : "",
                         "flex flex-col items-stretch max-w-[45em]",
                         className,

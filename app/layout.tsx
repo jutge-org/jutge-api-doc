@@ -24,7 +24,7 @@ export default async function RootLayout({
         <html lang="en">
             <ThemedBody className={cn(inter.className, "min-h-screen flex flex-col items-stretch")}>
                 <Header directory={directory} />
-                <div className="mt-[var(--topbar-height)]"></div>
+                <div className="mt-(--topbar-height)"></div>
                 <div className="flex-1 w-full">{children}</div>
                 <Footer />
             </ThemedBody>

@@ -4,13 +4,13 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
+import { usePlatform } from "@/hooks/use-platform"
 import { searchDirectory } from "@/lib/api/search"
 import type { ApiDir, Item } from "@/lib/api/types"
 import { cn } from "@/lib/utils"
 import { SearchIcon } from "lucide-react"
 import { ChangeEventHandler, useEffect, useRef, useState } from "react"
 import PlatformCtrlKbd from "../platform-ctrl-kbd"
-import { usePlatform } from "@/hooks/use-platform"
 
 type Props = {
     directory: ApiDir
@@ -109,7 +109,7 @@ export default function SearchBar({ directory, className }: Props) {
                 <DialogContent className="w-5/6 mx-auto lg:min-w-[40em] h-[30em] p-0 flex flex-col justify-start gap-0">
                     <DialogTitle className="hidden">Search Documentation</DialogTitle>
                     <Input
-                        className="h-12 debug border-none rounded-t-md rounded-b-none shrink-0 pr-12 m-0 mb-[1px]"
+                        className="h-12 debug border-none rounded-t-md rounded-b-none shrink-0 pr-12 m-0 mb-px"
                         value={search}
                         onChange={onChange}
                     />
@@ -124,7 +124,7 @@ export default function SearchBar({ directory, className }: Props) {
                                     "font-mono flex flex-row items-center px-2 py-1.5 pb-1 rounded-sm",
                                     "hover:outline outline-primary outline-offset-1 cursor-pointer",
                                     index === selected &&
-                                        "bg-primary text-foreground hover:bg-primary text-white",
+                                        "bg-primary text-foreground hover:bg-primary",
                                 )}
                                 onClick={clickOption(index)}
                             >
@@ -136,7 +136,14 @@ export default function SearchBar({ directory, className }: Props) {
                                 >
                                     {result.spath}
                                 </span>
-                                <span className="font-semibold">{result.name}</span>
+                                <span
+                                    className={cn(
+                                        "font-semibold",
+                                        index === selected ? "text-background" : "",
+                                    )}
+                                >
+                                    {result.name}
+                                </span>
                             </div>
                         ))}
                     </div>

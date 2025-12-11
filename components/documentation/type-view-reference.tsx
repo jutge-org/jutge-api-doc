@@ -45,7 +45,7 @@ export const TypeViewReference = ({ refName, className, input, spath, models }: 
                 <HoverCardContent
                     className={cn(
                         className,
-                        "p-4 border-black dark:border-white relative flex flex-col",
+                        "p-4 border-foreground relative flex flex-col",
                         "[&_div.up]:data-[side=top]:hidden [&_div.down]:data-[side=bottom]:hidden",
                         "w-[24em]",
                     )}
