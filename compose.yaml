@@ -1,6 +1,9 @@
 services:
     api-doc:
-        image: "api-doc:latest"
+        image: "api-doc"
+        build:
+          context: .
+          dockerfile: Dockerfile
         network_mode: host
         container_name: "jutge-api-doc"
         restart: always
