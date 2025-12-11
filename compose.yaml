@@ -1,0 +1,7 @@
+services:
+    web-admin:
+        image: "web-admin:latest"
+        network_mode: host
+        container_name: "jutge-web-admin"
+        restart: always
+    
