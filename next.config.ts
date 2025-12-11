@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
             fullUrl: true,
         },
     },
-    output: "standalone",
+    output: process.env.DOCKER_BUILD ? "standalone" : undefined,
 }
 
 const withMDX = createMDX({

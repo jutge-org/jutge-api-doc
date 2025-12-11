@@ -6,7 +6,8 @@
         "dev": "next dev --webpack --port 3000",
         "build": "next build --webpack",
         "start": "next start",
-        "lint": "next lint"
+        "lint": "next lint",
+        "deploy": "./deploy.sh"
     },
     "dependencies": {
         "@codemirror/autocomplete": "^6.20.0",
