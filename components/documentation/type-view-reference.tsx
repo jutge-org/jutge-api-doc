@@ -46,11 +46,16 @@ export const TypeViewReference = ({ refName, className, input, spath, models }: 
                     className={cn(
                         className,
                         "p-4 border-foreground relative flex flex-col",
-                        "[&_div.up]:data-[side=top]:hidden [&_div.down]:data-[side=bottom]:hidden",
+                        "data-[side=bottom]:[&_.up]:flex data-[side=top]:[&_.down]:flex",
                         "w-[24em]",
                     )}
                 >
-                    <div className="up absolute -top-2.5 h-2.5 left-0 right-0 flex flex-row justify-center">
+                    <div
+                        className={cn(
+                            "up absolute -top-2.5 h-2.5 left-0 right-0 flex-row justify-center hidden",
+                            "[&_svg>path]:fill-popover [&_svg>path]:stroke-foreground",
+                        )}
+                    >
                         <HoverCardTip side="up" />
                     </div>
                     <h3 className="font-semibold mb-2 font-mono break-all">{refName}</h3>
@@ -61,7 +66,12 @@ export const TypeViewReference = ({ refName, className, input, spath, models }: 
                     <pre className="text-xs bg-gray-100 dark:bg-stone-900 px-2 py-1 overflow-x-auto">
                         {JSON.stringify(makeExample(model, models), null, 2)}
                     </pre>
-                    <div className="down absolute -bottom-2 h-2.5 left-0 right-0 flex flex-row justify-center">
+                    <div
+                        className={cn(
+                            "down absolute -bottom-2 h-2.5 left-0 right-0 flex-row justify-center hidden",
+                            "[&_svg>path]:fill-popover [&_svg>path]:stroke-foreground",
+                        )}
+                    >
                         <HoverCardTip side="down" />
                     </div>
                 </HoverCardContent>
