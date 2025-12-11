@@ -1,3 +1,4 @@
+import env from "@/lib/env"
 import { NextRequest } from "next/server"
 import * as child_process from "node:child_process"
 import { readFile } from "node:fs/promises"
@@ -8,25 +9,15 @@ import * as util from "node:util"
 const exec = util.promisify(child_process.exec)
 
 type Language = "cpp" | "java" | "javascript" | "php" | "python" | "typescript"
+const allLanguages = ["cpp", "java", "javascript", "php", "python", "typescript"]
 
-const generateClient = async (lang: Language): Promise<string | null> => {
-    const { JUTGE_API_CLIENTS_DIR } = process.env
-    if (!JUTGE_API_CLIENTS_DIR) {
-        console.warn(`JUTGE_API_CLIENTS_DIR is not set. Generating clients will not work.`)
-        return null
-    }
-    const currDir = cwd()
-    const generatedClientsDir = resolve(join(currDir, "generated-clients"))
-    const result = await exec(
-        `/usr/bin/env bun ${JUTGE_API_CLIENTS_DIR}/src/cli.ts -d ${generatedClientsDir} ${lang}`,
-        { cwd: JUTGE_API_CLIENTS_DIR }
-    )
-    if (result.stderr) {
-        console.error(result.stderr)
-        return null
-    }
-    const filename = result.stdout.trim()
-    return filename
+const lang2extension: Record<Language, string> = {
+    cpp: ".cpp",
+    javascript: ".js",
+    typescript: ".ts",
+    php: ".php",
+    python: ".py",
+    java: ".jar", // FIXME(pauek): The .jar file has another name!
 }
 
 const extension2mime: Record<string, string> = {
@@ -38,13 +29,39 @@ const extension2mime: Record<string, string> = {
     ".cpp": "text/x-c++src",
 }
 
+const checkLanguage = (slang: string): Language => {
+    if (allLanguages.includes(slang)) {
+        return slang as Language
+    }
+    throw new Error(`Language '${slang}' not known!`)
+}
+
+const generateClient = async (lang: Language): Promise<string | null> => {
+    try {
+        const currDir = cwd()
+        const generatedClientsDir = resolve(join(currDir, "generated-clients"))
+        const result = await exec(
+            `bun run ${env.JUTGE_API_CLIENTS_DIR}/src/index.ts -o ${generatedClientsDir} ${lang}`,
+        )
+        if (result.stderr) {
+            console.error(result.stderr)
+        }
+        return join(generatedClientsDir, `jutge_api_client${lang2extension[lang]}`)
+        //
+    } catch (e) {
+        console.error(e)
+        return null
+    }
+}
+
 type GETParams = {
-    params: Promise<{ lang: Language }>
+    params: Promise<{ lang: string }>
 }
 export async function GET(_req: NextRequest, { params }: GETParams) {
     const { lang } = await params
 
-    const absolutePath = await generateClient(lang)
+    const language = checkLanguage(lang)
+    const absolutePath = await generateClient(language)
     if (absolutePath === null) {
         return new Response("Error generating client", { status: 500 })
     }

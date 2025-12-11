@@ -1,0 +1,3 @@
+[submodule "jutge-api-clients"]
+	path = jutge-api-clients
+	url = github:jutge-org/jutge-api-clients

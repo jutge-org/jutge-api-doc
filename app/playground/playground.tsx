@@ -11,7 +11,7 @@ import { MessageHandler } from "./types"
 export default function Playground() {
     const [fatalError, setFatalError] = useState<string | undefined>()
     const [numCells, setNumCells] = useState<number>(0)
-    const workerRef = useRef<Worker | undefined>()
+    const workerRef = useRef<Worker | undefined>(undefined)
 
     useEffect(() => {
         if (!window.Worker) {

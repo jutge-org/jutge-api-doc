@@ -1,7 +1,10 @@
 services:
-    web-admin:
-        image: "web-admin:latest"
+    api-doc:
+        image: "api-doc:latest"
         network_mode: host
-        container_name: "jutge-web-admin"
+        container_name: "jutge-api-doc"
         restart: always
+        environment:
+          JUTGE_API_CLIENTS_DIR: "/app/jutge-api-clients"
+          JUTGE_API_URL: "https://api.jutge.org/api"
     

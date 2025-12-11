@@ -10,6 +10,7 @@ const nextConfig: NextConfig = {
             fullUrl: true,
         },
     },
+    output: "standalone",
 }
 
 const withMDX = createMDX({

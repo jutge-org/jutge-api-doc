@@ -1,10 +1,11 @@
-import { boolean, literal, string, union } from 'valibot'
+import { boolean, literal, string, union, optional } from 'valibot'
 import { createEnv } from 'valibot-env'
 
 const env = createEnv({
     schema: {
         shared: {
-            JUTGE_API_URL: string(),
+            JUTGE_API_CLIENTS_DIR: string(),
+            JUTGE_API_URL: optional(string()),
             NODE_ENV: union([literal('development'), literal('production'), literal('test')]),
             TESTING: boolean(), // this is computed from NODE_ENV
         },

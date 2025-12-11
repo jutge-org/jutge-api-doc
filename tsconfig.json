@@ -37,6 +37,8 @@
   ],
   "exclude": [
     "node_modules",
-    "public/code/*.ts"
+    "public/code/*.ts",
+    "generated-clients/*.ts",
+    "jutge-api-clients",
   ]
 }
