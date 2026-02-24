@@ -14,7 +14,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
                 className="mt-(--topbar-height)"
                 tree={tree}
             />
-            <div className="md:ml-[calc(var(--sidebar-width)+2em)] xl:ml-0 w-full flex flex-row justify-center debug">
+            <div className="md:ml-[calc(var(--sidebar-width)+2em)] xl:ml-0 w-full flex flex-row justify-center">
                 {children}
             </div>
         </SidebarProvider>
