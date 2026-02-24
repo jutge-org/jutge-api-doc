@@ -1,5 +1,6 @@
 "use client"
 
+import { RawFiles } from "@/components/raw-files"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import {
     Sidebar,
@@ -8,8 +9,6 @@ import {
     SidebarGroupContent,
     SidebarGroupLabel,
     SidebarMenu,
-    SidebarMenuButton,
-    SidebarMenuItem,
     SidebarMenuSub,
     SidebarMenuSubButton,
     SidebarMenuSubItem,
@@ -17,16 +16,9 @@ import {
 import { type Tree } from "@/lib/api/dir"
 import { Item } from "@/lib/api/types"
 import { cn } from "@/lib/utils"
-import { ChevronDown, Cog, Package, Type } from "lucide-react"
-import Link from "next/link"
+import { ChevronDown, Package, Type } from "lucide-react"
 import { usePathname } from "next/navigation"
 import { useEffect, useState } from "react"
-
-type ApiRawItem = {
-    name: string
-    url: string
-    icon?: string
-}
 
 type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
     tree: Tree
@@ -125,7 +117,9 @@ export function AppSidebar({ ...props }: AppSidebarProps) {
                         highlight ? "bg-primary hover:bg-primary" : "",
                     )}
                 >
-                    <span className={cn("font-mono text-[0.95em]", highlight ? "text-secondary" : "")}>
+                    <span
+                        className={cn("font-mono text-[0.95em]", highlight ? "text-secondary" : "")}
+                    >
                         {item.name}
                     </span>
                 </SidebarMenuSubButton>
@@ -172,33 +166,11 @@ export function AppSidebar({ ...props }: AppSidebarProps) {
 
     const { tree } = props
     return (
-        <Sidebar {...props} className={cn("sidebar", props.className)}>
+        <Sidebar {...props} className={props.className}>
             <SidebarContent>
                 <Directory tree={tree} />
                 <RawFiles apiRaw={apiRaw} />
             </SidebarContent>
         </Sidebar>
-    )
-}
-
-function RawFiles({ apiRaw: items }: { apiRaw: ApiRawItem[] }) {
-    return (
-        <SidebarGroup>
-            <SidebarGroupLabel>API Raw Files</SidebarGroupLabel>
-            <SidebarGroupContent>
-                <SidebarMenu>
-                    {items.map((item, index) => (
-                        <SidebarMenuItem key={index}>
-                            <Link target="_blank" href={item.url}>
-                                <SidebarMenuButton>
-                                    <Cog />
-                                    {item.name}
-                                </SidebarMenuButton>
-                            </Link>
-                        </SidebarMenuItem>
-                    ))}
-                </SidebarMenu>
-            </SidebarGroupContent>
-        </SidebarGroup>
     )
 }
