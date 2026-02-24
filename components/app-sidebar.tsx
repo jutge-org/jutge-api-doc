@@ -74,10 +74,11 @@ export function AppSidebar({ ...props }: AppSidebarProps) {
     }, [selected])
 
     const Module = ({ item, path }: { item: Item; path: string }) => {
+        const isOpen = openset.has(path)
         return (
             <Collapsible
-                className="group/collapsible [&[data-state=open]>button>button>svg:first-child]:rotate-90"
-                open={openset.has(path)}
+                className="[&[data-state=open]>button>button>svg:first-child]:rotate-90"
+                open={isOpen}
                 onOpenChange={openModule(path)}
             >
                 <SidebarMenuSubItem>
@@ -85,7 +86,12 @@ export function AppSidebar({ ...props }: AppSidebarProps) {
                         <SidebarMenuSubButton>
                             <Package />
                             {item.name}
-                            <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
+                            <ChevronDown
+                                className={cn(
+                                    "ml-auto transition-transform",
+                                    isOpen && "rotate-180",
+                                )}
+                            />
                         </SidebarMenuSubButton>
                     </CollapsibleTrigger>
                     <CollapsibleContent>

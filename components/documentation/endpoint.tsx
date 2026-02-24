@@ -15,14 +15,13 @@ export default function Endpoint({ endpoint, spath, models }: EndpointProps) {
                 <div className="flex flex-row gap-2 items-start">
                     <code className="flex flex-wrap items-baseline mt-0.5 leading-tight">
                         <span className="text-[0.95rem] text-muted-foreground">{spath}.</span>
-                        <div className="flex flex-row items-center">
+                        <div className="flex flex-row items-start">
                             <span className="text-[1.05rem] font-semibold">
                                 <span className="break-all">{endpoint.name}</span>
-                                <ActorIcon
-                                    actor={endpoint.actor}
-                                    className="relative -bottom-0.5 -right-1"
-                                />
                             </span>
+                            <div className="relative top-0">
+                                <ActorIcon actor={endpoint.actor} domains={endpoint.domains} />
+                            </div>
                         </div>
                     </code>
                 </div>

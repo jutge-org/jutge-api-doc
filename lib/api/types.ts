@@ -19,7 +19,8 @@ export type ApiEndpoint = {
     name: string
     summary?: string
     description?: string
-    actor?: string
+    actor: string
+    domains: string[]
     input: any
     output: any
     ifiles: string
@@ -44,7 +45,8 @@ export type Item = {
     url: string
     type: string
     spath: string
-    actor?: string
+    actor: string
+    domains: string[]
     isActive?: boolean
     items?: Item[]
 }
