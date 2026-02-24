@@ -45,8 +45,7 @@ export type Item = {
     url: string
     type: string
     spath: string
-    actor: string
-    domains: string[]
+    actor?: string
     isActive?: boolean
     items?: Item[]
 }

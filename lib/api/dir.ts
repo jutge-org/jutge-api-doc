@@ -2,7 +2,7 @@ import env from "@/lib/env"
 import { ApiDir, ApiModel, ApiModule, Item } from "./types"
 
 export async function getApiDir(): Promise<ApiDir> {
-    const response = await fetch(`${env.JUTGE_API_URL}/dir`, { cache: "force-cache"})
+    const response = await fetch(`${env.JUTGE_API_URL}/dir`, { cache: "force-cache" })
     const result = await response.json()
     return {
         info: result.info,
@@ -34,7 +34,6 @@ export function endpoints(mod: ApiModule, path: string[]): Item[] {
             url: `#${path.join(".")}.${endpoint.name}`,
             type: "endpoint",
             spath: path.map((p) => `${p}.`).join(""),
-            actor: endpoint.actor,
             isActive: false,
         }
     })
