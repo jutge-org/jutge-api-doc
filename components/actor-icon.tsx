@@ -36,25 +36,26 @@ export default function ActorIcon({
     if (domains?.includes("exam") && domains?.includes("contest")) {
         exam_contest = (
             <Badge
-                variant="default"
-                className="-pt-4 py-0 px-1 leading-3.5 opacity-40 flex flex-row items-stretch"
+                variant="secondary"
+                className="py-0 px-1 text-[10px] leading-normal bg-transparent text-foreground/40 border-foreground/20"
             >
-                exams
-                <span className="h-3.5 mx-1 w-[1px] border-l border-background/50"></span>
-                contests
+                e|c
             </Badge>
         )
         exam_contest_tooltip = "Available in exam or contest mode"
     }
 
     let jutge, jutge_tooltip
-    if (!domains?.includes("jutge")) {
+    if (domains?.includes("jutge")) {
         jutge = (
-            <Badge variant="default" className="py-0 px-1 leading-3.5 line-through">
-                jutge
+            <Badge
+                variant="secondary"
+                className="py-0 px-1 text-[10px] leading-normal bg-transparent text-foreground/40 border-foreground/20"
+            >
+                j
             </Badge>
         )
-        jutge_tooltip = "Not available in normal mode"
+        jutge_tooltip = "Available in normal mode"
     }
 
     return (
