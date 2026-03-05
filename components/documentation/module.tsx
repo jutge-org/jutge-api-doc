@@ -1,8 +1,8 @@
 import type { ApiModel, ApiModule } from "@/lib/api/types"
 import { cn } from "@/lib/utils"
 import { Package } from "lucide-react"
-import { Fragment } from "react"
 import Endpoint from "./endpoint"
+import ModuleWrapper from "./module-wrapper"
 
 type ModuleProps = {
     models: Map<string, ApiModel>
@@ -18,44 +18,43 @@ export default function Module({ models, module, path, level, className }: Modul
     return (
         <>
             {path.length > 0 && endpoints.length > 0 && (
-                <div
-                    id={spath}
-                    className={cn(
-                        level > 0
-                            ? "bg-secondary/60 py-2.5 md:rounded-lg"
-                            : "",
-                        "flex flex-col items-stretch max-w-[45em]",
-                        className,
-                    )}
-                >
-                    {path.length > 0 && (
-                        <h1
-                            className={cn(
-                                "mb-4 flex flex-row gap-2 font-semibold items-center",
-                                "border-b pb-1 text-[1.75em] pl-3 break-all",
-                            )}
-                        >
-                            <Package className={cn("w-6 h-6")} />
-                            {spath}
-                        </h1>
-                    )}
+                <ModuleWrapper endpoints={endpoints.map((ep) => ({ actor: ep.actor, domains: ep.domains }))}>
+                    <div
+                        id={spath}
+                        className={cn(
+                            level > 0
+                                ? "bg-secondary/60 py-2.5 md:rounded-lg"
+                                : "",
+                            "flex flex-col items-stretch max-w-[45em] w-full",
+                            className,
+                        )}
+                    >
+                        {path.length > 0 && (
+                            <h1
+                                className={cn(
+                                    "mb-4 flex flex-row gap-2 font-semibold items-center",
+                                    "border-b pb-1 text-[1.75em] pl-3 break-all",
+                                )}
+                            >
+                                <Package className={cn("w-6 h-6")} />
+                                {spath}
+                            </h1>
+                        )}
 
-                    {endpoints.length > 0 && (
-                        <div
-                            className={cn(
-                                "flex flex-col items-stretch gap-1 pl-4",
-                                level > 0 ? "px-0" : "px-4",
-                            )}
-                        >
-                            {endpoints.map((endpoint, index) => (
-                                <Fragment key={endpoint.name}>
-                                    {index > 0 && <div className="border-t-2 border-dashed" />}
-                                    <Endpoint models={models} endpoint={endpoint} spath={spath} />
-                                </Fragment>
-                            ))}
-                        </div>
-                    )}
-                </div>
+                        {endpoints.length > 0 && (
+                            <div
+                                className={cn(
+                                    "flex flex-col items-stretch gap-1 pl-4",
+                                    level > 0 ? "px-0" : "px-4",
+                                )}
+                            >
+                                {endpoints.map((endpoint) => (
+                                    <Endpoint key={endpoint.name} models={models} endpoint={endpoint} spath={spath} />
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                </ModuleWrapper>
             )}
 
             {submodules

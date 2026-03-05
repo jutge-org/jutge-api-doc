@@ -20,6 +20,7 @@ export const searchDirectory = (dir: ApiDir, query: string): Item[] => {
                     url: `/documentation#${path.join(".")}.${endpoint.name}`,
                     type: "endpoint",
                     actor: endpoint.actor,
+                    domains: endpoint.domains,
                     spath: spath,
                 })
             }

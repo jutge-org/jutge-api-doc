@@ -10,7 +10,7 @@ type EndpointProps = {
 }
 export default function Endpoint({ endpoint, spath, models }: EndpointProps) {
     return (
-        <EndpointWrapper id={`${spath}.${endpoint.name}`}>
+        <EndpointWrapper id={`${spath}.${endpoint.name}`} actor={endpoint.actor} domains={endpoint.domains}>
             <h2 className="mt-1.5 m-0 leading-snug">
                 <div className="flex flex-row gap-2 items-start">
                     <code className="flex flex-wrap items-baseline mt-0.5 leading-tight">

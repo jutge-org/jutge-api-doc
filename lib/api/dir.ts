@@ -34,6 +34,8 @@ export function endpoints(mod: ApiModule, path: string[]): Item[] {
             url: `#${path.join(".")}.${endpoint.name}`,
             type: "endpoint",
             spath: path.map((p) => `${p}.`).join(""),
+            actor: endpoint.actor,
+            domains: endpoint.domains,
             isActive: false,
         }
     })

@@ -13,12 +13,29 @@ import {
     SidebarMenuSubButton,
     SidebarMenuSubItem,
 } from "@/components/ui/sidebar"
+import { matchesFilter, useFilter } from "@/components/filter-provider"
 import { type Tree } from "@/lib/api/dir"
 import { Item } from "@/lib/api/types"
 import { cn } from "@/lib/utils"
 import { ChevronDown, Package, Type } from "lucide-react"
 import { usePathname } from "next/navigation"
 import { useEffect, useState } from "react"
+
+function filterTree(items: Item[], filter: { actor: string; domain: string }): Item[] {
+    if (!filter.actor && !filter.domain) return items
+    return items
+        .map((item) => {
+            if (item.type === "endpoint") {
+                return matchesFilter(item.actor, item.domains, filter) ? item : null
+            }
+            if (item.type === "module" && item.items) {
+                const filtered = filterTree(item.items, filter)
+                return filtered.length > 0 ? { ...item, items: filtered } : null
+            }
+            return item
+        })
+        .filter((item): item is Item => item !== null)
+}
 
 type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
     tree: Tree
@@ -171,11 +188,42 @@ export function AppSidebar({ ...props }: AppSidebarProps) {
     }
 
     const { tree } = props
+    const { actorFilter, setActorFilter, domainFilter, setDomainFilter } = useFilter()
+    const filteredTree = filterTree(tree, { actor: actorFilter, domain: domainFilter })
+
     return (
         <Sidebar {...props} className={props.className}>
             <SidebarContent>
-                <Directory tree={tree} />
+                <Directory tree={filteredTree} />
                 <RawFiles apiRaw={apiRaw} />
+                <SidebarGroup>
+                    <SidebarGroupLabel>Filter</SidebarGroupLabel>
+                    <SidebarGroupContent>
+                        <div className="flex flex-col gap-2 px-2">
+                            <select
+                                className="text-xs border rounded px-1 py-0.5 bg-background"
+                                value={actorFilter}
+                                onChange={(e) => setActorFilter(e.target.value)}
+                            >
+                                <option value="">Credentials: All</option>
+                                <option value="anyActor">Public</option>
+                                <option value="userActor">User</option>
+                                <option value="instructorActor">Instructor</option>
+                                <option value="competitionsActor">Competitions</option>
+                                <option value="adminActor">Admin</option>
+                            </select>
+                            <select
+                                className="text-xs border rounded px-1 py-0.5 bg-background"
+                                value={domainFilter}
+                                onChange={(e) => setDomainFilter(e.target.value)}
+                            >
+                                <option value="">Domain: All</option>
+                                <option value="jutge">Normal (jutge)</option>
+                                <option value="exam_contest">Exam / Contest</option>
+                            </select>
+                        </div>
+                    </SidebarGroupContent>
+                </SidebarGroup>
             </SidebarContent>
         </Sidebar>
     )

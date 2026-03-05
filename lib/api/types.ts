@@ -46,6 +46,7 @@ export type Item = {
     type: string
     spath: string
     actor?: string
+    domains?: string[]
     isActive?: boolean
     items?: Item[]
 }

@@ -1,3 +1,4 @@
+import { FilterProvider } from "@/components/filter-provider"
 import Footer from "@/components/footer"
 import ThemedBody from "@/components/theme/themed-body"
 import { getApiDir } from "@/lib/api/dir"
@@ -23,10 +24,12 @@ export default async function RootLayout({
     return (
         <html lang="en">
             <ThemedBody className={cn(inter.className, "min-h-screen flex flex-col items-stretch")}>
-                <Header directory={directory} />
-                <div className="mt-(--topbar-height)"></div>
-                <div className="min-h-screen">{children}</div>
-                <Footer />
+                <FilterProvider>
+                    <Header directory={directory} />
+                    <div className="mt-(--topbar-height)"></div>
+                    <div className="min-h-screen">{children}</div>
+                    <Footer />
+                </FilterProvider>
             </ThemedBody>
         </html>
     )

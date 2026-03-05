@@ -1,5 +1,6 @@
 "use client"
 
+import { matchesFilter, useFilter } from "@/components/filter-provider"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
@@ -23,6 +24,7 @@ export default function SearchBar({ directory, className }: Props) {
     const [results, setResults] = useState<Item[]>([])
     const resultsRef = useRef<HTMLDivElement>(null)
     const [platform] = usePlatform()
+    const { actorFilter, domainFilter } = useFilter()
 
     const go = (index: number) => {
         const result = results[index]
@@ -77,10 +79,15 @@ export default function SearchBar({ directory, className }: Props) {
     })
 
     useEffect(() => {
-        const results = searchDirectory(directory, search)
+        let results = searchDirectory(directory, search)
+        if (actorFilter || domainFilter) {
+            results = results.filter((r) =>
+                matchesFilter(r.actor, r.domains, { actor: actorFilter, domain: domainFilter }),
+            )
+        }
         setResults(results)
         setSelected(0)
-    }, [search, directory])
+    }, [search, directory, actorFilter, domainFilter])
 
     useEffect(() => {
         const resultsDiv = resultsRef.current
