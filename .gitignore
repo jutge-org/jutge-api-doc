@@ -41,3 +41,5 @@ next-env.d.ts
 generated-clients
 # The local copy of the directory
 dir.json 
+
+.playwright-mcp
