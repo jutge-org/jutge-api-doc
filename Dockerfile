@@ -12,6 +12,8 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 ENV DOCKER_BUILD=true
+ENV JUTGE_API_URL=https://api.jutge.org/api
+ENV JUTGE_API_CLIENTS_DIR=jutge-api-clients
 RUN bun run build
 
 # runner

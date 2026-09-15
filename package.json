@@ -7,7 +7,10 @@
         "build": "next build --webpack",
         "start": "next start",
         "lint": "next lint",
-        "deploy": "./deploy.sh"
+        "deploy-pau": "./deploy.sh",
+        "deploy": "bun run docker-build-amd64 && (docker save api-doc | ssh jutge@jutge.org 'docker load') && ssh jutge@jutge.org 'docker compose up -d --force-recreate'",
+        "docker-build": "docker build -t api-doc .",
+        "docker-build-amd64": "docker build --platform linux/amd64/v2 -t api-doc ."      
     },
     "dependencies": {
         "@codemirror/autocomplete": "^6.20.1",
