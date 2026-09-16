@@ -5,6 +5,7 @@ import ts from "typescript"
 import { InputContinuationFunc, InputContinuationParam, InputMessage, OutputMessage } from "./types"
 
 const jutgeInstance = new JutgeApiClient()
+jutgeInstance.userAgent = "api-doc"
 
 let last: any = undefined
 

@@ -1,5 +1,5 @@
 /**
- * This file has been automatically generated at 2025-01-18T09:24:21.504Z
+ * This file has been automatically generated at 2026-09-16T06:32:36.067Z
  *
  * Name:    Jutge API
  * Version: 2.0.0
@@ -7,8 +7,11 @@
  * Description: Jutge API
  */
 
-// /* eslint-disable @typescript-eslint/no-explicit-any */
-// /* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
+// Type for dates
+type Iso8601Date = string // Example: "2026-12-31T11:00:00.000+01:00" is the 31st of December 2026 at 11:00:00 in Barcelona in Winter Time
 
 // Models
 
@@ -17,11 +20,69 @@ export type CredentialsIn = {
     password: string
 }
 
+export type ExamCredentialsIn = {
+    email: string
+    password: string
+    exam: string
+    exam_password: string
+}
+
 export type CredentialsOut = {
     token: string
-    expiration: string | string | string | number
+    expiration: Iso8601Date
     user_uid: string
+    error: string
 }
+
+export type CredentialsWithUsernameIn = {
+    username: string
+    password: string
+}
+
+export type RegisterIn = {
+    name: string
+    email: string
+    birth_year: number
+    parent_email: string | null
+    country_id: string
+    policies_agreement: boolean
+    recaptcha_token: string
+    password: string
+}
+
+export type RequestPasswordResetIn = {
+    email: string
+    hostname: string
+    recaptcha_token: string
+}
+
+export type ConfirmPasswordRequestIn = {
+    email: string
+    code: string
+    password: string
+    recaptcha_token: string
+}
+
+export type RequestUnregistrationIn = {
+    password: string
+    hostname: string
+    recaptcha_token: string
+}
+
+export type ConfirmUnregistrationIn = {
+    email: string
+    code: string
+    recaptcha_token: string
+}
+
+export type RequestChangeEmailIn = {
+    new_email: string
+    password: string
+    hostname: string
+    recaptcha_token: string
+}
+
+export type ConfirmChangeEmailIn = ConfirmUnregistrationIn
 
 export type Time = {
     full_time: string
@@ -31,10 +92,36 @@ export type Time = {
     date: string
 }
 
+export type RecentSubmissions = {
+    latest_01_minutes: number
+    latest_05_minutes: number
+    latest_15_minutes: number
+    latest_60_minutes: number
+}
+
 export type HomepageStats = {
     users: number
     problems: number
     submissions: number
+    exams: number
+    contests: number
+    recent_submissions: RecentSubmissions
+}
+
+export type ColorMapping = Record<string, Record<string, string>>
+
+export type ApiVersion = {
+    version: string
+    mode: string
+    gitHash: string
+    gitBranch: string
+    gitDate: string
+}
+
+export type RequestInformation = {
+    url: string
+    ip: string
+    domain: string
 }
 
 export type Language = {
@@ -43,14 +130,10 @@ export type Language = {
     own_name: string
 }
 
-export type Languages = Record<string, Language>
-
 export type Country = {
     country_id: string
     eng_name: string
 }
-
-export type Countries = Record<string, Country>
 
 export type Compiler = {
     compiler_id: string
@@ -67,47 +150,83 @@ export type Compiler = {
     notes: string | null
 }
 
-export type Compilers = Record<string, Compiler>
-
 export type Driver = {
     driver_id: string
 }
-
-export type Drivers = Record<string, Driver>
 
 export type Verdict = {
     verdict_id: string
     name: string
     description: string
+    emoji: string
 }
-
-export type Verdicts = Record<string, Verdict>
 
 export type Proglang = {
     proglang_id: string
 }
 
-export type Proglangs = Record<string, Proglang>
+export type Timezone = {
+    timezone_id: string
+}
 
-export type Tables = {
-    languages: Languages
-    countries: Countries
-    compilers: Compilers
-    drivers: Drivers
-    verdicts: Verdicts
-    proglangs: Proglangs
+export type AllTables = {
+    languages: Record<string, Language>
+    countries: Record<string, Country>
+    compilers: Record<string, Compiler>
+    drivers: Record<string, Driver>
+    verdicts: Record<string, Verdict>
+    proglangs: Record<string, Proglang>
+}
+
+export type PublicProfile = {
+    email: string
+    name: string
+    username: string | null
+    nickname: string | null
+}
+
+export type PublicCourse = {
+    course_nm: string
+    title: string
+    description: string
+    public: number
+    official: number
+    icon: string | null
+    lists: string[]
+    problem_count: number
+    owner: PublicProfile
+}
+
+export type PublicCourses = Record<string, PublicCourse>
+
+export type ProblemSummary = {
+    summary_1s: string
+    summary_1p: string
+    keywords: string
+    model: string
+    duration: number
+}
+
+export type SolutionTags = {
+    tags: string
+    model: string
+    duration: number
 }
 
 export type BriefAbstractProblem = {
     problem_nm: string
     author: string | null
     author_email: string | null
+    icon: string | null
     public: number | null
     official: number | null
     compilers: string | null
     driver_id: string | null
     type: string | null
     deprecation: string | null
+    created_at: Iso8601Date
+    updated_at: Iso8601Date
+    solution_tags: SolutionTags | null
 }
 
 export type BriefProblem = {
@@ -119,6 +238,7 @@ export type BriefProblem = {
     translator: string | null
     translator_email: string | null
     checked: number | null
+    summary: ProblemSummary | null
 }
 
 export type BriefProblemDict = Record<string, BriefProblem>
@@ -127,13 +247,31 @@ export type AbstractProblem = {
     problem_nm: string
     author: string | null
     author_email: string | null
+    icon: string | null
     public: number | null
     official: number | null
     compilers: string | null
     driver_id: string | null
     type: string | null
     deprecation: string | null
+    created_at: Iso8601Date
+    updated_at: Iso8601Date
+    solution_tags: SolutionTags | null
     problems: BriefProblemDict
+}
+
+export type AbstractProblemSuppl = {
+    compilers_with_ac: string[]
+    proglangs_with_ac: string[]
+}
+
+export type AbstractProblemSuppls = Record<string, AbstractProblemSuppl>
+
+export type ProblemSuppl = {
+    compilers_with_ac: string[]
+    proglangs_with_ac: string[]
+    official_solution_checks: Record<string, boolean>
+    handler: any
 }
 
 export type Problem = {
@@ -145,21 +283,8 @@ export type Problem = {
     translator: string | null
     translator_email: string | null
     checked: number | null
+    summary: ProblemSummary | null
     abstract_problem: BriefAbstractProblem
-}
-
-export type AbstractProblems = Record<string, AbstractProblem>
-
-export type AbstractProblemExtras = {
-    compilers_with_ac: string[]
-    proglangs_with_ac: string[]
-}
-
-export type ProblemExtras = {
-    compilers_with_ac: string[]
-    proglangs_with_ac: string[]
-    official_solution_checks: Record<string, boolean>
-    handler: any
 }
 
 export type Testcase = {
@@ -168,7 +293,32 @@ export type Testcase = {
     correct_b64: string
 }
 
-export type Testcases = Testcase[]
+export type ProblemRich = {
+    problem_id: string
+    problem_nm: string
+    language_id: string
+    title: string
+    original_language_id: string
+    translator: string | null
+    translator_email: string | null
+    checked: number | null
+    summary: ProblemSummary | null
+    abstract_problem: BriefAbstractProblem
+    sample_testcases: Testcase[]
+    html_statement: string
+}
+
+export type SearchResult = {
+    problem_nm: string
+    score: number
+}
+
+export type SearchResults = SearchResult[]
+
+export type GetSomeAbstractProblemsIn = {
+    regexp: string
+    limit: number
+}
 
 export type AllKeys = {
     problems: string[]
@@ -186,11 +336,12 @@ export type Profile = {
     webpage: string | null
     description: string | null
     affiliation: string | null
-    birth_year: number
+    birth_year: number | null
     max_subsxhour: number
     max_subsxday: number
     administrator: number
     instructor: number
+    tutor: number
     parent_email: string | null
     country_id: string | null
     timezone_id: string
@@ -200,26 +351,20 @@ export type Profile = {
 
 export type NewProfile = {
     name: string
-    birth_year: number
-    nickname: string
-    webpage: string
-    affiliation: string
-    description: string
-    country_id: string
-    timezone_id: string
+    birth_year: number | null
+    nickname: string | null
+    webpage: string | null
+    affiliation: string | null
+    description: string | null
+    country_id: string | null
+    timezone_id: string | null
+    compiler_id: string | null
+    language_id: string | null
 }
 
-export type PasswordUpdate = {
+export type NewPassword = {
     oldPassword: string
     newPassword: string
-}
-
-export type TypeA = {
-    a: string
-}
-
-export type TypeB = {
-    a: string
 }
 
 export type DateValue = {
@@ -231,7 +376,7 @@ export type HeatmapCalendar = DateValue[]
 
 export type Distribution = Record<string, number>
 
-export type Distributions = {
+export type AllDistributions = {
     verdicts: Distribution
     compilers: Distribution
     proglangs: Distribution
@@ -239,12 +384,15 @@ export type Distributions = {
     submissions_by_weekday: Distribution
 }
 
-export type DashboardStats = Record<string, number | string>
-
 export type Dashboard = {
-    stats: DashboardStats
+    stats: Distribution
     heatmap: HeatmapCalendar
-    distributions: Distributions
+    distributions: AllDistributions
+}
+
+export type DateRange2 = {
+    start_time: string
+    end_time: string
 }
 
 export type Submission = {
@@ -253,48 +401,162 @@ export type Submission = {
     compiler_id: string
     annotation: string | null
     state: string
-    time_in: string | string | string | number
+    time_in: Iso8601Date
     veredict: string | null
     veredict_info: string | null
     veredict_publics: string | null
     ok_publics_but_wrong: number
 }
 
-export type Submissions = Submission[]
+export type NewSubmissionIn = {
+    problem_id: string
+    compiler_id: string
+    annotation: string
+    extraSubmissionInfo: any
+}
 
-export type DictSubmissions = Record<string, Submission>
-
-export type DictDictSubmissions = Record<string, DictSubmissions>
-
-export type SubmissionPostOut = {
+export type NewSubmissionOut = {
     submission_id: string
 }
 
-export type PublicProfile = {
+export type CompilationErrors = {
+    compilation1: string | null
+    compilation2: string | null
+    linkage: string | null
+    interface: string | null
+}
+
+export type SubmissionAnalysis = {
+    testcase: string
+    execution: string
+    verdict: string
+}
+
+export type TestcaseAnalysis = {
+    testcase: string
+    execution: string
+    verdict: string
+    input_b64: string
+    output_b64: string
+    expected_b64: string
+}
+
+export type GetGameResultIn = {
+    problem_id: string
+    submission_id: string
+}
+
+export type MatchSchema = {
+    seed: number
+    status: number[]
+    players: string[]
+    scores: number[]
+}
+
+export type ProblemSchema = {
+    author: string
+    description: string
     email: string
-    name: string
-    username: string | null
+    gamename: string
+    title: string
+    version: number
+}
+
+export type SubmissionSchema = {
+    compiler_id: string
+    description: string
+    email: string
+    problem_id: string
+}
+
+export type GetGameResultOut = {
+    games: MatchSchema[]
+}
+
+export type GetGameOutputIn = {
+    problem_id: string
+    submission_id: string
+    game_id: number
+}
+
+export type CodeMetrics = {
+    comment_ratio: number
+    cyclomatic_complexity: number
+    fanout_external: number
+    fanout_internal: number
+    halstead_bugprop: number
+    halstead_difficulty: number
+    halstead_effort: number
+    halstead_timerequired: number
+    halstead_volume: number
+    loc: number
+    maintainability_index: number
+    operands_sum: number
+    operands_uniq: number
+    operators_sum: number
+    operators_uniq: number
+    pylint: number
+    tiobe: number
+    tiobe_compiler: number
+    tiobe_complexity: number
+    tiobe_coverage: number
+    tiobe_duplication: number
+    tiobe_fanout: number
+    tiobe_functional: number
+    tiobe_security: number
+    tiobe_standard: number
+}
+
+export type CodeMetricsResult = {
+    userMetrics: CodeMetrics | null
+    solutionMetrics: CodeMetrics | null
+}
+
+export type ScoringPart = {
+    testcase: string
+    verdict: string
+    verdict_info: string | null
+    points: number
+    correct_points: number
+}
+
+export type Scoring = ScoringPart[] | null
+
+export type DebugDirectories = {
+    problem: string
+    submission: string
+    correction: string
+    submission_uid: string
+}
+
+export type DebugInformation = {
+    correction: any
+    solution: any
+    stderr: string | null
+    stdout: string | null
+    directories: DebugDirectories | null
 }
 
 export type BriefCourse = {
     course_nm: string
     title: string | null
     description: string | null
-    annotation: string | null
     public: number
     official: number
+    icon: string | null
+    owner: PublicProfile
+    enrollment: string | string | string
 }
-
-export type BriefCourses = Record<string, BriefCourse>
 
 export type Course = {
     course_nm: string
     title: string | null
     description: string | null
-    annotation: string | null
     public: number
     official: number
+    icon: string | null
     owner: PublicProfile
+    enrollment: string | string | string
     lists: string[]
 }
 
@@ -302,8 +564,6 @@ export type ListItem = {
     problem_nm: string | null
     description: string | null
 }
-
-export type ListItems = ListItem[]
 
 export type BriefList = {
     list_nm: string
@@ -314,8 +574,6 @@ export type BriefList = {
     official: number
 }
 
-export type BriefLists = Record<string, BriefList>
-
 export type List = {
     list_nm: string
     title: string | null
@@ -323,8 +581,86 @@ export type List = {
     annotation: string | null
     public: number
     official: number
-    items: ListItems
+    items: ListItem[]
     owner: PublicProfile
+}
+
+export type ReadyExam = {
+    exam_key: string
+    title: string
+    place: string
+    description: string
+    exp_time_start: Iso8601Date
+    running_time: number
+    contest: boolean
+}
+
+export type RunningExamProblem = {
+    problem_nm: string
+    icon: string | null
+    caption: string | null
+    weight: number | null
+}
+
+export type RunningExamDocument = {
+    document_nm: string
+    title: string
+    description: string
+}
+
+export type RunningExam = {
+    title: string
+    description: string
+    instructions: string
+    time_start: Iso8601Date | null
+    exp_time_start: Iso8601Date
+    running_time: number
+    contest: number
+    problems: RunningExamProblem[]
+    compilers: string[]
+    documents: RunningExamDocument[]
+}
+
+export type StudentExamCourse = {
+    course_nm: string
+    title: string
+    icon: string | null
+}
+
+export type BriefExam = {
+    exam_key: string
+    title: string
+    place: string
+    description: string
+    contest: boolean
+    course: StudentExamCourse
+    owner: PublicProfile
+    visible_submissions: boolean
+    status: string
+    exp_time_start: Iso8601Date
+    running_time: Iso8601Date
+    time_start: Iso8601Date | null
+    time_end: Iso8601Date | null
+}
+
+export type BriefExams = Record<string, BriefExam>
+
+export type Exam = {
+    exam_key: string
+    title: string
+    place: string
+    description: string
+    contest: boolean
+    course: StudentExamCourse
+    owner: PublicProfile
+    visible_submissions: boolean
+    status: string
+    exp_time_start: Iso8601Date
+    running_time: Iso8601Date
+    time_start: Iso8601Date | null
+    time_end: Iso8601Date | null
+    problems: string[]
+    submissions: Submission[]
 }
 
 export type AbstractStatus = {
@@ -336,8 +672,6 @@ export type AbstractStatus = {
     nb_scored_submissions: number
     status: string
 }
-
-export type AbstractStatuses = Record<string, AbstractStatus>
 
 export type Status = {
     problem_id: string
@@ -352,7 +686,7 @@ export type Status = {
 
 export type Award = {
     award_id: string
-    time: string | string | string | number
+    time: Iso8601Date
     type: string
     icon: string
     title: string
@@ -363,7 +697,7 @@ export type Award = {
 
 export type BriefAward = {
     award_id: string
-    time: string | string | string | number
+    time: Iso8601Date
     type: string
     icon: string
     title: string
@@ -371,28 +705,80 @@ export type BriefAward = {
     youtube: string | null
 }
 
-export type BriefAwards = Record<string, BriefAward>
+export type Settings = Record<string, any>
 
-export type TagsDict = Record<string, string[]>
+export type Setting = {
+    key: string
+    value: any
+}
+
+export type TradingCard = {
+    card_id: string
+    created_at: Iso8601Date
+    updated_at: Iso8601Date
+}
+
+export type TradingCards = TradingCard[]
+
+export type EnrolledStudent = {
+    name: string
+    email: string
+}
+
+export type EnrolledTutor = EnrolledStudent
+
+export type CourseSubmission = {
+    time: string
+    user_uid: string
+    email: string
+    problem_id: string
+    submission_id: string
+    verdict: string
+    compiler_id: string
+    proglang: string
+}
+
+export type TutorSubmission = {
+    problem_id: string
+    submission_id: string
+    compiler_id: string
+    annotation: string | null
+    state: string
+    time_in: Iso8601Date
+    veredict: string | null
+    veredict_info: string | null
+    veredict_publics: string | null
+    ok_publics_but_wrong: number
+    exam_submission_id: string | null
+}
 
 export type Document = {
     document_nm: string
     title: string
     description: string
+    type: string
+    created_at: Iso8601Date
+    updated_at: Iso8601Date
 }
 
-export type Documents = Document[]
+export type DocumentCreation = {
+    document_nm: string
+    title: string
+    description: string
+}
 
-export type InstructorList = {
+export type DocumentUpdate = DocumentCreation
+
+export type InstructorBriefList = {
     list_nm: string
     title: string
     description: string
     annotation: string
     official: number
     public: number
+    created_at: Iso8601Date
+    updated_at: Iso8601Date
 }
-
-export type InstructorLists = InstructorList[]
 
 export type InstructorListItem = {
     problem_nm: string | null
@@ -401,7 +787,19 @@ export type InstructorListItem = {
 
 export type InstructorListItems = InstructorListItem[]
 
-export type InstructorListWithItems = {
+export type InstructorList = {
+    list_nm: string
+    title: string
+    description: string
+    annotation: string
+    official: number
+    public: number
+    created_at: Iso8601Date
+    updated_at: Iso8601Date
+    items: InstructorListItems
+}
+
+export type InstructorListCreation = {
     list_nm: string
     title: string
     description: string
@@ -411,16 +809,19 @@ export type InstructorListWithItems = {
     items: InstructorListItems
 }
 
-export type InstructorCourse = {
+export type InstructorListUpdate = InstructorListCreation
+
+export type InstructorBriefCourse = {
     course_nm: string
     title: string
     description: string
     annotation: string
     official: number
     public: number
+    icon: string | null
+    created_at: Iso8601Date
+    updated_at: Iso8601Date
 }
-
-export type InstructorCourses = InstructorCourse[]
 
 export type CourseMembers = {
     invited: string[]
@@ -428,51 +829,66 @@ export type CourseMembers = {
     pending: string[]
 }
 
-export type InstructorCourseWithItems = {
+export type InstructorCourse = {
     course_nm: string
     title: string
     description: string
     annotation: string
     official: number
     public: number
+    icon: string | null
+    created_at: Iso8601Date
+    updated_at: Iso8601Date
     lists: string[]
     students: CourseMembers
     tutors: CourseMembers
 }
 
-export type InstructorExam = {
-    exam_nm: string
-    title: string
-    place: string | null
-    description: string | null
-    code: string | null
-    time_start: string | string | string | number | null
-    exp_time_start: string | string | string | number
-    running_time: number
-    visible_submissions: number
-    started_by: string | null
-    contest: number
-    instructions: string | null
-    avatars: string | null
-    anonymous: number
+export type StudentProfile = {
+    name: string
+    email: string
 }
 
-export type InstructorExams = InstructorExam[]
+export type InstructorCourseCreation = {
+    course_nm: string
+    title: string
+    description: string
+    annotation: string
+    official: number
+    public: number
+    lists: string[] | null
+    students: CourseMembers | null
+    tutors: CourseMembers | null
+}
+
+export type InstructorCourseUpdate = {
+    course_nm: string
+    title: string | null
+    description: string | null
+    annotation: string | null
+    official: number | null
+    public: number | null
+    lists: string[] | null
+    students: CourseMembers | null
+    tutors: CourseMembers | null
+}
+
+export type InstructorCourseUpdateIconInput = {
+    course_nm: string
+    icon: string
+}
 
 export type InstructorExamCourse = {
-    title: string
-    description: string
     course_nm: string
-    annotation: string
-}
-
-export type InstructorExamDocument = {
-    document_nm: string
     title: string
-    description: string
 }
 
-export type InstructorExamDocuments = InstructorExamDocument[]
+export type InstructorExamDocument = RunningExamDocument
+
+export type InstructorExamCompiler = {
+    compiler_id: string
+    name: string
+}
 
 export type InstructorExamProblem = {
     problem_nm: string
@@ -481,11 +897,9 @@ export type InstructorExamProblem = {
     caption: string | null
 }
 
-export type InstructorExamProblems = InstructorExamProblem[]
-
 export type InstructorExamStudent = {
     email: string
-    name: string
+    name: string | null
     code: string | null
     restricted: number
     annotation: string | null
@@ -500,42 +914,32 @@ export type InstructorExamStudent = {
     invited: number
 }
 
-export type InstructorExamStudents = InstructorExamStudent[]
-
-export type InstructorExamWithItems = {
-    exam_nm: string
-    title: string
-    place: string | null
-    description: string | null
-    code: string | null
-    time_start: string | string | string | number | null
-    exp_time_start: string | string | string | number
-    running_time: number
-    visible_submissions: number
-    started_by: string | null
-    contest: number
-    instructions: string | null
-    avatars: string | null
-    anonymous: number
-    course: InstructorExamCourse
-    documents: InstructorExamDocuments
-    problems: InstructorExamProblems
-    students: InstructorExamStudents
-}
-
 export type InstructorExamCreation = {
     exam_nm: string
     course_nm: string
     title: string
-    place: string
-    description: string
-    instructions: string
-    exp_time_start: string
-    running_time: number
-    contest: number
+    exp_time_start: Iso8601Date
 }
 
-export type InstructorExamStudentPost = {
+export type InstructorExamUpdate = {
+    exam_nm: string
+    course_nm: string
+    title: string
+    place: string
+    code: string
+    description: string
+    time_start: Iso8601Date | null
+    exp_time_start: Iso8601Date
+    running_time: number
+    visible_submissions: number
+    started_by: string | null
+    contest: number
+    instructions: string
+    avatars: string | null
+    anonymous: number
+}
+
+export type InstructorNewExamStudent = {
     email: string
     invited: number
     restricted: number
@@ -544,14 +948,15 @@ export type InstructorExamStudentPost = {
     annotation: string
 }
 
-export type InstructorExamStudentsPost = InstructorExamStudentPost[]
-
 export type InstructorExamSubmissionsOptions = {
     problems: string
     include_source: boolean
     include_pdf: boolean
     include_metadata: boolean
     only_last: boolean
+    font_size: number
+    layout: string
+    obscure_private_testcases_names: boolean
 }
 
 export type Pack = {
@@ -559,16 +964,200 @@ export type Pack = {
     href: string
 }
 
+export type InstructorBriefExam = {
+    exam_nm: string
+    title: string
+    place: string | null
+    description: string | null
+    code: string | null
+    time_start: Iso8601Date | null
+    exp_time_start: Iso8601Date
+    running_time: number
+    visible_submissions: number
+    started_by: string | null
+    contest: number
+    instructions: string | null
+    avatars: string | null
+    anonymous: number
+    course: InstructorExamCourse
+    created_at: Iso8601Date
+    updated_at: Iso8601Date
+}
+
+export type InstructorExam = {
+    exam_nm: string
+    title: string
+    place: string | null
+    description: string | null
+    code: string | null
+    time_start: Iso8601Date | null
+    exp_time_start: Iso8601Date
+    running_time: number
+    visible_submissions: number
+    started_by: string | null
+    contest: number
+    instructions: string | null
+    avatars: string | null
+    anonymous: number
+    course: InstructorExamCourse
+    created_at: Iso8601Date
+    updated_at: Iso8601Date
+    documents: RunningExamDocument[]
+    compilers: InstructorExamCompiler[]
+    problems: InstructorExamProblem[]
+    students: InstructorExamStudent[]
+}
+
+export type ExamStatisticsEntry = {
+    minute: number
+    ok: number
+    ko: number
+}
+
+export type ExamStatistics = {
+    submissions: Record<string, Record<string, number>>
+    statuses: Record<string, Record<string, number>>
+    timeline: ExamStatisticsEntry[]
+    compilers: Record<string, Record<string, number>>
+    proglangs: Record<string, Record<string, number>>
+}
+
+export type RankingResult = {
+    problem_nm: string
+    submissions: number
+    verdict: string | null
+    score: number
+    time: number
+    penalty: number
+    wrongs: number
+}
+
+export type RankingRow = {
+    position: number | null
+    name: string
+    avatar: string | null
+    score: number
+    time: number
+    invited: boolean
+    submissions: number
+    rankingResults: RankingResult[]
+}
+
+export type Ranking = RankingRow[]
+
+export type WebStream = {
+    title: string
+    id: string
+}
+
+export type ProblemGenerationInfo = {
+    title: string
+    prompt: string
+    model: string
+}
+
+export type Deprecation = {
+    problem_nm: string
+    reason: string | null
+}
+
+export type SharingSettings = {
+    problem_nm: string
+    passcode: string | null
+    shared_testcases: boolean
+    shared_solutions: boolean
+}
+
+export type ProblemAlerts = {
+    problem_nm: string
+    se_count: number
+    ie_count: number
+}
+
+export type ProblemAnonymousSubmission = {
+    time: string
+    anonymous_user_id: string
+    problem_id: string
+    verdict: string
+    compiler_id: string
+    proglang: string
+}
+
+export type ShareWithInp = {
+    problem_nm: string
+    emails: string[]
+    text: string
+}
+
+export type ProblemPopularityBucketEntry = {
+    log2_bucket: number
+    bucket_min: number
+    bucket_max: number
+    problem_count: number
+}
+
 export type SubmissionQuery = {
     email: string
     problem_nm: string
     problem_id: string
-    time: string | string | string | number
+    time: Iso8601Date
     ip: string
     verdict: string
 }
 
 export type SubmissionsQuery = SubmissionQuery[]
+
+export type TagsDict = Record<string, string[]>
+
+export type ChatMessage = {
+    role: string
+    content: string
+}
+
+export type ChatPrompt = {
+    model: string
+    label: string
+    messages: ChatMessage[]
+    addUsage: boolean
+}
+
+export type LlmUsageEntry = {
+    id: string
+    created_at: Iso8601Date
+    model: string
+    label: string
+    duration: number
+    input_tokens: number
+    output_tokens: number
+    finish_reason: string
+}
+
+export type CreateImageInput = {
+    model: string
+    label: string
+    prompt: string
+    size: string
+}
+
+export type SubmitMatchUserPlayer = {
+    name: string
+    user_uid: string
+    submission_id: string
+}
+
+export type SubmitMatchBotPlayer = {
+    name: string
+    code: string
+}
+
+export type SubmitMatchPlayer = SubmitMatchUserPlayer | SubmitMatchBotPlayer
+
+export type SubmitMatchIn = {
+    problem_id: string
+    compiler_id: string
+    annotation: string
+    players: SubmitMatchPlayer[]
+}
 
 export type InstructorEntry = {
     username: string
@@ -577,6 +1166,33 @@ export type InstructorEntry = {
 }
 
 export type InstructorEntries = InstructorEntry[]
+
+export type AdminCourseInstructor = {
+    username: string | null
+    name: string
+    email: string
+}
+
+export type AdminCourse = {
+    course_id: string
+    course_nm: string
+    title: string
+    description: string
+    official: number
+    public: number
+    created_at: Iso8601Date
+    updated_at: Iso8601Date
+    icon: string | null
+    instructor: AdminCourseInstructor
+}
+
+export type AdminCourses = AdminCourse[]
+
+export type AdminCourseSetPublicAndOfficial = {
+    course_id: string
+    public: number
+    official: number
+}
 
 export type UserCreation = {
     email: string
@@ -587,7 +1203,49 @@ export type UserCreation = {
     instructor: number
 }
 
-export type FreeDiskSpace = {
+export type UserEmailAndName = {
+    email: string
+    name: string
+}
+
+export type UsersEmailsAndNames = UserEmailAndName[]
+
+export type ProfileForAdmin = {
+    user_id: string
+    user_uid: string
+    email: string
+    name: string
+    username: string | null
+    nickname: string | null
+    webpage: string | null
+    description: string | null
+    affiliation: string | null
+    birth_year: number | null
+    max_subsxhour: number
+    max_subsxday: number
+    administrator: number
+    instructor: number
+    parent_email: string | null
+    country_id: string | null
+    timezone_id: string
+    compiler_id: string | null
+    language_id: string | null
+    locked: number
+    banned: number
+    nb_bans: number
+    reason: string | null
+    creation_date: Iso8601Date
+}
+
+export type DatabasesInfoItem = {
+    name: string
+    size: number
+    mtime: Iso8601Date
+}
+
+export type DatabasesInfo = DatabasesInfoItem[]
+
+export type FreeDiskSpaceItem = {
     disk: string
     filesystem: string
     size: string
@@ -597,19 +1255,16 @@ export type FreeDiskSpace = {
     mounted: string
 }
 
+export type NullableFreeDiskSpaceItem = FreeDiskSpaceItem | null
+
+export type FreeDiskSpace = Record<string, NullableFreeDiskSpaceItem>
+
 export type RecentConnectedUsers = {
     latest_hour: number
     latest_day: number
     latest_week: number
     latest_month: number
     latest_year: number
-}
-
-export type RecentSubmissions = {
-    latest_01_minutes: number
-    latest_05_minutes: number
-    latest_15_minutes: number
-    latest_60_minutes: number
 }
 
 export type RecentLoadAverages = {
@@ -629,7 +1284,8 @@ export type Zombies = {
 }
 
 export type AdminDashboard = {
-    free_disk_space: Record<string, FreeDiskSpace | null>
+    databases_info: DatabasesInfo
+    free_disk_space: FreeDiskSpace
     recent_load_averages: RecentLoadAverages
     recent_connected_users: RecentConnectedUsers
     recent_submissions: RecentSubmissions
@@ -642,10 +1298,11 @@ export type UpcomingExam = {
     title: string
     username: string
     email: string
-    exp_time_start: string | string | string | number
+    exp_time_start: Iso8601Date
     running_time: number
     students: number
     name: string
+    contest: number
 }
 
 export type UpcomingExams = UpcomingExam[]
@@ -655,7 +1312,7 @@ export type SubmissionQueueItem = {
     submission_id: string
     problem_id: string
     compiler_id: string
-    time_in: string | string | string | number
+    time_in: Iso8601Date
     exam_id: string | null
     veredict: string | null
     user_id: string
@@ -664,6 +1321,11 @@ export type SubmissionQueueItem = {
 }
 
 export type SubmissionQueueItems = SubmissionQueueItem[]
+
+export type QueueQuery = {
+    verdicts: string[]
+    limit: number
+}
 
 export type UserRankingEntry = {
     user_id: string
@@ -697,19 +1359,19 @@ export type Name = {
 export type SomeType = {
     a: string
     b: number
-    c: boolean | null
-    d: boolean | null
+    c: boolean
+    d: boolean
 }
 
 // Client types
 
 export interface Meta {
     readonly token: string
-    readonly exam: string | null
+    readonly user_uid: string
 }
 
 export interface Download {
-    readonly content: Uint8Array
+    readonly data: Uint8Array
     readonly name: string
     readonly type: string
 }
@@ -717,38 +1379,44 @@ export interface Download {
 // Exceptions
 
 export class UnauthorizedError extends Error {
-    name: string = 'UnauthorizedError'
-    constructor(public message: string = 'Unauthorized') {
+    name: string = "UnauthorizedError"
+    constructor(public message: string = "Unauthorized") {
         super(message)
     }
 }
 
 export class InfoError extends Error {
-    name: string = 'InfoError'
+    name: string = "InfoError"
     constructor(public message: string) {
         super(message)
     }
 }
 
 export class NotFoundError extends Error {
-    name: string = 'NotFoundError'
+    name: string = "NotFoundError"
     constructor(public message: string) {
         super(message)
     }
 }
 
 export class InputError extends Error {
-    name: string = 'InputError'
+    name: string = "InputError"
     constructor(public message: string) {
         super(message)
     }
 }
 
 export class ProtocolError extends Error {
-    name: string = 'ProtocolError'
+    name: string = "ProtocolError"
     constructor(public message: string) {
         super(message)
     }
+}
+
+type CacheEntry = {
+    output: any
+    ofiles: any
+    epoch: number
 }
 
 /**
@@ -759,34 +1427,101 @@ export class ProtocolError extends Error {
 export class JutgeApiClient {
     //
 
+    /** Whether to use cache or not */
+    useCache: boolean = true
+
+    /** Whether to log API calls or not */
+    logApiCalls: boolean = false
+
+    /** Whether to log cache or not */
+    logCache: boolean = false
+
+    /**
+     * User agent to include in the API requests.
+     * This is a metadata included in the request that identifies the client making the call to the server)
+     * You should set this to a value that identifies your client, such as the name of the client and its version.
+     **/
+    userAgent: string = "typescript-client"
+
+    /** Client TTL values (in seconds) */
+    clientTTLs: Map<string, number> = new Map()
+
+    /** The cache */
+    private cache: Map<string, CacheEntry> = new Map()
+
     /** URL to talk with the API */
-    JUTGE_API_URL = process.env.JUTGE_API_URL || 'https://api.jutge.org/api'
+    JUTGE_API_URL = process.env.JUTGE_API_URL || "https://api.jutge.org/api"
+
+    /** Headers to include in the API requests */
+    headers: Record<string, string> = {
+        ...(process.env.JUTGE_DOMAIN ? { "x-forwarded-host": process.env.JUTGE_DOMAIN } : {}),
+    }
 
     /** Meta information */
     meta: Meta | null = null
 
     /** Function that sends a request to the API and returns the response. **/
     async execute(func: string, input: any, ifiles: File[] = []): Promise<[any, Download[]]> {
+        //
+
+        let startTime = new Date()
+        let endTime: Date
+        try {
+            return await this.execute2(func, input, ifiles)
+        } finally {
+            endTime = new Date()
+            if (this.logApiCalls) {
+                const duration = Math.round(endTime.getTime() - startTime.getTime())
+                console.log(`${func}: ${duration}ms`)
+            }
+        }
+    }
+
+    /** Function that sends a request to the API and returns the response. **/
+    async execute2(func: string, input: any, ifiles: File[] = []): Promise<[any, Download[]]> {
+        //
+
+        const caching = this.useCache && this.clientTTLs.has(func) && ifiles.length === 0
+
+        // check cache
+        if (caching) {
+            const key = JSON.stringify({ func, input })
+            const entry = this.cache.get(key)
+            if (entry !== undefined) {
+                if (this.logCache) console.log("found")
+                const ttl = this.clientTTLs.get(func)!
+                if (entry.epoch + ttl * 1000 > new Date().valueOf()) {
+                    if (this.logCache) console.log("used")
+                    return [entry.output, entry.ofiles]
+                } else {
+                    if (this.logCache) console.log("expired")
+                    this.cache.delete(key)
+                }
+            }
+        }
+        if (this.logCache) console.log("fetch")
+
         // prepare form
         const iform = new FormData()
-        const idata = { func, input, meta: this.meta }
-        iform.append('data', JSON.stringify(idata))
+        const idata = { func, input, meta: this.meta, userAgent: this.userAgent }
+        iform.append("data", JSON.stringify(idata))
         for (const index in ifiles) iform.append(`file_${index}`, ifiles[index])
 
         // send request
         const response = await fetch(this.JUTGE_API_URL, {
-            method: 'POST',
+            method: "POST",
             body: iform,
+            headers: this.headers,
         })
 
         // process response
-        const contentType = response.headers.get('content-type')?.split(';')[0].toLowerCase()
-        if (contentType !== 'multipart/form-data') {
-            throw new ProtocolError('The content type is not multipart/form-data')
+        const contentType = response.headers.get("content-type")?.split(";")[0].toLowerCase()
+        if (contentType !== "multipart/form-data") {
+            throw new ProtocolError("The content type is not multipart/form-data")
         }
 
         const oform = await response.formData()
-        const odata = oform.get('data')
+        const odata = oform.get("data")
         const { output, error, duration, operation_id, time } = JSON.parse(odata as string)
 
         if (error) {
@@ -799,11 +1534,18 @@ export class JutgeApiClient {
             const value = oform.get(key)
             if (value instanceof File) {
                 ofiles.push({
-                    content: new Uint8Array(await value.arrayBuffer()),
+                    data: new Uint8Array(await value.arrayBuffer()),
                     name: value.name,
                     type: value.type,
                 })
             }
+        }
+
+        // update cache
+        if (caching) {
+            if (this.logCache) console.log("saved")
+            const key = JSON.stringify({ func, input })
+            this.cache.set(key, { output, ofiles, epoch: new Date().valueOf() })
         }
 
         return [output, ofiles]
@@ -811,59 +1553,217 @@ export class JutgeApiClient {
 
     /** Function that throws the exception received through the API */
     throwError(error: Record<string, any>, operation_id: string | undefined) {
-        const message = error.message || 'Unknown error'
-        if (error.name === 'UnauthorizedError') {
+        const message = error.message || "Unknown error"
+        if (error.name === "UnauthorizedError") {
             throw new UnauthorizedError(message)
-        } else if (error.name === 'InfoError') {
+        } else if (error.name === "InfoError") {
             throw new InfoError(message)
-        } else if (error.name === 'NotFoundError') {
+        } else if (error.name === "NotFoundError") {
             throw new NotFoundError(message)
-        } else if (error.name === 'InputError') {
+        } else if (error.name === "InputError") {
             throw new InputError(message)
         } else {
             throw new Error(message)
         }
     }
 
-    /** Easy login */
+    /** Simple login setting meta */
+
     async login({ email, password }: { email: string; password: string }): Promise<CredentialsOut> {
-        const [credentials, _] = await this.execute('auth.login', { email, password })
-        this.meta = { token: credentials.token, exam: null }
+        const [credentials, _] = await this.execute("auth.login", { email, password })
+        if (credentials.error) throw new UnauthorizedError(credentials.error)
+        this.meta = { token: credentials.token, user_uid: credentials.user_uid }
         return credentials
     }
 
-    /** Easy logout */
+    /** Simple login to exam setting meta */
+    async loginExam({
+        email,
+        password,
+        exam,
+        exam_password,
+    }: {
+        email: string
+        password: string
+        exam: string
+        exam_password: string
+    }): Promise<CredentialsOut> {
+        const [credentials, _] = await this.execute("auth.loginExam", { email, password, exam, exam_password })
+        if (credentials.error) throw new UnauthorizedError(credentials.error)
+        this.meta = { token: credentials.token, user_uid: credentials.user_uid }
+        return credentials
+    }
+
+    /** Simple logout */
     async logout(): Promise<void> {
-        await this.execute('auth.logout', {})
+        await this.execute("auth.logout", null)
         this.meta = null
     }
 
+    /** Clear the contents of the cache */
+    clearCache() {
+        if (this.logCache) console.log("clear")
+        this.cache = new Map()
+    }
+
+    /** Provide a new value to the cache */
+    setCache(newCache: string) {
+        const obj = JSON.parse(newCache)
+        this.cache = new Map(Object.entries(obj))
+        this.removeExpired()
+    }
+
+    /** Get current value of the cache */
+    getCache(): string {
+        this.removeExpired()
+        const obj = Object.fromEntries(this.cache.entries())
+        return JSON.stringify(obj)
+    }
+
+    /** Remove expired entries from cache */
+    private removeExpired() {
+        for (const [key, entry] of this.cache) {
+            const { func } = JSON.parse(key)
+            const ttl = this.clientTTLs.get(func)
+            if (ttl !== undefined && entry.epoch + ttl * 1000 < new Date().getTime()) {
+                this.cache.delete(key)
+            }
+        }
+    }
+
+    readonly clients: Module_clients
     readonly auth: Module_auth
     readonly misc: Module_misc
     readonly tables: Module_tables
+    readonly courses: Module_courses
     readonly problems: Module_problems
     readonly student: Module_student
+    readonly tutor: Module_tutor
     readonly instructor: Module_instructor
+    readonly games: Module_games
     readonly admin: Module_admin
-    readonly check: Module_check
-    readonly playground: Module_playground
+    readonly testing: Module_testing
 
     constructor() {
+        this.clients = new Module_clients(this)
         this.auth = new Module_auth(this)
         this.misc = new Module_misc(this)
         this.tables = new Module_tables(this)
+        this.courses = new Module_courses(this)
         this.problems = new Module_problems(this)
         this.student = new Module_student(this)
+        this.tutor = new Module_tutor(this)
         this.instructor = new Module_instructor(this)
+        this.games = new Module_games(this)
         this.admin = new Module_admin(this)
-        this.check = new Module_check(this)
-        this.playground = new Module_playground(this)
+        this.testing = new Module_testing(this)
+
+        this.clientTTLs.set("misc.getAvatarPacks", 3600)
+        this.clientTTLs.set("misc.getExamIcons", 3600)
+        this.clientTTLs.set("misc.getDemosForCompiler", 3600)
+        this.clientTTLs.set("tables.get", 3600)
+        this.clientTTLs.set("tables.getLanguages", 3600)
+        this.clientTTLs.set("tables.getCountries", 3600)
+        this.clientTTLs.set("tables.getCompilers", 3600)
+        this.clientTTLs.set("tables.getDrivers", 3600)
+        this.clientTTLs.set("tables.getVerdicts", 3600)
+        this.clientTTLs.set("tables.getProglangs", 3600)
+        this.clientTTLs.set("tables.getTimezones", 3600)
+        this.clientTTLs.set("courses.indexPublic", 300)
+        this.clientTTLs.set("problems.getAllAbstractProblems", 3600)
+        this.clientTTLs.set("problems.getAllAbstractProblemsRaw", 3600)
+        this.clientTTLs.set("problems.getSomeAbstractProblems", 600)
     }
 }
 
 /**
  *
- * Module with authentication endpoints
+ * Module to download clients.
+ *
+ */
+class Module_clients {
+    private readonly root: JutgeApiClient
+
+    constructor(root: JutgeApiClient) {
+        this.root = root
+    }
+
+    /**
+     * Get Python client.
+     *
+     * 🔐 Authentication: any
+     * No warnings
+     *
+     */
+    async python(): Promise<Download> {
+        const [output, ofiles] = await this.root.execute("clients.python", null)
+        return ofiles[0]
+    }
+
+    /**
+     * Get TypeScript client.
+     *
+     * 🔐 Authentication: any
+     * No warnings
+     *
+     */
+    async typescript(): Promise<Download> {
+        const [output, ofiles] = await this.root.execute("clients.typescript", null)
+        return ofiles[0]
+    }
+
+    /**
+     * Get JavaScript client.
+     *
+     * 🔐 Authentication: any
+     * No warnings
+     *
+     */
+    async javascript(): Promise<Download> {
+        const [output, ofiles] = await this.root.execute("clients.javascript", null)
+        return ofiles[0]
+    }
+
+    /**
+     * Get Java client.
+     *
+     * 🔐 Authentication: any
+     * No warnings
+     *
+     */
+    async java(): Promise<Download> {
+        const [output, ofiles] = await this.root.execute("clients.java", null)
+        return ofiles[0]
+    }
+
+    /**
+     * Get Cpp client.
+     *
+     * 🔐 Authentication: any
+     * No warnings
+     *
+     */
+    async cpp(): Promise<Download> {
+        const [output, ofiles] = await this.root.execute("clients.cpp", null)
+        return ofiles[0]
+    }
+
+    /**
+     * Get PHP client.
+     *
+     * 🔐 Authentication: any
+     * No warnings
+     *
+     */
+    async php(): Promise<Download> {
+        const [output, ofiles] = await this.root.execute("clients.php", null)
+        return ofiles[0]
+    }
+}
+
+/**
+ *
+ * Module to provide authentication functions.
  *
  */
 class Module_auth {
@@ -874,26 +1774,146 @@ class Module_auth {
     }
 
     /**
-     * Login: Get an access token
+     * Login: Get an access token.
      *
-     * No authentication
+     * 🔐 Authentication: any
      * No warnings
-     *
+     * Returns a token on success. Throws UnauthorizedError on failure.
      */
     async login(data: CredentialsIn): Promise<CredentialsOut> {
-        const [output, ofiles] = await this.root.execute('auth.login', data)
+        const [output, ofiles] = await this.root.execute("auth.login", data)
         return output
     }
 
     /**
-     * Logout: Discard access token
+     * Logout: Discard the access token.
      *
      * 🔐 Authentication: user
      * No warnings
      *
      */
     async logout(): Promise<void> {
-        const [output, ofiles] = await this.root.execute('auth.logout', null)
+        const [output, ofiles] = await this.root.execute("auth.logout", null)
+        return output
+    }
+
+    /**
+     * Login to an exam: Get an access token for an exam.
+     *
+     * 🔐 Authentication: any
+     * No warnings
+     * Returns a token on success. Throws UnauthorizedError on failure.
+     */
+    async loginExam(data: ExamCredentialsIn): Promise<CredentialsOut> {
+        const [output, ofiles] = await this.root.execute("auth.loginExam", data)
+        return output
+    }
+
+    /**
+     * Get list of ready exams for a user, given their credentials.
+     *
+     * 🔐 Authentication: any
+     * No warnings
+     * Validates user credentials and returns the list of ready exams. Does not create a session or return a token.
+     */
+    async getReadyExams(data: CredentialsIn): Promise<ReadyExam[]> {
+        const [output, ofiles] = await this.root.execute("auth.getReadyExams", data)
+        return output
+    }
+
+    /**
+     * Login: Get an access token.
+     *
+     * 🔐 Authentication: any
+     * No warnings
+     * Returns a token on success. Throws UnauthorizedError on failure. Created for backward compatibility, do not use.
+     */
+    async loginWithUsername(data: CredentialsWithUsernameIn): Promise<CredentialsOut> {
+        const [output, ofiles] = await this.root.execute("auth.loginWithUsername", data)
+        return output
+    }
+
+    /**
+     * Register a new user account.
+     *
+     * 🔐 Authentication: any
+     * No warnings
+     * Creates a new user with the provided profile data. Requires a valid reCAPTCHA v3 token.
+     */
+    async register(data: RegisterIn): Promise<void> {
+        const [output, ofiles] = await this.root.execute("auth.register", data)
+        return output
+    }
+
+    /**
+     * Request a password reset link by email.
+     *
+     * 🔐 Authentication: any
+     * No warnings
+     * Sends a reset link to the user if the email is registered. Always succeeds silently for unknown emails. Requires a valid reCAPTCHA v3 token.
+     */
+    async requestPasswordReset(data: RequestPasswordResetIn): Promise<void> {
+        const [output, ofiles] = await this.root.execute("auth.requestPasswordReset", data)
+        return output
+    }
+
+    /**
+     * Confirm a password reset and set a new password.
+     *
+     * 🔐 Authentication: any
+     * No warnings
+     * Validates the reset code and sets a new password. Requires a valid reCAPTCHA v3 token.
+     */
+    async confirmPasswordRequest(data: ConfirmPasswordRequestIn): Promise<void> {
+        const [output, ofiles] = await this.root.execute("auth.confirmPasswordRequest", data)
+        return output
+    }
+
+    /**
+     * Request account unregistration confirmation link by email.
+     *
+     * 🔐 Authentication: user
+     * No warnings
+     * Verifies the current password and sends an unregistration confirmation link. Requires authentication and a valid reCAPTCHA v3 token.
+     */
+    async requestUnregistration(data: RequestUnregistrationIn): Promise<void> {
+        const [output, ofiles] = await this.root.execute("auth.requestUnregistration", data)
+        return output
+    }
+
+    /**
+     * Confirm account unregistration.
+     *
+     * 🔐 Authentication: user
+     * No warnings
+     * Validates the unregistration code, removes the account, unlinks course enrollments, and invalidates all sessions. Requires authentication and a valid reCAPTCHA v3 token. Warning: This action is irreversible!!!
+     */
+    async confirmUnregistration(data: ConfirmUnregistrationIn): Promise<void> {
+        const [output, ofiles] = await this.root.execute("auth.confirmUnregistration", data)
+        return output
+    }
+
+    /**
+     * Request an email address change confirmation link.
+     *
+     * 🔐 Authentication: user
+     * No warnings
+     * Verifies the current password and sends a confirmation link to the new email address. Requires authentication and a valid reCAPTCHA v3 token.
+     */
+    async requestChangeEmail(data: RequestChangeEmailIn): Promise<void> {
+        const [output, ofiles] = await this.root.execute("auth.requestChangeEmail", data)
+        return output
+    }
+
+    /**
+     * Confirm an email address change.
+     *
+     * 🔐 Authentication: user
+     * No warnings
+     * Validates the email change code, updates the account email, migrates course enrollments, and invalidates all sessions. Requires authentication and a valid reCAPTCHA v3 token.
+     */
+    async confirmChangeEmail(data: ConfirmUnregistrationIn): Promise<void> {
+        const [output, ofiles] = await this.root.execute("auth.confirmChangeEmail", data)
         return output
     }
 }
@@ -911,51 +1931,135 @@ class Module_misc {
     }
 
     /**
-     * Get a fortune message
+     * Get version information of the API.
      *
-     * No authentication
+     * 🔐 Authentication: any
+     * No warnings
+     *
+     */
+    async getApiVersion(): Promise<ApiVersion> {
+        const [output, ofiles] = await this.root.execute("misc.getApiVersion", null)
+        return output
+    }
+
+    /**
+     * Get requestion information.
+     *
+     * 🔐 Authentication: any
+     * No warnings
+     *
+     */
+    async getRequestInformation(): Promise<RequestInformation> {
+        const [output, ofiles] = await this.root.execute("misc.getRequestInformation", null)
+        return output
+    }
+
+    /**
+     * Get a fortune message.
+     *
+     * 🔐 Authentication: any
      * No warnings
      *
      */
     async getFortune(): Promise<string> {
-        const [output, ofiles] = await this.root.execute('misc.getFortune', null)
+        const [output, ofiles] = await this.root.execute("misc.getFortune", null)
         return output
     }
 
     /**
-     * Get server time
+     * Get server time.
      *
-     * No authentication
+     * 🔐 Authentication: any
      * No warnings
      *
      */
     async getTime(): Promise<Time> {
-        const [output, ofiles] = await this.root.execute('misc.getTime', null)
+        const [output, ofiles] = await this.root.execute("misc.getTime", null)
         return output
     }
 
     /**
-     * Get homepage stats
+     * Get homepage stats.
      *
-     * No authentication
+     * 🔐 Authentication: any
      * No warnings
      *
      */
     async getHomepageStats(): Promise<HomepageStats> {
-        const [output, ofiles] = await this.root.execute('misc.getHomepageStats', null)
+        const [output, ofiles] = await this.root.execute("misc.getHomepageStats", null)
         return output
     }
 
     /**
-     * Get Jutge.org logo as a PNG file
+     * Get Jutge.org logo as a PNG file.
      *
-     * No authentication
+     * 🔐 Authentication: any
      * No warnings
      *
      */
     async getLogo(): Promise<Download> {
-        const [output, ofiles] = await this.root.execute('misc.getLogo', null)
+        const [output, ofiles] = await this.root.execute("misc.getLogo", null)
         return ofiles[0]
+    }
+
+    /**
+     * Returns all packs of avatars.
+     *
+     * 🔐 Authentication: any
+     * No warnings
+     * Avatars are used in exams and contests to identify students or participants.
+     */
+    async getAvatarPacks(): Promise<string[]> {
+        const [output, ofiles] = await this.root.execute("misc.getAvatarPacks", null)
+        return output
+    }
+
+    /**
+     * Returns all exam icons.
+     *
+     * 🔐 Authentication: any
+     * No warnings
+     * Exam icon are used in exams and contests to identify problems.
+     */
+    async getExamIcons(): Promise<TagsDict> {
+        const [output, ofiles] = await this.root.execute("misc.getExamIcons", null)
+        return output
+    }
+
+    /**
+     * Returns color mappings using colornames notation.
+     *
+     * 🔐 Authentication: any
+     * No warnings
+     * Color mappings may be used to colorize keys in the frontends. Color names are as defined in https://github.com/timoxley/colornames
+     */
+    async getColors(): Promise<ColorMapping> {
+        const [output, ofiles] = await this.root.execute("misc.getColors", null)
+        return output
+    }
+
+    /**
+     * Returns color mappings using hexadecimal color notation.
+     *
+     * 🔐 Authentication: any
+     * No warnings
+     * Color mappings may be used to colorize keys in the frontends.
+     */
+    async getHexColors(): Promise<ColorMapping> {
+        const [output, ofiles] = await this.root.execute("misc.getHexColors", null)
+        return output
+    }
+
+    /**
+     * Returns code demos for a given compiler as a dictionary of base64 codes indexed by problem_nm.
+     *
+     * 🔐 Authentication: any
+     * No warnings
+     *
+     */
+    async getDemosForCompiler(compiler_id: string): Promise<Record<string, string>> {
+        const [output, ofiles] = await this.root.execute("misc.getDemosForCompiler", compiler_id)
+        return output
     }
 }
 
@@ -972,98 +2076,142 @@ class Module_tables {
     }
 
     /**
-     * Returns all languages
+     * Returns all tables.
      *
-     * No authentication
-     * No warnings
-     * Returns all languages as a dictionary of objects, indexed by id.
-     */
-    async getLanguages(): Promise<Languages> {
-        const [output, ofiles] = await this.root.execute('tables.getLanguages', null)
-        return output
-    }
-
-    /**
-     * Returns all countries
-     *
-     * No authentication
-     * No warnings
-     * Returns all countries as a dictionary of objects, indexed by id.
-     */
-    async getCountries(): Promise<Countries> {
-        const [output, ofiles] = await this.root.execute('tables.getCountries', null)
-        return output
-    }
-
-    /**
-     * Returns all compilers
-     *
-     * No authentication
-     * No warnings
-     * Returns all compilers as a dictionary of objects, indexed by id.
-     */
-    async getCompilers(): Promise<Compilers> {
-        const [output, ofiles] = await this.root.execute('tables.getCompilers', null)
-        return output
-    }
-
-    /**
-     * Returns all drivers
-     *
-     * No authentication
-     * No warnings
-     * Returns all drivers as a dictionary of objects, indexed by id.
-     */
-    async getDrivers(): Promise<Drivers> {
-        const [output, ofiles] = await this.root.execute('tables.getDrivers', null)
-        return output
-    }
-
-    /**
-     * Returns all verdicts
-     *
-     * No authentication
-     * No warnings
-     * Returns all verdicts as a dictionary of objects, indexed by id.
-     */
-    async getVerdicts(): Promise<Verdicts> {
-        const [output, ofiles] = await this.root.execute('tables.getVerdicts', null)
-        return output
-    }
-
-    /**
-     * Returns all proglangs
-     *
-     * No authentication
-     * No warnings
-     * Returns all proglangs as a dictionary of objects, indexed by id.
-     */
-    async getProglangs(): Promise<Proglangs> {
-        const [output, ofiles] = await this.root.execute('tables.getProglangs', null)
-        return output
-    }
-
-    /**
-     * Returns all tables
-     *
-     * No authentication
+     * 🔐 Authentication: any
      * No warnings
      * Returns all compilers, countries, drivers, languages, proglangs, and verdicts in a single request. This data does not change often, so you should only request it once per session.
      */
-    async getAll(): Promise<Tables> {
-        const [output, ofiles] = await this.root.execute('tables.getAll', null)
+    async get(): Promise<AllTables> {
+        const [output, ofiles] = await this.root.execute("tables.get", null)
+        return output
+    }
+
+    /**
+     * Returns all languages.
+     *
+     * 🔐 Authentication: any
+     * No warnings
+     * Returns all languages as a dictionary of objects, indexed by id.
+     */
+    async getLanguages(): Promise<Record<string, Language>> {
+        const [output, ofiles] = await this.root.execute("tables.getLanguages", null)
+        return output
+    }
+
+    /**
+     * Returns all countries.
+     *
+     * 🔐 Authentication: any
+     * No warnings
+     * Returns all countries as a dictionary of objects, indexed by id.
+     */
+    async getCountries(): Promise<Record<string, Country>> {
+        const [output, ofiles] = await this.root.execute("tables.getCountries", null)
+        return output
+    }
+
+    /**
+     * Returns all compilers.
+     *
+     * 🔐 Authentication: any
+     * No warnings
+     * Returns all compilers as a dictionary of objects, indexed by id.
+     */
+    async getCompilers(): Promise<Record<string, Compiler>> {
+        const [output, ofiles] = await this.root.execute("tables.getCompilers", null)
+        return output
+    }
+
+    /**
+     * Returns all drivers.
+     *
+     * 🔐 Authentication: any
+     * No warnings
+     * Returns all drivers as a dictionary of objects, indexed by id.
+     */
+    async getDrivers(): Promise<Record<string, Driver>> {
+        const [output, ofiles] = await this.root.execute("tables.getDrivers", null)
+        return output
+    }
+
+    /**
+     * Returns all verdicts.
+     *
+     * 🔐 Authentication: any
+     * No warnings
+     * Returns all verdicts as a dictionary of objects, indexed by id.
+     */
+    async getVerdicts(): Promise<Record<string, Verdict>> {
+        const [output, ofiles] = await this.root.execute("tables.getVerdicts", null)
+        return output
+    }
+
+    /**
+     * Returns all proglangs.
+     *
+     * 🔐 Authentication: any
+     * No warnings
+     * Returns all proglangs (porgramming languages) as a dictionary of objects, indexed by id.
+     */
+    async getProglangs(): Promise<Record<string, Proglang>> {
+        const [output, ofiles] = await this.root.execute("tables.getProglangs", null)
+        return output
+    }
+
+    /**
+     * Returns all timezones.
+     *
+     * 🔐 Authentication: any
+     * No warnings
+     * Returns all timezones as a dictionary of objects, indexed by id.
+     */
+    async getTimezones(): Promise<Record<string, Timezone>> {
+        const [output, ofiles] = await this.root.execute("tables.getTimezones", null)
         return output
     }
 }
 
 /**
  *
+ * Public course endpoints
  *
-Module with endpoints related to problems.
+ */
+class Module_courses {
+    private readonly root: JutgeApiClient
 
-There are two types of problems: *abstract problems* and *problems*. An abstract problem is a group of problems. A problem is an instance of an abstract problem in a particular language. Abstract problem are identified by a problem_nm (such as 'P68688'), while problems are identified by a problem_id including its language_id (such as 'P68688_en'). Abstract problems have a list of problems, while problems have an abstract problem. Abstract problems have an author, while problems have a translator.
+    constructor(root: JutgeApiClient) {
+        this.root = root
+    }
 
-Available problems depend on the actor issuing the request. For example, non authenticated users can only access public problems, while authenticated users can potentially access more problems.
+    /**
+     * Get all public courses.
+     *
+     * 🔐 Authentication: any
+     * No warnings
+     * Returns all courses marked as public, indexed by course key (`username:course_nm`).
+     */
+    async indexPublic(): Promise<PublicCourses> {
+        const [output, ofiles] = await this.root.execute("courses.indexPublic", null)
+        return output
+    }
+}
+
+/**
+ *
+ * Module with endpoints related to problems.
+
+There are two types of problems: *abstract problems* and *problems*. An abstract
+problem is a group of problems. A problem is an instance of an abstract problem
+in a particular language. Abstract problems are identified by a `problem_nm` (such
+as 'P68688'), while problems are identified by a `problem_id` including its
+`language_id` (such as 'P68688_en'). Abstract problems have a list of problems,
+while problems have an abstract problem. Abstract problems have an author, while
+problems have a translator.
+
+Available problems depend on the actor issuing the request. For example, non
+authenticated users can only access public problems, while authenticated
+users can potentially access more problems.
 
  *
  */
@@ -1075,95 +2223,122 @@ class Module_problems {
     }
 
     /**
-     * Get all available abstract problems
+     * Get all available abstract problems.
      *
      * 🔐 Authentication: any
      * No warnings
      * Includes problems.
      */
-    async getAllAbstractProblems(): Promise<AbstractProblems> {
-        const [output, ofiles] = await this.root.execute('problems.getAllAbstractProblems', null)
+    async getAllAbstractProblems(): Promise<Record<string, AbstractProblem>> {
+        const [output, ofiles] = await this.root.execute("problems.getAllAbstractProblems", null)
         return output
     }
 
     /**
-     * Get available abstract problems whose keys are in `problem_nms` (comma separated list)
+     * Test of getting abstract problems
+     *
+     * 🔐 Authentication: any
+     * No warnings
+     * Bla bla
+     */
+    async getAllAbstractProblemsRaw(): Promise<Record<string, AbstractProblem>> {
+        const [output, ofiles] = await this.root.execute("problems.getAllAbstractProblemsRaw", null)
+        return output
+    }
+
+    /**
+     * Get available abstract problems whose keys are in `problem_nms`.
      *
      * 🔐 Authentication: any
      * No warnings
      * Includes problems.
      */
-    async getAbstractProblems(problem_nms: string): Promise<AbstractProblems> {
-        const [output, ofiles] = await this.root.execute(
-            'problems.getAbstractProblems',
-            problem_nms,
-        )
+    async getAbstractProblems(problem_nms: string): Promise<Record<string, AbstractProblem>> {
+        const [output, ofiles] = await this.root.execute("problems.getAbstractProblems", problem_nms)
         return output
     }
 
     /**
-     * Get available abstract problems that belong to a list
+     * Get some available abstract problems with a given regexp and a limit.
      *
      * 🔐 Authentication: any
      * No warnings
      * Includes problems.
      */
-    async getAbstractProblemsInList(list_key: string): Promise<AbstractProblems> {
-        const [output, ofiles] = await this.root.execute(
-            'problems.getAbstractProblemsInList',
-            list_key,
-        )
+    async getSomeAbstractProblems(data: GetSomeAbstractProblemsIn): Promise<Record<string, AbstractProblem>> {
+        const [output, ofiles] = await this.root.execute("problems.getSomeAbstractProblems", data)
         return output
     }
 
     /**
-     * Get an abstract problem
+     * Get available abstract problems that belong to a list.
      *
      * 🔐 Authentication: any
      * No warnings
-     * Includes owner and problems
+     * Includes problems.
+     */
+    async getAbstractProblemsInList(list_key: string): Promise<Record<string, AbstractProblem>> {
+        const [output, ofiles] = await this.root.execute("problems.getAbstractProblemsInList", list_key)
+        return output
+    }
+
+    /**
+     * Get an abstract problem.
+     *
+     * 🔐 Authentication: any
+     * No warnings
+     * Includes problems
      */
     async getAbstractProblem(problem_nm: string): Promise<AbstractProblem> {
-        const [output, ofiles] = await this.root.execute('problems.getAbstractProblem', problem_nm)
+        const [output, ofiles] = await this.root.execute("problems.getAbstractProblem", problem_nm)
         return output
     }
 
     /**
-     * Get extras of an abstract problem
+     * Get supplementary information of an abstract problem.
      *
      * 🔐 Authentication: any
      * No warnings
      * Includes accepted compilers and accepted proglangs
      */
-    async getAbstractProblemExtras(problem_nm: string): Promise<AbstractProblemExtras> {
-        const [output, ofiles] = await this.root.execute(
-            'problems.getAbstractProblemExtras',
-            problem_nm,
-        )
+    async getAbstractProblemSuppl(problem_nm: string): Promise<AbstractProblemSuppl> {
+        const [output, ofiles] = await this.root.execute("problems.getAbstractProblemSuppl", problem_nm)
         return output
     }
 
     /**
-     * Get a problem
+     * Get supplementary information of many abstract problems.
      *
      * 🔐 Authentication: any
      * No warnings
-     * Includes abstract problem, which includes owner
+     * Includes accepted compilers and accepted proglangs. Keys are `problem_nm`s.
      */
-    async getProblem(problem_id: string): Promise<Problem> {
-        const [output, ofiles] = await this.root.execute('problems.getProblem', problem_id)
+    async getManyAbstractProblemSuppl(problem_nms: string): Promise<AbstractProblemSuppls> {
+        const [output, ofiles] = await this.root.execute("problems.getManyAbstractProblemSuppl", problem_nms)
         return output
     }
 
     /**
-     * Get extras of a problem.
+     * Get a problem.
+     *
+     * 🔐 Authentication: any
+     * No warnings
+     * Includes abstract problem.
+     */
+    async getProblem(problem_id: string): Promise<Problem> {
+        const [output, ofiles] = await this.root.execute("problems.getProblem", problem_id)
+        return output
+    }
+
+    /**
+     * Get supplementary information of a problem.
      *
      * 🔐 Authentication: any
      * No warnings
      * Includes accepted compilers, accepted proglangs, official solutions checks and handler specifications
      */
-    async getProblemExtras(problem_id: string): Promise<ProblemExtras> {
-        const [output, ofiles] = await this.root.execute('problems.getProblemExtras', problem_id)
+    async getProblemSuppl(problem_id: string): Promise<ProblemSuppl> {
+        const [output, ofiles] = await this.root.execute("problems.getProblemSuppl", problem_id)
         return output
     }
 
@@ -1174,8 +2349,8 @@ class Module_problems {
      * No warnings
      *
      */
-    async getSampleTestcases(problem_id: string): Promise<Testcases> {
-        const [output, ofiles] = await this.root.execute('problems.getSampleTestcases', problem_id)
+    async getSampleTestcases(problem_id: string): Promise<Testcase[]> {
+        const [output, ofiles] = await this.root.execute("problems.getSampleTestcases", problem_id)
         return output
     }
 
@@ -1184,11 +2359,35 @@ class Module_problems {
      *
      * 🔐 Authentication: any
      * No warnings
-     * Public testcases are like sample testcases, but are not meant to be show in the problem statatement, because of their long length.
+     * Public testcases are like sample testcases, but are not meant to be shown in the problem statatement, because of their long length.
      */
-    async getPublicTestcases(problem_id: string): Promise<Testcases> {
-        const [output, ofiles] = await this.root.execute('problems.getPublicTestcases', problem_id)
+    async getPublicTestcases(problem_id: string): Promise<Testcase[]> {
+        const [output, ofiles] = await this.root.execute("problems.getPublicTestcases", problem_id)
         return output
+    }
+
+    /**
+     * Get ZIP archive of a problem. This includes its statements, templates and public testcases.
+     *
+     * 🔐 Authentication: any
+     * No warnings
+     *
+     */
+    async getZipStatement(problem_id: string): Promise<Download> {
+        const [output, ofiles] = await this.root.execute("problems.getZipStatement", problem_id)
+        return ofiles[0]
+    }
+
+    /**
+     * Get PDF statement of a problem.
+     *
+     * 🔐 Authentication: any
+     * No warnings
+     *
+     */
+    async getPdfStatement(problem_id: string): Promise<Download> {
+        const [output, ofiles] = await this.root.execute("problems.getPdfStatement", problem_id)
+        return ofiles[0]
     }
 
     /**
@@ -1196,10 +2395,10 @@ class Module_problems {
      *
      * 🔐 Authentication: any
      * No warnings
-     * Currently, this is suboptimal, but I already know how to improve it.
+     *
      */
     async getHtmlStatement(problem_id: string): Promise<string> {
-        const [output, ofiles] = await this.root.execute('problems.getHtmlStatement', problem_id)
+        const [output, ofiles] = await this.root.execute("problems.getHtmlStatement", problem_id)
         return output
     }
 
@@ -1211,7 +2410,7 @@ class Module_problems {
      *
      */
     async getTextStatement(problem_id: string): Promise<string> {
-        const [output, ofiles] = await this.root.execute('problems.getTextStatement', problem_id)
+        const [output, ofiles] = await this.root.execute("problems.getTextStatement", problem_id)
         return output
     }
 
@@ -1223,35 +2422,92 @@ class Module_problems {
      *
      */
     async getMarkdownStatement(problem_id: string): Promise<string> {
-        const [output, ofiles] = await this.root.execute(
-            'problems.getMarkdownStatement',
-            problem_id,
-        )
+        const [output, ofiles] = await this.root.execute("problems.getMarkdownStatement", problem_id)
         return output
     }
 
     /**
-     * Get PDF statement of a problem.
+     * Get short Html statement of a problem (does not include title or author).
      *
      * 🔐 Authentication: any
      * No warnings
      *
      */
-    async getPdfStatement(problem_id: string): Promise<Download> {
-        const [output, ofiles] = await this.root.execute('problems.getPdfStatement', problem_id)
+    async getShortHtmlStatement(problem_id: string): Promise<string> {
+        const [output, ofiles] = await this.root.execute("problems.getShortHtmlStatement", problem_id)
+        return output
+    }
+
+    /**
+     * Get short Text statement of a problem (does not include title or author).
+     *
+     * 🔐 Authentication: any
+     * No warnings
+     *
+     */
+    async getShortTextStatement(problem_id: string): Promise<string> {
+        const [output, ofiles] = await this.root.execute("problems.getShortTextStatement", problem_id)
+        return output
+    }
+
+    /**
+     * Get short Markdown statement of a problem (does not include title or author).
+     *
+     * 🔐 Authentication: any
+     * No warnings
+     *
+     */
+    async getShortMarkdownStatement(problem_id: string): Promise<string> {
+        const [output, ofiles] = await this.root.execute("problems.getShortMarkdownStatement", problem_id)
+        return output
+    }
+
+    /**
+     * Get list of template files of a problem (`main.*`, `code.*`, `public.tar`, etc.).
+     *
+     * 🔐 Authentication: any
+     * No warnings
+     *
+     */
+    async getTemplates(problem_id: string): Promise<string[]> {
+        const [output, ofiles] = await this.root.execute("problems.getTemplates", problem_id)
+        return output
+    }
+
+    /**
+     * Get a template file of a problem.
+     *
+     * 🔐 Authentication: any
+     * No warnings
+     *
+     */
+    async getTemplate(data: { problem_id: string; template: string }): Promise<Download> {
+        const [output, ofiles] = await this.root.execute("problems.getTemplate", data)
         return ofiles[0]
     }
 
     /**
-     * Get ZIP archive of a problem.
+     * Get results for a semantic search for statement problems. The array is sorted by score (better at the top).
      *
      * 🔐 Authentication: any
      * No warnings
      *
      */
-    async getZipStatement(problem_id: string): Promise<Download> {
-        const [output, ofiles] = await this.root.execute('problems.getZipStatement', problem_id)
-        return ofiles[0]
+    async semanticSearch(data: { query: string; limit: number }): Promise<SearchResults> {
+        const [output, ofiles] = await this.root.execute("problems.semanticSearch", data)
+        return output
+    }
+
+    /**
+     * Get results for a full text search for statement problems. The array is sorted by score (better at the top). Queries are matched against titles and statements and can use boolean operators.
+     *
+     * 🔐 Authentication: any
+     * No warnings
+     *
+     */
+    async fullTextSearch(data: { query: string; limit: number }): Promise<SearchResults> {
+        const [output, ofiles] = await this.root.execute("problems.fullTextSearch", data)
+        return output
     }
 }
 
@@ -1269,8 +2525,12 @@ class Module_student {
     readonly submissions: Module_student_submissions
     readonly courses: Module_student_courses
     readonly lists: Module_student_lists
+    readonly exam: Module_student_exam
+    readonly exams: Module_student_exams
     readonly statuses: Module_student_statuses
     readonly awards: Module_student_awards
+    readonly settings: Module_student_settings
+    readonly tradingCards: Module_student_tradingCards
 
     constructor(root: JutgeApiClient) {
         this.root = root
@@ -1280,14 +2540,18 @@ class Module_student {
         this.submissions = new Module_student_submissions(root)
         this.courses = new Module_student_courses(root)
         this.lists = new Module_student_lists(root)
+        this.exam = new Module_student_exam(root)
+        this.exams = new Module_student_exams(root)
         this.statuses = new Module_student_statuses(root)
         this.awards = new Module_student_awards(root)
+        this.settings = new Module_student_settings(root)
+        this.tradingCards = new Module_student_tradingCards(root)
     }
 }
 
 /**
  *
- * No description yet
+ * This module exposes all valid keys for problems, courses and lists that a user can access.
  *
  */
 class Module_student_keys {
@@ -1298,14 +2562,14 @@ class Module_student_keys {
     }
 
     /**
-     * Get problem, courses (enrolled and available) and list keys.
+     * Get problem, courses (as enrolled and available) and list keys.
      *
      * 🔐 Authentication: user
      * No warnings
      *
      */
-    async getAll(): Promise<AllKeys> {
-        const [output, ofiles] = await this.root.execute('student.keys.getAll', null)
+    async get(): Promise<AllKeys> {
+        const [output, ofiles] = await this.root.execute("student.keys.get", null)
         return output
     }
 
@@ -1317,7 +2581,7 @@ class Module_student_keys {
      *
      */
     async getProblems(): Promise<string[]> {
-        const [output, ofiles] = await this.root.execute('student.keys.getProblems', null)
+        const [output, ofiles] = await this.root.execute("student.keys.getProblems", null)
         return output
     }
 
@@ -1329,7 +2593,7 @@ class Module_student_keys {
      *
      */
     async getEnrolledCourses(): Promise<string[]> {
-        const [output, ofiles] = await this.root.execute('student.keys.getEnrolledCourses', null)
+        const [output, ofiles] = await this.root.execute("student.keys.getEnrolledCourses", null)
         return output
     }
 
@@ -1341,7 +2605,7 @@ class Module_student_keys {
      *
      */
     async getAvailableCourses(): Promise<string[]> {
-        const [output, ofiles] = await this.root.execute('student.keys.getAvailableCourses', null)
+        const [output, ofiles] = await this.root.execute("student.keys.getAvailableCourses", null)
         return output
     }
 
@@ -1353,14 +2617,14 @@ class Module_student_keys {
      *
      */
     async getLists(): Promise<string[]> {
-        const [output, ofiles] = await this.root.execute('student.keys.getLists', null)
+        const [output, ofiles] = await this.root.execute("student.keys.getLists", null)
         return output
     }
 }
 
 /**
  *
- * No description yet
+ * This module exposes the user profile.
  *
  */
 class Module_student_profile {
@@ -1375,22 +2639,10 @@ class Module_student_profile {
      *
      * 🔐 Authentication: user
      * No warnings
-     *
+     * In case of exams, some fields are not nullified to avoid cheating.
      */
     async get(): Promise<Profile> {
-        const [output, ofiles] = await this.root.execute('student.profile.get', null)
-        return output
-    }
-
-    /**
-     * Update the profile
-     *
-     * 🔐 Authentication: user
-     * No warnings
-     *
-     */
-    async update(data: NewProfile): Promise<void> {
-        const [output, ofiles] = await this.root.execute('student.profile.update', data)
+        const [output, ofiles] = await this.root.execute("student.profile.get", null)
         return output
     }
 
@@ -1402,31 +2654,43 @@ class Module_student_profile {
      *
      */
     async getAvatar(): Promise<Download> {
-        const [output, ofiles] = await this.root.execute('student.profile.getAvatar', null)
+        const [output, ofiles] = await this.root.execute("student.profile.getAvatar", null)
         return ofiles[0]
     }
 
     /**
-     * Set a PNG file as avatar
+     * Update the profile
      *
      * 🔐 Authentication: user
      * No warnings
      *
      */
-    async setAvatar(ifile: File): Promise<void> {
-        const [output, ofiles] = await this.root.execute('student.profile.setAvatar', null, [ifile])
+    async update(data: NewProfile): Promise<void> {
+        const [output, ofiles] = await this.root.execute("student.profile.update", data)
         return output
     }
 
     /**
-     * Change password
+     * Update the avatar with new PNG.
      *
      * 🔐 Authentication: user
      * No warnings
-     * Receives the old password and the new one, and changes the password if the old one is correct
+     *
      */
-    async changePassword(data: PasswordUpdate): Promise<void> {
-        const [output, ofiles] = await this.root.execute('student.profile.changePassword', data)
+    async updateAvatar(ifile: File): Promise<void> {
+        const [output, ofiles] = await this.root.execute("student.profile.updateAvatar", null, [ifile])
+        return output
+    }
+
+    /**
+     * Update password.
+     *
+     * 🔐 Authentication: user
+     * No warnings
+     * Receives the old password and the new one, and changes the password if the old one is correct and the new one strong enough.
+     */
+    async updatePassword(data: NewPassword): Promise<void> {
+        const [output, ofiles] = await this.root.execute("student.profile.updatePassword", data)
         return output
     }
 }
@@ -1444,131 +2708,134 @@ class Module_student_dashboard {
     }
 
     /**
-     * Get all distributions
+     * Get the ranking of the user over all users in the system.
      *
      * 🔐 Authentication: user
      * No warnings
      *
      */
-    async getAllDistributions(): Promise<Distributions> {
-        const [output, ofiles] = await this.root.execute(
-            'student.dashboard.getAllDistributions',
-            null,
-        )
+    async getAbsoluteRanking(): Promise<number> {
+        const [output, ofiles] = await this.root.execute("student.dashboard.getAbsoluteRanking", null)
         return output
     }
 
     /**
-     * Get compilers distribution
+     * Get all distributions.
+     *
+     * 🔐 Authentication: user
+     * No warnings
+     *
+     */
+    async getAllDistributions(): Promise<AllDistributions> {
+        const [output, ofiles] = await this.root.execute("student.dashboard.getAllDistributions", null)
+        return output
+    }
+
+    /**
+     * Get compilers distribution.
      *
      * 🔐 Authentication: user
      * No warnings
      *
      */
     async getCompilersDistribution(): Promise<Distribution> {
-        const [output, ofiles] = await this.root.execute(
-            'student.dashboard.getCompilersDistribution',
-            null,
-        )
+        const [output, ofiles] = await this.root.execute("student.dashboard.getCompilersDistribution", null)
         return output
     }
 
     /**
-     * Get dashboard
+     * Get dashboard.
      *
      * 🔐 Authentication: user
      * No warnings
      *
      */
     async getDashboard(): Promise<Dashboard> {
-        const [output, ofiles] = await this.root.execute('student.dashboard.getDashboard', null)
+        const [output, ofiles] = await this.root.execute("student.dashboard.getDashboard", null)
         return output
     }
 
     /**
-     * Get heatmap calendar of submissions
+     * Get heatmap calendar of submissions.
      *
      * 🔐 Authentication: user
      * No warnings
      *
      */
     async getHeatmapCalendar(): Promise<HeatmapCalendar> {
-        const [output, ofiles] = await this.root.execute(
-            'student.dashboard.getHeatmapCalendar',
-            null,
-        )
+        const [output, ofiles] = await this.root.execute("student.dashboard.getHeatmapCalendar", null)
         return output
     }
 
     /**
-     * Get programming languages distribution
+     * Get programming languages distribution.
      *
      * 🔐 Authentication: user
      * No warnings
      *
      */
     async getProglangsDistribution(): Promise<Distribution> {
-        const [output, ofiles] = await this.root.execute(
-            'student.dashboard.getProglangsDistribution',
-            null,
-        )
+        const [output, ofiles] = await this.root.execute("student.dashboard.getProglangsDistribution", null)
         return output
     }
 
     /**
-     * Get dashboard stats
+     * Get dashboard stats.
      *
      * 🔐 Authentication: user
      * No warnings
      *
      */
-    async getStats(): Promise<DashboardStats> {
-        const [output, ofiles] = await this.root.execute('student.dashboard.getStats', null)
+    async getStats(): Promise<Distribution> {
+        const [output, ofiles] = await this.root.execute("student.dashboard.getStats", null)
         return output
     }
 
     /**
-     * Get submissions by hour distribution
+     * Get fancy Jutge level.
+     *
+     * 🔐 Authentication: user
+     * No warnings
+     *
+     */
+    async getLevel(): Promise<string> {
+        const [output, ofiles] = await this.root.execute("student.dashboard.getLevel", null)
+        return output
+    }
+
+    /**
+     * Get submissions by hour distribution.
      *
      * 🔐 Authentication: user
      * No warnings
      *
      */
     async getSubmissionsByHour(): Promise<Distribution> {
-        const [output, ofiles] = await this.root.execute(
-            'student.dashboard.getSubmissionsByHour',
-            null,
-        )
+        const [output, ofiles] = await this.root.execute("student.dashboard.getSubmissionsByHour", null)
         return output
     }
 
     /**
-     * Get submissions by weekday distribution
+     * Get submissions by weekday distribution.
      *
      * 🔐 Authentication: user
      * No warnings
      *
      */
     async getSubmissionsByWeekDay(): Promise<Distribution> {
-        const [output, ofiles] = await this.root.execute(
-            'student.dashboard.getSubmissionsByWeekDay',
-            null,
-        )
+        const [output, ofiles] = await this.root.execute("student.dashboard.getSubmissionsByWeekDay", null)
         return output
     }
 
     /**
-     * Get verdicts distribution
+     * Get verdicts distribution.
      *
      * 🔐 Authentication: user
      * No warnings
      *
      */
     async getVerdictsDistribution(): Promise<Distribution> {
-        const [output, ofiles] = await this.root.execute(
-            'student.dashboard.getVerdictsDistribution',
-            null,
-        )
+        const [output, ofiles] = await this.root.execute("student.dashboard.getVerdictsDistribution", null)
         return output
     }
 }
@@ -1586,44 +2853,86 @@ class Module_student_submissions {
     }
 
     /**
-     * Get all submissions.
-     *
-     * 🔐 Authentication: user
-     * No warnings
-     * Flat array of submissions in chronological order.
-     */
-    async getAll(): Promise<Submissions> {
-        const [output, ofiles] = await this.root.execute('student.submissions.getAll', null)
-        return output
-    }
-
-    /**
-     * Get all submissions for an abstract problem.
+     * Get index of all submissions for an abstract problem.
      *
      * 🔐 Authentication: user
      * No warnings
      * Grouped by problem.
      */
-    async getForAbstractProblem(problem_nm: string): Promise<DictDictSubmissions> {
-        const [output, ofiles] = await this.root.execute(
-            'student.submissions.getForAbstractProblem',
-            problem_nm,
-        )
+    async indexForAbstractProblem(problem_nm: string): Promise<Record<string, Record<string, Submission>>> {
+        const [output, ofiles] = await this.root.execute("student.submissions.indexForAbstractProblem", problem_nm)
         return output
     }
 
     /**
-     * Get all submissions for a problem.
+     * Get index of all submissions for a problem.
      *
      * 🔐 Authentication: user
      * No warnings
      *
      */
-    async getForProblem(problem_id: string): Promise<DictSubmissions> {
-        const [output, ofiles] = await this.root.execute(
-            'student.submissions.getForProblem',
-            problem_id,
-        )
+    async indexForProblem(problem_id: string): Promise<Record<string, Submission>> {
+        const [output, ofiles] = await this.root.execute("student.submissions.indexForProblem", problem_id)
+        return output
+    }
+
+    /**
+     * Get all submissions for a list of abstract problems.
+     *
+     * 🔐 Authentication: user
+     * No warnings
+     * Flat array of submissions from newer to older.
+     */
+    async getForAbstractProblems(problem_nms: string): Promise<Submission[]> {
+        const [output, ofiles] = await this.root.execute("student.submissions.getForAbstractProblems", problem_nms)
+        return output
+    }
+
+    /**
+     * Get all submissions.
+     *
+     * 🔐 Authentication: user
+     * No warnings
+     * Flat array of submissions from newer to older.
+     */
+    async getAll(): Promise<Submission[]> {
+        const [output, ofiles] = await this.root.execute("student.submissions.getAll", null)
+        return output
+    }
+
+    /**
+     * Get list of submissions in a range of dates.
+     *
+     * 🔐 Authentication: user
+     * No warnings
+     * Flat array of submissions from newer to older for a given range of dates.
+     */
+    async getRange(data: DateRange2): Promise<Submission[]> {
+        const [output, ofiles] = await this.root.execute("student.submissions.getRange", data)
+        return output
+    }
+
+    /**
+     * Submit a solution to the Judge, easy interface.
+     *
+     * 🔐 Authentication: user
+     * No warnings
+     *
+     */
+    async submit(data: { problem_id: string; compiler_id: string; code: string; annotation: string }): Promise<string> {
+        const [output, ofiles] = await this.root.execute("student.submissions.submit", data)
+        return output
+    }
+
+    /**
+     * Submit a solution to the Judge, full interface.
+     *
+     * 🔐 Authentication: user
+     * No warnings
+     *
+     */
+    async submitFull(data: NewSubmissionIn, ifiles: File[]): Promise<NewSubmissionOut> {
+        const [output, ofiles] = await this.root.execute("student.submissions.submitFull", data, ifiles)
         return output
     }
 
@@ -1634,25 +2943,168 @@ class Module_student_submissions {
      * No warnings
      *
      */
-    async get(data: { problem_id: string; submission_id: string }): Promise<Submission> {
-        const [output, ofiles] = await this.root.execute('student.submissions.get', data)
+    async get(data: GetGameResultIn): Promise<Submission> {
+        const [output, ofiles] = await this.root.execute("student.submissions.get", data)
         return output
     }
 
     /**
-     * Perform a submission.
+     * Get code for a submission as a string in base64.
      *
      * 🔐 Authentication: user
      * No warnings
      *
      */
-    async submit(
-        data: { problem_id: string; compiler_id: string; annotation: string },
-        ifile: File,
-    ): Promise<SubmissionPostOut> {
-        const [output, ofiles] = await this.root.execute('student.submissions.submit', data, [
-            ifile,
-        ])
+    async getCodeAsB64(data: GetGameResultIn): Promise<string> {
+        const [output, ofiles] = await this.root.execute("student.submissions.getCodeAsB64", data)
+        return output
+    }
+
+    /**
+     * Get compilation errors for a submission.
+     *
+     * 🔐 Authentication: user
+     * No warnings
+     *
+     */
+    async getCompilationErrors(data: GetGameResultIn): Promise<CompilationErrors> {
+        const [output, ofiles] = await this.root.execute("student.submissions.getCompilationErrors", data)
+        return output
+    }
+
+    /**
+     * Get code metrics for a submission.
+     *
+     * 🔐 Authentication: user
+     * No warnings
+     *
+     */
+    async getCodeMetrics(data: GetGameResultIn): Promise<CodeMetricsResult> {
+        const [output, ofiles] = await this.root.execute("student.submissions.getCodeMetrics", data)
+        return output
+    }
+
+    /**
+     * Get partial scoring for a submission.
+     *
+     * 🔐 Authentication: user
+     * No warnings
+     *
+     */
+    async getScoring(data: GetGameResultIn): Promise<Scoring> {
+        const [output, ofiles] = await this.root.execute("student.submissions.getScoring", data)
+        return output
+    }
+
+    /**
+     * Get list of awards ids for a submission.
+     *
+     * 🔐 Authentication: user
+     * No warnings
+     *
+     */
+    async getAwards(data: GetGameResultIn): Promise<string[]> {
+        const [output, ofiles] = await this.root.execute("student.submissions.getAwards", data)
+        return output
+    }
+
+    /**
+     * Get analysis of a submission.
+     *
+     * 🔐 Authentication: user
+     * No warnings
+     *
+     */
+    async getAnalysis(data: GetGameResultIn): Promise<SubmissionAnalysis[]> {
+        const [output, ofiles] = await this.root.execute("student.submissions.getAnalysis", data)
+        return output
+    }
+
+    /**
+     * Get a (public) testcase analysis of a submission.
+     *
+     * 🔐 Authentication: user
+     * No warnings
+     *
+     */
+    async getTestcaseAnalysis(data: {
+        problem_id: string
+        submission_id: string
+        testcase: string
+    }): Promise<TestcaseAnalysis> {
+        const [output, ofiles] = await this.root.execute("student.submissions.getTestcaseAnalysis", data)
+        return output
+    }
+
+    /**
+     * Get the modules of a circuit submission. Only for circuits. Each element is an SVG string.
+     *
+     * 🔐 Authentication: user
+     * No warnings
+     *
+     */
+    async getCircuitModules(data: GetGameResultIn): Promise<Record<string, string>> {
+        const [output, ofiles] = await this.root.execute("student.submissions.getCircuitModules", data)
+        return output
+    }
+
+    /**
+     * Get the error report traces of a circuit submission.
+     *
+     * 🔐 Authentication: user
+     * No warnings
+     *
+     */
+    async getCircuitTracesJson(data: GetGameResultIn): Promise<Settings> {
+        const [output, ofiles] = await this.root.execute("student.submissions.getCircuitTracesJson", data)
+        return output
+    }
+
+    /**
+     * Get the error report traces of a circuit submission.
+     *
+     * 🔐 Authentication: user
+     * No warnings
+     *
+     */
+    async getCircuitTracesSvg(data: GetGameResultIn): Promise<Record<string, string>> {
+        const [output, ofiles] = await this.root.execute("student.submissions.getCircuitTracesSvg", data)
+        return output
+    }
+
+    /**
+     * Get the result of a game submission.
+     *
+     * 🔐 Authentication: user
+     * No warnings
+     *
+     */
+    async getGameResult(data: GetGameResultIn): Promise<GetGameResultOut> {
+        const [output, ofiles] = await this.root.execute("student.submissions.getGameResult", data)
+        return output
+    }
+
+    /**
+     * Get the output of a game in a game submission.
+     *
+     * 🔐 Authentication: user
+     * No warnings
+     *
+     */
+    async getGameOutput(data: GetGameOutputIn): Promise<string> {
+        const [output, ofiles] = await this.root.execute("student.submissions.getGameOutput", data)
+        return output
+    }
+
+    /**
+     * Get debug information for a submission.
+     *
+     * 🔐 Authentication: user
+     * No warnings
+     *
+     */
+    async getDebugInformation(data: GetGameResultIn): Promise<DebugInformation | null> {
+        const [output, ofiles] = await this.root.execute("student.submissions.getDebugInformation", data)
         return output
     }
 }
@@ -1670,26 +3122,26 @@ class Module_student_courses {
     }
 
     /**
-     * Get all available courses.
+     * Get index of all available courses.
      *
      * 🔐 Authentication: user
      * No warnings
      *
      */
-    async getAllAvailable(): Promise<BriefCourses> {
-        const [output, ofiles] = await this.root.execute('student.courses.getAllAvailable', null)
+    async indexAvailable(): Promise<Record<string, BriefCourse>> {
+        const [output, ofiles] = await this.root.execute("student.courses.indexAvailable", null)
         return output
     }
 
     /**
-     * Get all enrolled courses.
+     * Get index of all enrolled courses.
      *
      * 🔐 Authentication: user
      * No warnings
      *
      */
-    async getAllEnrolled(): Promise<BriefCourses> {
-        const [output, ofiles] = await this.root.execute('student.courses.getAllEnrolled', null)
+    async indexEnrolled(): Promise<Record<string, BriefCourse>> {
+        const [output, ofiles] = await this.root.execute("student.courses.indexEnrolled", null)
         return output
     }
 
@@ -1701,7 +3153,7 @@ class Module_student_courses {
      * Includes owner and lists.
      */
     async getAvailable(course_key: string): Promise<Course> {
-        const [output, ofiles] = await this.root.execute('student.courses.getAvailable', course_key)
+        const [output, ofiles] = await this.root.execute("student.courses.getAvailable", course_key)
         return output
     }
 
@@ -1713,7 +3165,7 @@ class Module_student_courses {
      * Includes owner and lists.
      */
     async getEnrolled(course_key: string): Promise<Course> {
-        const [output, ofiles] = await this.root.execute('student.courses.getEnrolled', course_key)
+        const [output, ofiles] = await this.root.execute("student.courses.getEnrolled", course_key)
         return output
     }
 
@@ -1725,7 +3177,7 @@ class Module_student_courses {
      *
      */
     async enroll(course_key: string): Promise<void> {
-        const [output, ofiles] = await this.root.execute('student.courses.enroll', course_key)
+        const [output, ofiles] = await this.root.execute("student.courses.enroll", course_key)
         return output
     }
 
@@ -1737,7 +3189,43 @@ class Module_student_courses {
      *
      */
     async unenroll(course_key: string): Promise<void> {
-        const [output, ofiles] = await this.root.execute('student.courses.unenroll', course_key)
+        const [output, ofiles] = await this.root.execute("student.courses.unenroll", course_key)
+        return output
+    }
+
+    /**
+     * Get the keys of all archived courses.
+     *
+     * 🔐 Authentication: user
+     * No warnings
+     *
+     */
+    async getArchivedKeys(): Promise<string[]> {
+        const [output, ofiles] = await this.root.execute("student.courses.getArchivedKeys", null)
+        return output
+    }
+
+    /**
+     * Archive an enrolled course.
+     *
+     * 🔐 Authentication: user
+     * No warnings
+     *
+     */
+    async archive(course_key: string): Promise<void> {
+        const [output, ofiles] = await this.root.execute("student.courses.archive", course_key)
+        return output
+    }
+
+    /**
+     * Unarchive an archived course.
+     *
+     * 🔐 Authentication: user
+     * No warnings
+     *
+     */
+    async unArchive(course_key: string): Promise<void> {
+        const [output, ofiles] = await this.root.execute("student.courses.unArchive", course_key)
         return output
     }
 }
@@ -1761,8 +3249,8 @@ class Module_student_lists {
      * No warnings
      *
      */
-    async getAll(): Promise<BriefLists> {
-        const [output, ofiles] = await this.root.execute('student.lists.getAll', null)
+    async getAll(): Promise<Record<string, BriefList>> {
+        const [output, ofiles] = await this.root.execute("student.lists.getAll", null)
         return output
     }
 
@@ -1774,7 +3262,129 @@ class Module_student_lists {
      * Includes items, owner.
      */
     async get(list_key: string): Promise<List> {
-        const [output, ofiles] = await this.root.execute('student.lists.get', list_key)
+        const [output, ofiles] = await this.root.execute("student.lists.get", list_key)
+        return output
+    }
+
+    /**
+     * Get many lists.
+     *
+     * 🔐 Authentication: user
+     * No warnings
+     * Includes items, owner. Keys are `list_key`s.
+     */
+    async getMany(list_keys: string): Promise<Record<string, List>> {
+        const [output, ofiles] = await this.root.execute("student.lists.getMany", list_keys)
+        return output
+    }
+}
+
+/**
+ *
+ * ‼️ The state of this module is UNDER CONSTRUCTION. It is not ready for production use. The output of some function is capped if the exam has not started yet.
+ *
+ */
+class Module_student_exam {
+    private readonly root: JutgeApiClient
+
+    constructor(root: JutgeApiClient) {
+        this.root = root
+    }
+
+    /**
+     * Get list of ready exams.
+     *
+     * 🔐 Authentication: user
+     * No warnings
+     * An exam is ready if the current time is between its expected start time minus two days and its expected end time plus two days. Exams are sorted by their distance to the current time and by title order in case of ties.
+     */
+    async getReadyExams(): Promise<ReadyExam[]> {
+        const [output, ofiles] = await this.root.execute("student.exam.getReadyExams", null)
+        return output
+    }
+
+    /**
+     * Get current exam.
+     *
+     * 🔐 Authentication: exam
+     * No warnings
+     *
+     */
+    async get(): Promise<RunningExam> {
+        const [output, ofiles] = await this.root.execute("student.exam.get", null)
+        return output
+    }
+
+    /**
+     * Get a document in an exam.
+     *
+     * 🔐 Authentication: exam
+     * No warnings
+     *
+     */
+    async getDocument(document_nm: string): Promise<RunningExamDocument> {
+        const [output, ofiles] = await this.root.execute("student.exam.getDocument", document_nm)
+        return output
+    }
+
+    /**
+     * Get PDF of a document in an exam.
+     *
+     * 🔐 Authentication: exam
+     * No warnings
+     *
+     */
+    async getDocumentPdf(document_nm: string): Promise<Download> {
+        const [output, ofiles] = await this.root.execute("student.exam.getDocumentPdf", document_nm)
+        return ofiles[0]
+    }
+
+    /**
+     * Get ranking of the current contest.
+     *
+     * 🔐 Authentication: exam
+     * No warnings
+     *
+     */
+    async getRanking(): Promise<Ranking> {
+        const [output, ofiles] = await this.root.execute("student.exam.getRanking", null)
+        return output
+    }
+}
+
+/**
+ *
+ * No description yet
+ *
+ */
+class Module_student_exams {
+    private readonly root: JutgeApiClient
+
+    constructor(root: JutgeApiClient) {
+        this.root = root
+    }
+
+    /**
+     * Get all exams linked to the user.
+     *
+     * 🔐 Authentication: user
+     * No warnings
+     *
+     */
+    async getAll(): Promise<BriefExams> {
+        const [output, ofiles] = await this.root.execute("student.exams.getAll", null)
+        return output
+    }
+
+    /**
+     * Get an exam linked to the user.
+     *
+     * 🔐 Authentication: user
+     * No warnings
+     *
+     */
+    async get(exam_key: string): Promise<Exam> {
+        const [output, ofiles] = await this.root.execute("student.exams.get", exam_key)
         return output
     }
 }
@@ -1792,14 +3402,14 @@ class Module_student_statuses {
     }
 
     /**
-     * Get statuses for all problems.
+     * Get statuses for all abstract problems.
      *
      * 🔐 Authentication: user
      * No warnings
      *
      */
-    async getAll(): Promise<AbstractStatuses> {
-        const [output, ofiles] = await this.root.execute('student.statuses.getAll', null)
+    async getAll(): Promise<Record<string, AbstractStatus>> {
+        const [output, ofiles] = await this.root.execute("student.statuses.getAll", null)
         return output
     }
 
@@ -1811,10 +3421,7 @@ class Module_student_statuses {
      *
      */
     async getForAbstractProblem(problem_nm: string): Promise<AbstractStatus> {
-        const [output, ofiles] = await this.root.execute(
-            'student.statuses.getForAbstractProblem',
-            problem_nm,
-        )
+        const [output, ofiles] = await this.root.execute("student.statuses.getForAbstractProblem", problem_nm)
         return output
     }
 
@@ -1826,17 +3433,14 @@ class Module_student_statuses {
      *
      */
     async getForProblem(problem_id: string): Promise<Status> {
-        const [output, ofiles] = await this.root.execute(
-            'student.statuses.getForProblem',
-            problem_id,
-        )
+        const [output, ofiles] = await this.root.execute("student.statuses.getForProblem", problem_id)
         return output
     }
 }
 
 /**
  *
- * No description yet
+ * This module is not yet finished.
  *
  */
 class Module_student_awards {
@@ -1853,8 +3457,8 @@ class Module_student_awards {
      * No warnings
      *
      */
-    async getAll(): Promise<BriefAwards> {
-        const [output, ofiles] = await this.root.execute('student.awards.getAll', null)
+    async getAll(): Promise<Record<string, BriefAward>> {
+        const [output, ofiles] = await this.root.execute("student.awards.getAll", null)
         return output
     }
 
@@ -1866,7 +3470,464 @@ class Module_student_awards {
      *
      */
     async get(award_id: string): Promise<Award> {
-        const [output, ofiles] = await this.root.execute('student.awards.get', award_id)
+        const [output, ofiles] = await this.root.execute("student.awards.get", award_id)
+        return output
+    }
+}
+
+/**
+ *
+ * User-specific settings stored as key-value pairs.
+ *
+ */
+class Module_student_settings {
+    private readonly root: JutgeApiClient
+
+    constructor(root: JutgeApiClient) {
+        this.root = root
+    }
+
+    /**
+     * Get all user settings.
+     *
+     * 🔐 Authentication: user
+     * No warnings
+     *
+     */
+    async getAll(): Promise<Settings> {
+        const [output, ofiles] = await this.root.execute("student.settings.getAll", null)
+        return output
+    }
+
+    /**
+     * Get a user setting by key.
+     *
+     * 🔐 Authentication: user
+     * No warnings
+     *
+     */
+    async get(key: string): Promise<any> {
+        const [output, ofiles] = await this.root.execute("student.settings.get", key)
+        return output
+    }
+
+    /**
+     * Set a user setting.
+     *
+     * 🔐 Authentication: user
+     * No warnings
+     *
+     */
+    async set(data: Setting): Promise<void> {
+        const [output, ofiles] = await this.root.execute("student.settings.set", data)
+        return output
+    }
+}
+
+/**
+ *
+ * No description yet
+ *
+ */
+class Module_student_tradingCards {
+    private readonly root: JutgeApiClient
+
+    constructor(root: JutgeApiClient) {
+        this.root = root
+    }
+
+    /**
+     * Get all trading cards.
+     *
+     * 🔐 Authentication: user
+     * No warnings
+     *
+     */
+    async getAll(): Promise<TradingCards> {
+        const [output, ofiles] = await this.root.execute("student.tradingCards.getAll", null)
+        return output
+    }
+}
+
+/**
+ *
+ * Supervision operations available to tutors.
+ *
+ */
+class Module_tutor {
+    private readonly root: JutgeApiClient
+
+    readonly courses: Module_tutor_courses
+    readonly profile: Module_tutor_profile
+    readonly statuses: Module_tutor_statuses
+    readonly submissions: Module_tutor_submissions
+
+    constructor(root: JutgeApiClient) {
+        this.root = root
+        this.courses = new Module_tutor_courses(root)
+        this.profile = new Module_tutor_profile(root)
+        this.statuses = new Module_tutor_statuses(root)
+        this.submissions = new Module_tutor_submissions(root)
+    }
+}
+
+/**
+ *
+ * Course operations for tutors.
+ *
+ */
+class Module_tutor_courses {
+    private readonly root: JutgeApiClient
+
+    constructor(root: JutgeApiClient) {
+        this.root = root
+    }
+
+    /**
+     * Get course keys the user can tutorize.
+     *
+     * 🔐 Authentication: tutor
+     * No warnings
+     * Returns courses where the user is enrolled as a tutor.
+     */
+    async getCoursesKeys(): Promise<string[]> {
+        const [output, ofiles] = await this.root.execute("tutor.courses.getCoursesKeys", null)
+        return output
+    }
+
+    /**
+     * Get students enrolled in a course.
+     *
+     * 🔐 Authentication: tutor
+     * No warnings
+     * Returns name and email for each student enrolled in the given course. Gated to courses the user can tutorize.
+     */
+    async getEnrolledStudents(course_key: string): Promise<EnrolledStudent[]> {
+        const [output, ofiles] = await this.root.execute("tutor.courses.getEnrolledStudents", course_key)
+        return output
+    }
+
+    /**
+     * Get tutors enrolled in a course.
+     *
+     * 🔐 Authentication: tutor
+     * No warnings
+     * Returns name and email for each tutor enrolled in the given course. Gated to courses the user can tutorize.
+     */
+    async getEnrolledTutors(course_key: string): Promise<EnrolledStudent[]> {
+        const [output, ofiles] = await this.root.execute("tutor.courses.getEnrolledTutors", course_key)
+        return output
+    }
+
+    /**
+     * Get all submissions for a course.
+     *
+     * 🔐 Authentication: tutor
+     * No warnings
+     * Returns all submissions for all problems in all lists of the course, from all enrolled students. Each submission includes the student user uid, email, time, problem id, verdict, compiler id, and programming language. Gated to courses the user can tutorize.
+     */
+    async getCourseSubmissions(course_key: string): Promise<CourseSubmission[]> {
+        const [output, ofiles] = await this.root.execute("tutor.courses.getCourseSubmissions", course_key)
+        return output
+    }
+}
+
+/**
+ *
+ * Student profile operations for tutors.
+ *
+ */
+class Module_tutor_profile {
+    private readonly root: JutgeApiClient
+
+    constructor(root: JutgeApiClient) {
+        this.root = root
+    }
+
+    /**
+     * Get the public profile of a student.
+     *
+     * 🔐 Authentication: tutor
+     * No warnings
+     * Returns the public profile for the given email. Gated to students enrolled in courses the user can tutorize.
+     */
+    async get(email: string): Promise<PublicProfile> {
+        const [output, ofiles] = await this.root.execute("tutor.profile.get", email)
+        return output
+    }
+
+    /**
+     * Returns the avatar of a student as a PNG file.
+     *
+     * 🔐 Authentication: tutor
+     * No warnings
+     * Returns the avatar for the given email. Gated to students enrolled in courses the user can tutorize.
+     */
+    async getAvatar(email: string): Promise<Download> {
+        const [output, ofiles] = await this.root.execute("tutor.profile.getAvatar", email)
+        return ofiles[0]
+    }
+}
+
+/**
+ *
+ * Student status operations for tutors.
+ *
+ */
+class Module_tutor_statuses {
+    private readonly root: JutgeApiClient
+
+    constructor(root: JutgeApiClient) {
+        this.root = root
+    }
+
+    /**
+     * Get statuses for all abstract problems in a course.
+     *
+     * 🔐 Authentication: tutor
+     * No warnings
+     *
+     */
+    async getAll(data: { course_key: string; email: string }): Promise<Record<string, AbstractStatus>> {
+        const [output, ofiles] = await this.root.execute("tutor.statuses.getAll", data)
+        return output
+    }
+
+    /**
+     * Get status for an abstract problem in a course.
+     *
+     * 🔐 Authentication: tutor
+     * No warnings
+     *
+     */
+    async getForAbstractProblem(data: {
+        course_key: string
+        email: string
+        problem_nm: string
+    }): Promise<AbstractStatus> {
+        const [output, ofiles] = await this.root.execute("tutor.statuses.getForAbstractProblem", data)
+        return output
+    }
+
+    /**
+     * Get status for a problem in a course.
+     *
+     * 🔐 Authentication: tutor
+     * No warnings
+     *
+     */
+    async getForProblem(data: { course_key: string; email: string; problem_id: string }): Promise<Status> {
+        const [output, ofiles] = await this.root.execute("tutor.statuses.getForProblem", data)
+        return output
+    }
+}
+
+/**
+ *
+ * Submission operations for tutors.
+ *
+ */
+class Module_tutor_submissions {
+    private readonly root: JutgeApiClient
+
+    constructor(root: JutgeApiClient) {
+        this.root = root
+    }
+
+    /**
+     * Get index of all submissions for an abstract problem in a course.
+     *
+     * 🔐 Authentication: tutor
+     * No warnings
+     *
+     */
+    async indexForAbstractProblem(data: {
+        course_key: string
+        email: string
+        problem_nm: string
+    }): Promise<Record<string, Record<string, TutorSubmission>>> {
+        const [output, ofiles] = await this.root.execute("tutor.submissions.indexForAbstractProblem", data)
+        return output
+    }
+
+    /**
+     * Get index of all submissions for a problem in a course.
+     *
+     * 🔐 Authentication: tutor
+     * No warnings
+     *
+     */
+    async indexForProblem(data: {
+        course_key: string
+        email: string
+        problem_id: string
+    }): Promise<Record<string, TutorSubmission>> {
+        const [output, ofiles] = await this.root.execute("tutor.submissions.indexForProblem", data)
+        return output
+    }
+
+    /**
+     * Get all submissions for a list of abstract problems in a course.
+     *
+     * 🔐 Authentication: tutor
+     * No warnings
+     *
+     */
+    async getForAbstractProblems(data: {
+        course_key: string
+        email: string
+        problem_nms: string
+    }): Promise<TutorSubmission[]> {
+        const [output, ofiles] = await this.root.execute("tutor.submissions.getForAbstractProblems", data)
+        return output
+    }
+
+    /**
+     * Get all submissions for a supervised student in a course.
+     *
+     * 🔐 Authentication: tutor
+     * No warnings
+     *
+     */
+    async getAll(data: { course_key: string; email: string }): Promise<TutorSubmission[]> {
+        const [output, ofiles] = await this.root.execute("tutor.submissions.getAll", data)
+        return output
+    }
+
+    /**
+     * Get a submission.
+     *
+     * 🔐 Authentication: tutor
+     * No warnings
+     *
+     */
+    async get(data: {
+        course_key: string
+        email: string
+        problem_id: string
+        submission_id: string
+    }): Promise<TutorSubmission> {
+        const [output, ofiles] = await this.root.execute("tutor.submissions.get", data)
+        return output
+    }
+
+    /**
+     * Get code for a submission as a string in base64.
+     *
+     * 🔐 Authentication: tutor
+     * No warnings
+     *
+     */
+    async getCodeAsB64(data: {
+        course_key: string
+        email: string
+        problem_id: string
+        submission_id: string
+    }): Promise<string> {
+        const [output, ofiles] = await this.root.execute("tutor.submissions.getCodeAsB64", data)
+        return output
+    }
+
+    /**
+     * Get compilation errors for a submission.
+     *
+     * 🔐 Authentication: tutor
+     * No warnings
+     *
+     */
+    async getCompilationErrors(data: {
+        course_key: string
+        email: string
+        problem_id: string
+        submission_id: string
+    }): Promise<CompilationErrors> {
+        const [output, ofiles] = await this.root.execute("tutor.submissions.getCompilationErrors", data)
+        return output
+    }
+
+    /**
+     * Get code metrics for a submission.
+     *
+     * 🔐 Authentication: tutor
+     * No warnings
+     *
+     */
+    async getCodeMetrics(data: {
+        course_key: string
+        email: string
+        problem_id: string
+        submission_id: string
+    }): Promise<CodeMetrics | null> {
+        const [output, ofiles] = await this.root.execute("tutor.submissions.getCodeMetrics", data)
+        return output
+    }
+
+    /**
+     * Get partial scoring for a submission.
+     *
+     * 🔐 Authentication: tutor
+     * No warnings
+     *
+     */
+    async getScoring(data: {
+        course_key: string
+        email: string
+        problem_id: string
+        submission_id: string
+    }): Promise<Scoring> {
+        const [output, ofiles] = await this.root.execute("tutor.submissions.getScoring", data)
+        return output
+    }
+
+    /**
+     * Get list of awards ids for a submission.
+     *
+     * 🔐 Authentication: tutor
+     * No warnings
+     *
+     */
+    async getAwards(data: {
+        course_key: string
+        email: string
+        problem_id: string
+        submission_id: string
+    }): Promise<string[]> {
+        const [output, ofiles] = await this.root.execute("tutor.submissions.getAwards", data)
+        return output
+    }
+
+    /**
+     * Get analysis of a submission.
+     *
+     * 🔐 Authentication: tutor
+     * No warnings
+     *
+     */
+    async getAnalysis(data: {
+        course_key: string
+        email: string
+        problem_id: string
+        submission_id: string
+    }): Promise<SubmissionAnalysis[]> {
+        const [output, ofiles] = await this.root.execute("tutor.submissions.getAnalysis", data)
+        return output
+    }
+
+    /**
+     * Get a (public) testcase analysis of a submission.
+     *
+     * 🔐 Authentication: tutor
+     * No warnings
+     *
+     */
+    async getTestcaseAnalysis(data: {
+        course_key: string
+        email: string
+        problem_id: string
+        submission_id: string
+        testcase: string
+    }): Promise<TestcaseAnalysis> {
+        const [output, ofiles] = await this.root.execute("tutor.submissions.getTestcaseAnalysis", data)
         return output
     }
 }
@@ -1879,72 +3940,25 @@ class Module_student_awards {
 class Module_instructor {
     private readonly root: JutgeApiClient
 
-    readonly tags: Module_instructor_tags
     readonly documents: Module_instructor_documents
     readonly lists: Module_instructor_lists
     readonly courses: Module_instructor_courses
     readonly exams: Module_instructor_exams
-    readonly queries: Module_instructor_queries
     readonly problems: Module_instructor_problems
+    readonly queries: Module_instructor_queries
+    readonly tags: Module_instructor_tags
+    readonly jutgeai: Module_instructor_jutgeai
 
     constructor(root: JutgeApiClient) {
         this.root = root
-        this.tags = new Module_instructor_tags(root)
         this.documents = new Module_instructor_documents(root)
         this.lists = new Module_instructor_lists(root)
         this.courses = new Module_instructor_courses(root)
         this.exams = new Module_instructor_exams(root)
-        this.queries = new Module_instructor_queries(root)
         this.problems = new Module_instructor_problems(root)
-    }
-}
-
-/**
- *
- * No description yet
- *
- */
-class Module_instructor_tags {
-    private readonly root: JutgeApiClient
-
-    constructor(root: JutgeApiClient) {
-        this.root = root
-    }
-
-    /**
-     * Get all tags
-     *
-     * 🔐 Authentication: instructor
-     * No warnings
-     *
-     */
-    async getAll(): Promise<string[]> {
-        const [output, ofiles] = await this.root.execute('instructor.tags.getAll', null)
-        return output
-    }
-
-    /**
-     * Get all tags with their problems
-     *
-     * 🔐 Authentication: instructor
-     * No warnings
-     *
-     */
-    async getDict(): Promise<TagsDict> {
-        const [output, ofiles] = await this.root.execute('instructor.tags.getDict', null)
-        return output
-    }
-
-    /**
-     * Get all problems with a given tag
-     *
-     * 🔐 Authentication: instructor
-     * No warnings
-     *
-     */
-    async get(tag: string): Promise<string[]> {
-        const [output, ofiles] = await this.root.execute('instructor.tags.get', tag)
-        return output
+        this.queries = new Module_instructor_queries(root)
+        this.tags = new Module_instructor_tags(root)
+        this.jutgeai = new Module_instructor_jutgeai(root)
     }
 }
 
@@ -1961,92 +3975,86 @@ class Module_instructor_documents {
     }
 
     /**
-     * Get index of all documents
+     * Get index of all documents.
      *
      * 🔐 Authentication: instructor
      * No warnings
      *
      */
-    async index(): Promise<Documents> {
-        const [output, ofiles] = await this.root.execute('instructor.documents.index', null)
+    async index(): Promise<Record<string, Document>> {
+        const [output, ofiles] = await this.root.execute("instructor.documents.index", null)
         return output
     }
 
     /**
-     * Get a document (without PDF)
+     * Get a document.
      *
      * 🔐 Authentication: instructor
      * No warnings
-     *
+     * The file content is not included in the response.
      */
     async get(document_nm: string): Promise<Document> {
-        const [output, ofiles] = await this.root.execute('instructor.documents.get', document_nm)
+        const [output, ofiles] = await this.root.execute("instructor.documents.get", document_nm)
         return output
     }
 
     /**
-     * Get PDF of a document
+     * Get PDF of a document.
      *
      * 🔐 Authentication: instructor
      * No warnings
      *
      */
     async getPdf(document_nm: string): Promise<Download> {
-        const [output, ofiles] = await this.root.execute('instructor.documents.getPdf', document_nm)
+        const [output, ofiles] = await this.root.execute("instructor.documents.getPdf", document_nm)
         return ofiles[0]
     }
 
     /**
-     * Create a new document
+     * Get ZIP of a document.
      *
      * 🔐 Authentication: instructor
      * No warnings
      *
      */
-    async create(data: Document, ifile: File): Promise<void> {
-        const [output, ofiles] = await this.root.execute('instructor.documents.create', data, [
-            ifile,
-        ])
-        return output
+    async getZip(document_nm: string): Promise<Download> {
+        const [output, ofiles] = await this.root.execute("instructor.documents.getZip", document_nm)
+        return ofiles[0]
     }
 
     /**
-     * Update a document (without PDF)
+     * Create a new document.
      *
      * 🔐 Authentication: instructor
      * No warnings
      *
      */
-    async update(data: Document): Promise<void> {
-        const [output, ofiles] = await this.root.execute('instructor.documents.update', data)
+    async create(data: DocumentCreation, ifile: File): Promise<void> {
+        const [output, ofiles] = await this.root.execute("instructor.documents.create", data, [ifile])
         return output
     }
 
     /**
-     * Update PDF of a document
+     * Update a document.
      *
      * 🔐 Authentication: instructor
      * No warnings
      *
      */
-    async updatePdf(document_nm: string, ifile: File): Promise<void> {
-        const [output, ofiles] = await this.root.execute(
-            'instructor.documents.updatePdf',
-            document_nm,
-            [ifile],
-        )
+    async update(data: DocumentCreation, ifile: File): Promise<void> {
+        const [output, ofiles] = await this.root.execute("instructor.documents.update", data, [ifile])
         return output
     }
 
     /**
-     * Remove a document (including PDF)
+     * Remove a document.
      *
      * 🔐 Authentication: instructor
      * No warnings
      *
      */
     async remove(document_nm: string): Promise<void> {
-        const [output, ofiles] = await this.root.execute('instructor.documents.remove', document_nm)
+        const [output, ofiles] = await this.root.execute("instructor.documents.remove", document_nm)
         return output
     }
 }
@@ -2064,93 +4072,115 @@ class Module_instructor_lists {
     }
 
     /**
-     * Get index of all lists
+     * Get index of all lists.
      *
      * 🔐 Authentication: instructor
      * No warnings
      *
      */
-    async index(): Promise<InstructorLists> {
-        const [output, ofiles] = await this.root.execute('instructor.lists.index', null)
+    async index(): Promise<Record<string, InstructorBriefList>> {
+        const [output, ofiles] = await this.root.execute("instructor.lists.index", null)
         return output
     }
 
     /**
-     * Get a list with its items
+     * Get a list.
      *
      * 🔐 Authentication: instructor
      * No warnings
      *
      */
-    async get(list_nm: string): Promise<InstructorListWithItems> {
-        const [output, ofiles] = await this.root.execute('instructor.lists.get', list_nm)
+    async get(list_nm: string): Promise<InstructorList> {
+        const [output, ofiles] = await this.root.execute("instructor.lists.get", list_nm)
         return output
     }
 
     /**
-     * Get the items of a list
+     * Create a new list.
      *
      * 🔐 Authentication: instructor
      * No warnings
      *
      */
-    async getItems(list_nm: string): Promise<InstructorListItems> {
-        const [output, ofiles] = await this.root.execute('instructor.lists.getItems', list_nm)
+    async create(data: InstructorListCreation): Promise<void> {
+        const [output, ofiles] = await this.root.execute("instructor.lists.create", data)
         return output
     }
 
     /**
-     * Create a new list
+     * Update an existing list.
      *
      * 🔐 Authentication: instructor
      * No warnings
      *
      */
-    async create(data: InstructorList): Promise<void> {
-        const [output, ofiles] = await this.root.execute('instructor.lists.create', data)
+    async update(data: InstructorListCreation): Promise<void> {
+        const [output, ofiles] = await this.root.execute("instructor.lists.update", data)
         return output
     }
 
     /**
-     * Update an existing list
-     *
-     * 🔐 Authentication: instructor
-     * No warnings
-     *
-     */
-    async update(data: InstructorList): Promise<void> {
-        const [output, ofiles] = await this.root.execute('instructor.lists.update', data)
-        return output
-    }
-
-    /**
-     * Delete an existing list
+     * Delete an existing list.
      *
      * 🔐 Authentication: instructor
      * No warnings
      *
      */
     async remove(list_nm: string): Promise<void> {
-        const [output, ofiles] = await this.root.execute('instructor.lists.remove', list_nm)
+        const [output, ofiles] = await this.root.execute("instructor.lists.remove", list_nm)
         return output
     }
 
     /**
-     * Set the items of a list
+     * Get the list of lists that are archived.
+     *
+     * 🔐 Authentication: instructor
+     * No warnings
+     * At some point, endpoints related to archiving lists should change as the archive bit will be an attribute of each list.
+     */
+    async getArchived(): Promise<string[]> {
+        const [output, ofiles] = await this.root.execute("instructor.lists.getArchived", null)
+        return output
+    }
+
+    /**
+     * Archive a list.
      *
      * 🔐 Authentication: instructor
      * No warnings
      *
      */
-    async setItems(data: { list_nm: string; items: InstructorListItems }): Promise<void> {
-        const [output, ofiles] = await this.root.execute('instructor.lists.setItems', data)
+    async archive(list_nm: string): Promise<void> {
+        const [output, ofiles] = await this.root.execute("instructor.lists.archive", list_nm)
+        return output
+    }
+
+    /**
+     * Unarchive a list.
+     *
+     * 🔐 Authentication: instructor
+     * No warnings
+     *
+     */
+    async unarchive(list_nm: string): Promise<void> {
+        const [output, ofiles] = await this.root.execute("instructor.lists.unarchive", list_nm)
         return output
     }
 }
 
 /**
  *
- * No description yet
+ *
+This module manages the courses that an instructor is teaching. It allows the instructor to manage the course, including getting and updating its lists, students and tutors. It can also send invites to pending students and tutors.
+
+The course name is a unique slug for the course. It is used to reference the course in the system.
+
+The course title is the human-readable title of the course.
+
+The course description is a human-readable description of the course.
+
+Students and tutors are managed in three lists: invited, enrolled and pending. These contains the emails of these users. Invited students and tutors are those who have been invited to the course. Enrolled students and tutors are those who have accepted the invitation and are part of the course. Pending students and tutors are those who have been invited to join the course but have not yet accepted. Enrolled and pending students and tutors are managed by the system and cannot not be modified directly.
+
  *
  */
 class Module_instructor_courses {
@@ -2161,168 +4191,170 @@ class Module_instructor_courses {
     }
 
     /**
-     * Get index of all courses
+     * Get index of all courses.
      *
      * 🔐 Authentication: instructor
      * No warnings
      *
      */
-    async index(): Promise<InstructorCourses> {
-        const [output, ofiles] = await this.root.execute('instructor.courses.index', null)
+    async index(): Promise<Record<string, InstructorBriefCourse>> {
+        const [output, ofiles] = await this.root.execute("instructor.courses.index", null)
         return output
     }
 
     /**
-     * Get a course with its items (lists, courses and tutors)
+     * Get a course.
      *
      * 🔐 Authentication: instructor
      * No warnings
      *
      */
-    async get(course_nm: string): Promise<InstructorCourseWithItems> {
-        const [output, ofiles] = await this.root.execute('instructor.courses.get', course_nm)
+    async get(course_nm: string): Promise<InstructorCourse> {
+        const [output, ofiles] = await this.root.execute("instructor.courses.get", course_nm)
         return output
     }
 
     /**
-     * Get lists of a course
+     * Create a new course.
+     *
+     * 🔐 Authentication: instructor
+     * No warnings
+     * Only invited students and tutors are taken into account. Enrolled and pending students and tutors are ignored, as these are managed by the system.
+     */
+    async create(data: InstructorCourseCreation): Promise<void> {
+        const [output, ofiles] = await this.root.execute("instructor.courses.create", data)
+        return output
+    }
+
+    /**
+     * Update an existing course.
+     *
+     * 🔐 Authentication: instructor
+     * No warnings
+     * Only invited students and tutors are taken into account. Enrolled and pending students and tutors are ignored, as these are managed by the system.
+     */
+    async update(data: InstructorCourseUpdate): Promise<void> {
+        const [output, ofiles] = await this.root.execute("instructor.courses.update", data)
+        return output
+    }
+
+    /**
+     * Update the icon of a course.
      *
      * 🔐 Authentication: instructor
      * No warnings
      *
      */
-    async getLists(course_nm: string): Promise<string[]> {
-        const [output, ofiles] = await this.root.execute('instructor.courses.getLists', course_nm)
+    async updateIcon(data: InstructorCourseUpdateIconInput): Promise<void> {
+        const [output, ofiles] = await this.root.execute("instructor.courses.updateIcon", data)
         return output
     }
 
     /**
-     * Get students of a course
+     * Delete an existing course.
      *
      * 🔐 Authentication: instructor
      * No warnings
-     *
-     */
-    async getStudents(course_nm: string): Promise<CourseMembers> {
-        const [output, ofiles] = await this.root.execute(
-            'instructor.courses.getStudents',
-            course_nm,
-        )
-        return output
-    }
-
-    /**
-     * Get tutors of a course
-     *
-     * 🔐 Authentication: instructor
-     * No warnings
-     *
-     */
-    async getTutors(course_nm: string): Promise<CourseMembers> {
-        const [output, ofiles] = await this.root.execute('instructor.courses.getTutors', course_nm)
-        return output
-    }
-
-    /**
-     * Create a new course
-     *
-     * 🔐 Authentication: instructor
-     * No warnings
-     *
-     */
-    async create(data: InstructorCourse): Promise<void> {
-        const [output, ofiles] = await this.root.execute('instructor.courses.create', data)
-        return output
-    }
-
-    /**
-     * Update an existing course
-     *
-     * 🔐 Authentication: instructor
-     * No warnings
-     *
-     */
-    async update(data: InstructorCourse): Promise<void> {
-        const [output, ofiles] = await this.root.execute('instructor.courses.update', data)
-        return output
-    }
-
-    /**
-     * Delete an existing course
-     *
-     * 🔐 Authentication: instructor
-     * No warnings
-     * Note: A course should not be deleted. Ask a system administrator to remove it.
+     * A course should not be deleted. Ask a system administrator to remove it if you really need it.
      */
     async remove(course_nm: string): Promise<void> {
-        const [output, ofiles] = await this.root.execute('instructor.courses.remove', course_nm)
+        const [output, ofiles] = await this.root.execute("instructor.courses.remove", course_nm)
         return output
     }
 
     /**
-     * Set lists of a course
+     * Send invite email to pending students in the course.
+     *
+     * 🔐 Authentication: instructor
+     * No warnings
+     * Please do not abuse.
+     */
+    async sendInviteToStudents(course_nm: string): Promise<void> {
+        const [output, ofiles] = await this.root.execute("instructor.courses.sendInviteToStudents", course_nm)
+        return output
+    }
+
+    /**
+     * Send invite email to pending tutors in the course.
+     *
+     * 🔐 Authentication: instructor
+     * No warnings
+     * Please do not abuse.
+     */
+    async sendInviteToTutors(course_nm: string): Promise<void> {
+        const [output, ofiles] = await this.root.execute("instructor.courses.sendInviteToTutors", course_nm)
+        return output
+    }
+
+    /**
+     * Get the profiles of the students enrolled in the course.
      *
      * 🔐 Authentication: instructor
      * No warnings
      *
      */
-    async setLists(data: { course_nm: string; lists: string[] }): Promise<void> {
-        const [output, ofiles] = await this.root.execute('instructor.courses.set_lists', data)
+    async getStudentProfiles(course_nm: string): Promise<Record<string, StudentProfile>> {
+        const [output, ofiles] = await this.root.execute("instructor.courses.getStudentProfiles", course_nm)
         return output
     }
 
     /**
-     * Invite students to a course
+     * Get the profiles of the tutors enrolled in the course.
      *
      * 🔐 Authentication: instructor
      * No warnings
      *
      */
-    async inviteStudents(data: { course_nm: string; emails: string[] }): Promise<void> {
-        const [output, ofiles] = await this.root.execute('instructor.courses.invite_students', data)
+    async getTutorProfiles(course_nm: string): Promise<Record<string, StudentProfile>> {
+        const [output, ofiles] = await this.root.execute("instructor.courses.getTutorProfiles", course_nm)
         return output
     }
 
     /**
-     * Invite tutors to a course
+     * Get the list of courses that are archived.
+     *
+     * 🔐 Authentication: instructor
+     * No warnings
+     * At some point, endpoints related to archiving courses should change as the archive bit will be an attribute of each course.
+     */
+    async getArchived(): Promise<string[]> {
+        const [output, ofiles] = await this.root.execute("instructor.courses.getArchived", null)
+        return output
+    }
+
+    /**
+     * Archive a course.
      *
      * 🔐 Authentication: instructor
      * No warnings
      *
      */
-    async inviteTutors(data: { course_nm: string; emails: string[] }): Promise<void> {
-        const [output, ofiles] = await this.root.execute('instructor.courses.invite_tutors', data)
+    async archive(course_nm: string): Promise<void> {
+        const [output, ofiles] = await this.root.execute("instructor.courses.archive", course_nm)
         return output
     }
 
     /**
-     * Remove students from a course
+     * Unarchive a course.
      *
      * 🔐 Authentication: instructor
      * No warnings
      *
      */
-    async removeStudents(data: { course_nm: string; emails: string[] }): Promise<void> {
-        const [output, ofiles] = await this.root.execute('instructor.courses.remove_students', data)
-        return output
-    }
-
-    /**
-     * Remove tutors from a course
-     *
-     * 🔐 Authentication: instructor
-     * No warnings
-     *
-     */
-    async removeTutors(data: { course_nm: string; emails: string[] }): Promise<void> {
-        const [output, ofiles] = await this.root.execute('instructor.courses.remove_tutors', data)
+    async unarchive(course_nm: string): Promise<void> {
+        const [output, ofiles] = await this.root.execute("instructor.courses.unarchive", course_nm)
         return output
     }
 }
 
 /**
  *
- * No description yet
+ *
+
+This module manages the exams that an instructor is teaching. It allows the instructor to manage the exam, including getting and updating its documents, problems, students and submissions.
+
+Exams objects are quite complex. Thus, this interface is also a bit complex. Each part of an exam can be get or updated in a separate endpoint. The main endpoint is the get endpoint, which returns the full exam object.
+
  *
  */
 class Module_instructor_exams {
@@ -2333,203 +4365,500 @@ class Module_instructor_exams {
     }
 
     /**
-     * Get index of all exams
+     * Get index of all exams.
      *
      * 🔐 Authentication: instructor
      * No warnings
      *
      */
-    async index(): Promise<InstructorExams> {
-        const [output, ofiles] = await this.root.execute('instructor.exams.index', null)
+    async index(): Promise<Record<string, InstructorBriefExam>> {
+        const [output, ofiles] = await this.root.execute("instructor.exams.index", null)
         return output
     }
 
     /**
-     * Get an exam with its items (course, problems, documents, students)
+     * Get an exam.
      *
      * 🔐 Authentication: instructor
      * No warnings
      *
      */
-    async get(exam_nm: string): Promise<InstructorExamWithItems> {
-        const [output, ofiles] = await this.root.execute('instructor.exams.get', exam_nm)
+    async get(exam_nm: string): Promise<InstructorExam> {
+        const [output, ofiles] = await this.root.execute("instructor.exams.get", exam_nm)
         return output
     }
 
     /**
-     * Create a new exam
+     * Get documents of an exam.
      *
      * 🔐 Authentication: instructor
      * No warnings
      *
      */
-    async create(data: InstructorExamCreation): Promise<void> {
-        const [output, ofiles] = await this.root.execute('instructor.exams.create', data)
+    async getDocuments(exam_nm: string): Promise<RunningExamDocument[]> {
+        const [output, ofiles] = await this.root.execute("instructor.exams.getDocuments", exam_nm)
         return output
     }
 
     /**
-     * Update an existing exam
+     * Get problems of an exam.
      *
      * 🔐 Authentication: instructor
      * No warnings
      *
      */
-    async update(data: InstructorExamCreation): Promise<void> {
-        const [output, ofiles] = await this.root.execute('instructor.exams.update', data)
+    async getProblems(exam_nm: string): Promise<InstructorExamProblem[]> {
+        const [output, ofiles] = await this.root.execute("instructor.exams.getProblems", exam_nm)
         return output
     }
 
     /**
-     * Delete an existing exam
-     *
-     * 🔐 Authentication: instructor
-     * No warnings
-     * Note: An exam can only be deleted if it has not started.
-     */
-    async remove(exam_nm: string): Promise<void> {
-        const [output, ofiles] = await this.root.execute('instructor.exams.remove', exam_nm)
-        return output
-    }
-
-    /**
-     * Get documents of an exam
+     * Get students of an exam.
      *
      * 🔐 Authentication: instructor
      * No warnings
      *
      */
-    async getDocuments(exam_nm: string): Promise<InstructorExamDocuments> {
-        const [output, ofiles] = await this.root.execute('instructor.exams.getDocuments', exam_nm)
+    async getStudents(exam_nm: string): Promise<InstructorExamStudent[]> {
+        const [output, ofiles] = await this.root.execute("instructor.exams.getStudents", exam_nm)
         return output
     }
 
     /**
-     * Get course of an exam
-     *
-     * 🔐 Authentication: instructor
-     * No warnings
-     *
-     */
-    async getCourse(exam_nm: string): Promise<InstructorExamCourse> {
-        const [output, ofiles] = await this.root.execute('instructor.exams.getCourse', exam_nm)
-        return output
-    }
-
-    /**
-     * Get problems of an exam
-     *
-     * 🔐 Authentication: instructor
-     * No warnings
-     *
-     */
-    async getProblems(exam_nm: string): Promise<InstructorExamProblems> {
-        const [output, ofiles] = await this.root.execute('instructor.exams.getProblems', exam_nm)
-        return output
-    }
-
-    /**
-     * Get students of an exam
-     *
-     * 🔐 Authentication: instructor
-     * No warnings
-     *
-     */
-    async getStudents(exam_nm: string): Promise<InstructorExamStudents> {
-        const [output, ofiles] = await this.root.execute('instructor.exams.getStudents', exam_nm)
-        return output
-    }
-
-    /**
-     * Get an student of an exam
+     * Get an student of an exam.
      *
      * 🔐 Authentication: instructor
      * No warnings
      *
      */
     async getStudent(data: { exam_nm: string; email: string }): Promise<InstructorExamStudent> {
-        const [output, ofiles] = await this.root.execute('instructor.exams.getStudent', data)
+        const [output, ofiles] = await this.root.execute("instructor.exams.getStudent", data)
         return output
     }
 
     /**
-     * Get submissions of an exam
+     * Get submissions of an exam as a webstream.
      *
      * 🔐 Authentication: instructor
      * No warnings
-     * This endpoint prepares a ZIP file to download the submissions of an exam. Preparing the ZIP file takes some time, an href link to the ZIP will be returned. This ZIP file will be available for download for a limited time.
+     * Meant for real-time streaming of submissions, most instructors will possibly prefer getSubmissionsPack.
      */
-    async getSubmissions(data: {
-        exam_nm: string
-        options: InstructorExamSubmissionsOptions
-    }): Promise<Pack> {
-        const [output, ofiles] = await this.root.execute('instructor.exams.getSubmissions', data)
+    async getSubmissions(data: { exam_nm: string; options: InstructorExamSubmissionsOptions }): Promise<WebStream> {
+        const [output, ofiles] = await this.root.execute("instructor.exams.getSubmissions", data)
         return output
     }
 
     /**
-     * Set documents of an exam
+     * Get submissions of an exam as a pack.
      *
      * 🔐 Authentication: instructor
      * No warnings
-     *
+     * This endpoint will prepare the pack in the background and return a link to download it later. Packs take some time to be prepared, and are deleted after 24 hours. This is the preferred endpoint for most instructors, as it is simpler to use than getSubmissions.
      */
-    async setDocuments(data: { exam_nm: string; document_nms: string[] }): Promise<void> {
-        const [output, ofiles] = await this.root.execute('instructor.exams.setDocuments', data)
+    async getSubmissionsPack(data: { exam_nm: string; options: InstructorExamSubmissionsOptions }): Promise<Pack> {
+        const [output, ofiles] = await this.root.execute("instructor.exams.getSubmissionsPack", data)
         return output
     }
 
     /**
-     * Set problems of an exam
+     * Get statistics of an exam.
      *
      * 🔐 Authentication: instructor
      * No warnings
      *
      */
-    async setProblems(data: { exam_nm: string; problems: InstructorExamProblems }): Promise<void> {
-        const [output, ofiles] = await this.root.execute('instructor.exams.setProblems', data)
+    async getStatistics(exam_nm: string): Promise<ExamStatistics> {
+        const [output, ofiles] = await this.root.execute("instructor.exams.getStatistics", exam_nm)
         return output
     }
 
     /**
-     * Set students of an exam
+     * Create a new exam.
      *
      * 🔐 Authentication: instructor
      * No warnings
      *
      */
-    async setStudents(data: {
-        exam_nm: string
-        students: InstructorExamStudentsPost
-    }): Promise<void> {
-        const [output, ofiles] = await this.root.execute('instructor.exams.setStudents', data)
+    async create(data: InstructorExamCreation): Promise<void> {
+        const [output, ofiles] = await this.root.execute("instructor.exams.create", data)
         return output
     }
 
     /**
-     * Add students to an exam
+     * Update an existing exam.
      *
      * 🔐 Authentication: instructor
      * No warnings
      *
      */
-    async addStudents(data: {
-        exam_nm: string
-        students: InstructorExamStudentsPost
-    }): Promise<void> {
-        const [output, ofiles] = await this.root.execute('instructor.exams.addStudents', data)
+    async update(data: InstructorExamUpdate): Promise<void> {
+        const [output, ofiles] = await this.root.execute("instructor.exams.update", data)
         return output
     }
 
     /**
-     * Remove students from an exam
+     * Update documents of an exam.
+     *
+     * 🔐 Authentication: instructor
+     * No warnings
+     *
+     */
+    async updateDocuments(data: { exam_nm: string; document_nms: string[] }): Promise<void> {
+        const [output, ofiles] = await this.root.execute("instructor.exams.updateDocuments", data)
+        return output
+    }
+
+    /**
+     * Update compilers of an exam.
+     *
+     * 🔐 Authentication: instructor
+     * No warnings
+     *
+     */
+    async updateCompilers(data: { exam_nm: string; compiler_ids: string[] }): Promise<void> {
+        const [output, ofiles] = await this.root.execute("instructor.exams.updateCompilers", data)
+        return output
+    }
+
+    /**
+     * Update problems of an exam.
+     *
+     * 🔐 Authentication: instructor
+     * No warnings
+     *
+     */
+    async updateProblems(data: { exam_nm: string; problems: InstructorExamProblem[] }): Promise<void> {
+        const [output, ofiles] = await this.root.execute("instructor.exams.updateProblems", data)
+        return output
+    }
+
+    /**
+     * Update students of an exam.
+     *
+     * 🔐 Authentication: instructor
+     * No warnings
+     *
+     */
+    async updateStudents(data: { exam_nm: string; students: InstructorExamStudent[] }): Promise<void> {
+        const [output, ofiles] = await this.root.execute("instructor.exams.updateStudents", data)
+        return output
+    }
+
+    /**
+     * Add students to an exam.
+     *
+     * 🔐 Authentication: instructor
+     * No warnings
+     *
+     */
+    async addStudents(data: { exam_nm: string; students: InstructorExamStudent[] }): Promise<void> {
+        const [output, ofiles] = await this.root.execute("instructor.exams.addStudents", data)
+        return output
+    }
+
+    /**
+     * Remove students from an exam.
      *
      * 🔐 Authentication: instructor
      * No warnings
      *
      */
     async removeStudents(data: { exam_nm: string; emails: string[] }): Promise<void> {
-        const [output, ofiles] = await this.root.execute('instructor.exams.removeStudents', data)
+        const [output, ofiles] = await this.root.execute("instructor.exams.removeStudents", data)
+        return output
+    }
+
+    /**
+     * Delete an existing exam.
+     *
+     * 🔐 Authentication: instructor
+     * No warnings
+     * Note: An exam can only be deleted if it has not started.
+     */
+    async remove(exam_nm: string): Promise<void> {
+        const [output, ofiles] = await this.root.execute("instructor.exams.remove", exam_nm)
+        return output
+    }
+
+    /**
+     * Get the list of exams that are archived.
+     *
+     * 🔐 Authentication: instructor
+     * No warnings
+     * At some point, endpoints related to archiving exams should change as the archive bit will be an attribute of each exam.
+     */
+    async getArchived(): Promise<string[]> {
+        const [output, ofiles] = await this.root.execute("instructor.exams.getArchived", null)
+        return output
+    }
+
+    /**
+     * Archive an exam.
+     *
+     * 🔐 Authentication: instructor
+     * No warnings
+     *
+     */
+    async archive(exam_nm: string): Promise<void> {
+        const [output, ofiles] = await this.root.execute("instructor.exams.archive", exam_nm)
+        return output
+    }
+
+    /**
+     * Unarchive an exam.
+     *
+     * 🔐 Authentication: instructor
+     * No warnings
+     *
+     */
+    async unarchive(exam_nm: string): Promise<void> {
+        const [output, ofiles] = await this.root.execute("instructor.exams.unarchive", exam_nm)
+        return output
+    }
+
+    /**
+     * Get the ranking.
+     *
+     * 🔐 Authentication: instructor
+     * No warnings
+     * Under development.
+     */
+    async getRanking(exam_nm: string): Promise<Ranking> {
+        const [output, ofiles] = await this.root.execute("instructor.exams.getRanking", exam_nm)
+        return output
+    }
+}
+
+/**
+ *
+ * No description yet
+ *
+ */
+class Module_instructor_problems {
+    private readonly root: JutgeApiClient
+
+    constructor(root: JutgeApiClient) {
+        this.root = root
+    }
+
+    /**
+     * Get the list of own problems.
+     *
+     * 🔐 Authentication: instructor
+     * No warnings
+     *
+     */
+    async getOwnProblems(): Promise<string[]> {
+        const [output, ofiles] = await this.root.execute("instructor.problems.getOwnProblems", null)
+        return output
+    }
+
+    /**
+     * Set the sharing settings of a problem.
+     *
+     * 🔐 Authentication: instructor
+     * No warnings
+     *
+            Without a passcode, the problem is visible to all users.
+            With a passcode, the problem is only visible to users with the correct passcode.
+            With shared testcases, the testcases are shared with instructors.
+            With shared solutions, the solutions are shared with instructors.
+
+     */
+    async setSharingSettings(data: SharingSettings): Promise<void> {
+        const [output, ofiles] = await this.root.execute("instructor.problems.setSharingSettings", data)
+        return output
+    }
+
+    /**
+     * Get the sharing settings of a problem.
+     *
+     * 🔐 Authentication: instructor
+     * No warnings
+     *
+     */
+    async getSharingSettings(problem_nm: string): Promise<SharingSettings> {
+        const [output, ofiles] = await this.root.execute("instructor.problems.getSharingSettings", problem_nm)
+        return output
+    }
+
+    /**
+     * Get the sharing settings of all problems.
+     *
+     * 🔐 Authentication: instructor
+     * No warnings
+     *
+     */
+    async getAllSharingSettings(): Promise<SharingSettings[]> {
+        const [output, ofiles] = await this.root.execute("instructor.problems.getAllSharingSettings", null)
+        return output
+    }
+
+    /**
+     * Get alerts for one problem.
+     *
+     * 🔐 Authentication: instructor
+     * No warnings
+     *
+     */
+    async getAlerts(problem_nm: string): Promise<ProblemAlerts> {
+        const [output, ofiles] = await this.root.execute("instructor.problems.getAlerts", problem_nm)
+        return output
+    }
+
+    /**
+     * Get alerts for all problems.
+     *
+     * 🔐 Authentication: instructor
+     * No warnings
+     *
+     */
+    async getAllAlerts(): Promise<ProblemAlerts[]> {
+        const [output, ofiles] = await this.root.execute("instructor.problems.getAllAlerts", null)
+        return output
+    }
+
+    /**
+     * Share a problem with users.
+     *
+     * 🔐 Authentication: instructor
+     * No warnings
+     *
+     */
+    async shareWith(data: ShareWithInp): Promise<void> {
+        const [output, ofiles] = await this.root.execute("instructor.problems.shareWith", data)
+        return output
+    }
+
+    /**
+     * Set the deprecation of a problem.
+     *
+     * 🔐 Authentication: instructor
+     * No warnings
+     * If the reason is null or empty, the problem is undeprecated.
+     */
+    async setDeprecation(data: Deprecation): Promise<void> {
+        const [output, ofiles] = await this.root.execute("instructor.problems.setDeprecation", data)
+        return output
+    }
+
+    /**
+     * Get the popularity buckets for all problems.
+     *
+     * 🔐 Authentication: instructor
+     * No warnings
+     * The buckets are sorted by the number of problems in each bucket by total number of submissions. The data is refreshed every hour.
+     */
+    async getProblemPopularityBuckets(): Promise<ProblemPopularityBucketEntry[]> {
+        const [output, ofiles] = await this.root.execute("instructor.problems.getProblemPopularityBuckets", null)
+        return output
+    }
+
+    /**
+     * Get anonymous submissions for an abstract problem.
+     *
+     * 🔐 Authentication: instructor
+     * No warnings
+     * This function is useful to produce statistics about the submissions for an abstract problem. The user ids are anonymized using a nonce.
+     */
+    async getAnonymousSubmissions(problem_nm: string): Promise<ProblemAnonymousSubmission[]> {
+        const [output, ofiles] = await this.root.execute("instructor.problems.getAnonymousSubmissions", problem_nm)
+        return output
+    }
+
+    /**
+     * Download a problem as a ZIP file.
+     *
+     * 🔐 Authentication: instructor
+     * No warnings
+     *
+     */
+    async download(problem_nm: string): Promise<Download> {
+        const [output, ofiles] = await this.root.execute("instructor.problems.download", problem_nm)
+        return ofiles[0]
+    }
+
+    /**
+     * Get all testcases of a problem.
+     *
+     * 🔐 Authentication: instructorOrAdmin
+     * No warnings
+     * Permission is granted to admins, the problem owner, or any instructor if testcases are shared.
+     */
+    async getAllTestcases(problem_id: string): Promise<Testcase[]> {
+        const [output, ofiles] = await this.root.execute("instructor.problems.getAllTestcases", problem_id)
+        return output
+    }
+
+    /**
+     * Get list of proglangs for which the problem has an official solution.
+     *
+     * 🔐 Authentication: instructorOrAdmin
+     * No warnings
+     * Permission is granted to admins and instructors who own the problem.
+     */
+    async getSolutions(problem_id: string): Promise<string[]> {
+        const [output, ofiles] = await this.root.execute("instructor.problems.getSolutions", problem_id)
+        return output
+    }
+
+    /**
+     * Get official solution for a problem in proglang as a string in base64.
+     *
+     * 🔐 Authentication: instructorOrAdmin
+     * No warnings
+     * Permission is granted to admins and instructors who own the problem.
+     */
+    async getSolutionAsB64(data: { problem_id: string; proglang: string }): Promise<string> {
+        const [output, ofiles] = await this.root.execute("instructor.problems.getSolutionAsB64", data)
+        return output
+    }
+
+    /**
+     * Get official solution for a problem in proglang as a file.
+     *
+     * 🔐 Authentication: instructorOrAdmin
+     * No warnings
+     * Permission is granted to admins and instructors who own the problem.
+     */
+    async getSolutionAsFile(data: { problem_id: string; proglang: string }): Promise<Download> {
+        const [output, ofiles] = await this.root.execute("instructor.problems.getSolutionAsFile", data)
+        return ofiles[0]
+    }
+
+    /**
+     * Create a problem from a ZIP archive.
+     *
+     * 🔐 Authentication: instructor
+     * No warnings
+     * This endpoint uses terminal web streaming: It returns an id from which the problem feedback is streamed over <URL>/api/webstreams/<id>.
+     */
+    async create(passcode: string, ifile: File): Promise<WebStream> {
+        const [output, ofiles] = await this.root.execute("instructor.problems.create", passcode, [ifile])
+        return output
+    }
+
+    /**
+     * Update a problem from a ZIP archive.
+     *
+     * 🔐 Authentication: instructor
+     * No warnings
+     * This endpoint uses terminal web streaming: It returns an id from which the problem feedback is streamed over <URL>/api/webstreams/<id>.
+     */
+    async update(problem_nm: string, ifile: File): Promise<WebStream> {
+        const [output, ofiles] = await this.root.execute("instructor.problems.update", problem_nm, [ifile])
+        return output
+    }
+
+    /**
+     * Remove a problem.
+     *
+     * 🔐 Authentication: instructor
+     * No warnings
+     * A problem can only be removed if it has few submissions.
+     */
+    async remove(problem_nm: string): Promise<void> {
+        const [output, ofiles] = await this.root.execute("instructor.problems.remove", problem_nm)
         return output
     }
 }
@@ -2553,14 +4882,8 @@ class Module_instructor_queries {
      * No warnings
      * Returns a list of submissions for a given problem for all students of a given course. Each submission includes the email, time, problem name, problem id, verdict, and IP address. The list is ordered by email and time. Known as ricard01 in the past.
      */
-    async getCourseProblemSubmissions(data: {
-        course_nm: string
-        problem_nm: string
-    }): Promise<SubmissionsQuery> {
-        const [output, ofiles] = await this.root.execute(
-            'instructor.queries.getCourseProblemSubmissions',
-            data,
-        )
+    async getCourseProblemSubmissions(data: { course_nm: string; problem_nm: string }): Promise<SubmissionsQuery> {
+        const [output, ofiles] = await this.root.execute("instructor.queries.getCourseProblemSubmissions", data)
         return output
     }
 
@@ -2571,14 +4894,8 @@ class Module_instructor_queries {
      * No warnings
      * Returns a list of submissions for all problems in a given list for all students of a given course. Each submission includes the email, time, problem name, problem id, verdict, and IP address. The list is ordered by email, problem id and time. Known as ricard02 in the past.
      */
-    async getCourseListSubmissions(data: {
-        course_nm: string
-        list_nm: string
-    }): Promise<SubmissionsQuery> {
-        const [output, ofiles] = await this.root.execute(
-            'instructor.queries.getCourseListSubmissions',
-            data,
-        )
+    async getCourseListSubmissions(data: { course_nm: string; list_nm: string }): Promise<SubmissionsQuery> {
+        const [output, ofiles] = await this.root.execute("instructor.queries.getCourseListSubmissions", data)
         return output
     }
 }
@@ -2588,7 +4905,7 @@ class Module_instructor_queries {
  * No description yet
  *
  */
-class Module_instructor_problems {
+class Module_instructor_tags {
     private readonly root: JutgeApiClient
 
     constructor(root: JutgeApiClient) {
@@ -2596,84 +4913,173 @@ class Module_instructor_problems {
     }
 
     /**
-     * Get the passcode of a problem.
+     * Get list of all tags.
      *
      * 🔐 Authentication: instructor
      * No warnings
-     * Returns an empty string if the problem has no passcode.
+     *
      */
-    async getPasscode(problem_nm: string): Promise<string> {
-        const [output, ofiles] = await this.root.execute(
-            'instructor.problems.getPasscode',
-            problem_nm,
-        )
+    async index(): Promise<string[]> {
+        const [output, ofiles] = await this.root.execute("instructor.tags.index", null)
         return output
     }
 
     /**
-     * Set or update the passcode of a problem.
+     * Get all tags with their problems.
      *
      * 🔐 Authentication: instructor
      * No warnings
-     * The passcode must be at least 8 characters long and contain only alphanumeric characters. The passcode will be stored in the database in plain text.
+     *
      */
-    async setPasscode(data: { problem_nm: string; passcode: string }): Promise<void> {
-        const [output, ofiles] = await this.root.execute('instructor.problems.setPasscode', data)
+    async getDict(): Promise<TagsDict> {
+        const [output, ofiles] = await this.root.execute("instructor.tags.getDict", null)
         return output
     }
 
     /**
-     * Remove passcode of a problem.
+     * Get all problems with a given tag.
      *
      * 🔐 Authentication: instructor
      * No warnings
      *
      */
-    async removePasscode(problem_nm: string): Promise<void> {
-        const [output, ofiles] = await this.root.execute(
-            'instructor.problems.removePasscode',
-            problem_nm,
-        )
+    async get(tag: string): Promise<string[]> {
+        const [output, ofiles] = await this.root.execute("instructor.tags.get", tag)
+        return output
+    }
+}
+
+/**
+ *
+ * No description yet
+ *
+ */
+class Module_instructor_jutgeai {
+    private readonly root: JutgeApiClient
+
+    constructor(root: JutgeApiClient) {
+        this.root = root
+    }
+
+    /**
+     * Get the list of supported models.
+     *
+     * 🔐 Authentication: instructor
+     * No warnings
+     *
+     */
+    async supportedModels(): Promise<string[]> {
+        const [output, ofiles] = await this.root.execute("instructor.jutgeai.supportedModels", null)
         return output
     }
 
     /**
-     * Deprecate a problem.
+     * Get the list of supported image models.
      *
      * 🔐 Authentication: instructor
      * No warnings
      *
      */
-    async deprecate(data: { problem_nm: string; reason: string }): Promise<void> {
-        const [output, ofiles] = await this.root.execute('instructor.problems.deprecate', data)
+    async supportedImageModels(): Promise<string[]> {
+        const [output, ofiles] = await this.root.execute("instructor.jutgeai.supportedImageModels", null)
         return output
     }
 
     /**
-     * Undeprecate a problem.
+     * Chat with an AI model using a list of messages.
      *
      * 🔐 Authentication: instructor
      * No warnings
-     *
+     * Send a conversation (list of system|user|assistant messages) and get the next assistant reply. Models are listed in the `supportedModels` endpoint. This endpoint uses terminal web streaming: It returns an id from which the chat is streamed over <URL>/api/webstreams/<id>. If `addUsage` is true, the usage of the model will be added at the end of the response as a JSON object between `---USAGE_JSON_START---` and `---USAGE_JSON_END---`.
      */
-    async undeprecate(problem_nm: string): Promise<void> {
-        const [output, ofiles] = await this.root.execute(
-            'instructor.problems.undeprecate',
-            problem_nm,
-        )
+    async chat(data: ChatPrompt): Promise<WebStream> {
+        const [output, ofiles] = await this.root.execute("instructor.jutgeai.chat", data)
         return output
     }
 
     /**
-     * Download a problem.
+     * Create an image using an AI image model.
      *
      * 🔐 Authentication: instructor
      * No warnings
-     * Quick and dirty implementation, should be improved. Returns a zip file with the abstract problem and all its problems.
+     * Some models only accept certain sizes and aspect ratios.
      */
-    async download(problem_nm: string): Promise<Download> {
-        const [output, ofiles] = await this.root.execute('instructor.problems.download', problem_nm)
+    async createImage(data: CreateImageInput): Promise<Download> {
+        const [output, ofiles] = await this.root.execute("instructor.jutgeai.createImage", data)
         return ofiles[0]
+    }
+
+    /**
+     * Get audit usage of LLM models.
+     *
+     * 🔐 Authentication: instructor
+     * No warnings
+     *
+     */
+    async getLlmUsage(): Promise<LlmUsageEntry[]> {
+        const [output, ofiles] = await this.root.execute("instructor.jutgeai.getLlmUsage", null)
+        return output
+    }
+}
+
+/**
+ *
+ * Module to allow playing Jutge.org games. All operations require the `competitions` user. This module is still under development and is not yet ready for production.
+ *
+ */
+class Module_games {
+    private readonly root: JutgeApiClient
+
+    constructor(root: JutgeApiClient) {
+        this.root = root
+    }
+
+    /**
+     * Get list of problems that are games.
+     *
+     * 🔐 Authentication: competitions
+     * No warnings
+     *
+     */
+    async getGames(): Promise<string[]> {
+        const [output, ofiles] = await this.root.execute("games.getGames", null)
+        return output
+    }
+
+    /**
+     * Get dummy player for a game.
+     *
+     * 🔐 Authentication: competitions
+     * No warnings
+     *
+     */
+    async getDummy(problem_id: string): Promise<string> {
+        const [output, ofiles] = await this.root.execute("games.getDummy", problem_id)
+        return output
+    }
+
+    /**
+     * Get a ZIP file with the viewer for a game.
+     *
+     * 🔐 Authentication: competitions
+     * No warnings
+     *
+     */
+    async getViewer(problem_id: string): Promise<Download> {
+        const [output, ofiles] = await this.root.execute("games.getViewer", problem_id)
+        return ofiles[0]
+    }
+
+    /**
+     * Submit a match for a game (combat or competition match).
+     *
+     * 🔐 Authentication: competitions
+     * No warnings
+     *
+     */
+    async submitMatch(data: SubmitMatchIn): Promise<NewSubmissionOut> {
+        const [output, ofiles] = await this.root.execute("games.submitMatch", data)
+        return output
     }
 }
 
@@ -2686,6 +5092,7 @@ class Module_admin {
     private readonly root: JutgeApiClient
 
     readonly instructors: Module_admin_instructors
+    readonly courses: Module_admin_courses
     readonly users: Module_admin_users
     readonly dashboard: Module_admin_dashboard
     readonly queue: Module_admin_queue
@@ -2696,6 +5103,7 @@ class Module_admin {
     constructor(root: JutgeApiClient) {
         this.root = root
         this.instructors = new Module_admin_instructors(root)
+        this.courses = new Module_admin_courses(root)
         this.users = new Module_admin_users(root)
         this.dashboard = new Module_admin_dashboard(root)
         this.queue = new Module_admin_queue(root)
@@ -2718,38 +5126,75 @@ class Module_admin_instructors {
     }
 
     /**
-     * Get instructors
+     * Get instructors.
      *
      * 🔐 Authentication: admin
      * No warnings
      *
      */
     async get(): Promise<InstructorEntries> {
-        const [output, ofiles] = await this.root.execute('admin.instructors.get', null)
+        const [output, ofiles] = await this.root.execute("admin.instructors.get", null)
         return output
     }
 
     /**
-     * Add an instructor
+     * Add an instructor.
      *
      * 🔐 Authentication: admin
      * No warnings
      *
      */
     async add(data: { email: string; username: string }): Promise<void> {
-        const [output, ofiles] = await this.root.execute('admin.instructors.add', data)
+        const [output, ofiles] = await this.root.execute("admin.instructors.add", data)
         return output
     }
 
     /**
-     * Remove an instructor
+     * Remove an instructor.
      *
      * 🔐 Authentication: admin
      * No warnings
      *
      */
     async remove(email: string): Promise<void> {
-        const [output, ofiles] = await this.root.execute('admin.instructors.remove', email)
+        const [output, ofiles] = await this.root.execute("admin.instructors.remove", email)
+        return output
+    }
+}
+
+/**
+ *
+ * No description yet
+ *
+ */
+class Module_admin_courses {
+    private readonly root: JutgeApiClient
+
+    constructor(root: JutgeApiClient) {
+        this.root = root
+    }
+
+    /**
+     * Get all courses from all instructors.
+     *
+     * 🔐 Authentication: admin
+     * No warnings
+     *
+     */
+    async getAll(): Promise<AdminCourses> {
+        const [output, ofiles] = await this.root.execute("admin.courses.getAll", null)
+        return output
+    }
+
+    /**
+     * Set the public and official fields of a course.
+     *
+     * 🔐 Authentication: admin
+     * No warnings
+     *
+     */
+    async setPublicAndOfficial(data: AdminCourseSetPublicAndOfficial): Promise<void> {
+        const [output, ofiles] = await this.root.execute("admin.courses.setPublicAndOfficial", data)
         return output
     }
 }
@@ -2774,7 +5219,7 @@ class Module_admin_users {
      *
      */
     async count(): Promise<number> {
-        const [output, ofiles] = await this.root.execute('admin.users.count', null)
+        const [output, ofiles] = await this.root.execute("admin.users.count", null)
         return output
     }
 
@@ -2786,7 +5231,7 @@ class Module_admin_users {
      *
      */
     async create(data: UserCreation): Promise<void> {
-        const [output, ofiles] = await this.root.execute('admin.users.create', data)
+        const [output, ofiles] = await this.root.execute("admin.users.create", data)
         return output
     }
 
@@ -2798,7 +5243,7 @@ class Module_admin_users {
      *
      */
     async remove(email: string): Promise<void> {
-        const [output, ofiles] = await this.root.execute('admin.users.remove', email)
+        const [output, ofiles] = await this.root.execute("admin.users.remove", email)
         return output
     }
 
@@ -2809,8 +5254,56 @@ class Module_admin_users {
      * No warnings
      *
      */
-    async setPassword(data: { email: string; password: string }): Promise<void> {
-        const [output, ofiles] = await this.root.execute('admin.users.setPassword', data)
+    async setPassword(data: { email: string; password: string; message: string }): Promise<void> {
+        const [output, ofiles] = await this.root.execute("admin.users.setPassword", data)
+        return output
+    }
+
+    /**
+     * Get all profiles of users whose email or name contains a specific string
+     *
+     * 🔐 Authentication: admin
+     * No warnings
+     *
+     */
+    async getProfiles(data: string): Promise<ProfileForAdmin[]> {
+        const [output, ofiles] = await this.root.execute("admin.users.getProfiles", data)
+        return output
+    }
+
+    /**
+     * Get all users (well, just email and name) whose email contains a specific string
+     *
+     * 🔐 Authentication: admin
+     * No warnings
+     *
+     */
+    async getAllWithEmail(data: string): Promise<UsersEmailsAndNames> {
+        const [output, ofiles] = await this.root.execute("admin.users.getAllWithEmail", data)
+        return output
+    }
+
+    /**
+     * Get a list of emails of spam users
+     *
+     * 🔐 Authentication: admin
+     * No warnings
+     *
+     */
+    async getSpamUsers(): Promise<string[]> {
+        const [output, ofiles] = await this.root.execute("admin.users.getSpamUsers", null)
+        return output
+    }
+
+    /**
+     * Remove spam users
+     *
+     * 🔐 Authentication: admin
+     * No warnings
+     *
+     */
+    async removeSpamUsers(data: string[]): Promise<void> {
+        const [output, ofiles] = await this.root.execute("admin.users.removeSpamUsers", data)
         return output
     }
 }
@@ -2835,7 +5328,19 @@ class Module_admin_dashboard {
      *
      */
     async getAll(): Promise<AdminDashboard> {
-        const [output, ofiles] = await this.root.execute('admin.dashboard.getAll', null)
+        const [output, ofiles] = await this.root.execute("admin.dashboard.getAll", null)
+        return output
+    }
+
+    /**
+     * Get database info.
+     *
+     * 🔐 Authentication: admin
+     * No warnings
+     *
+     */
+    async getDatabasesInfo(): Promise<DatabasesInfo> {
+        const [output, ofiles] = await this.root.execute("admin.dashboard.getDatabasesInfo", null)
         return output
     }
 
@@ -2846,8 +5351,8 @@ class Module_admin_dashboard {
      * No warnings
      *
      */
-    async getFreeDiskSpace(): Promise<Record<string, FreeDiskSpace | null>> {
-        const [output, ofiles] = await this.root.execute('admin.dashboard.getFreeDiskSpace', null)
+    async getFreeDiskSpace(): Promise<FreeDiskSpace> {
+        const [output, ofiles] = await this.root.execute("admin.dashboard.getFreeDiskSpace", null)
         return output
     }
 
@@ -2859,10 +5364,7 @@ class Module_admin_dashboard {
      *
      */
     async getRecentConnectedUsers(): Promise<RecentConnectedUsers> {
-        const [output, ofiles] = await this.root.execute(
-            'admin.dashboard.getRecentConnectedUsers',
-            null,
-        )
+        const [output, ofiles] = await this.root.execute("admin.dashboard.getRecentConnectedUsers", null)
         return output
     }
 
@@ -2874,10 +5376,7 @@ class Module_admin_dashboard {
      *
      */
     async getRecentLoadAverages(): Promise<RecentLoadAverages> {
-        const [output, ofiles] = await this.root.execute(
-            'admin.dashboard.getRecentLoadAverages',
-            null,
-        )
+        const [output, ofiles] = await this.root.execute("admin.dashboard.getRecentLoadAverages", null)
         return output
     }
 
@@ -2889,10 +5388,7 @@ class Module_admin_dashboard {
      *
      */
     async getRecentSubmissions(): Promise<RecentSubmissions> {
-        const [output, ofiles] = await this.root.execute(
-            'admin.dashboard.getRecentSubmissions',
-            null,
-        )
+        const [output, ofiles] = await this.root.execute("admin.dashboard.getRecentSubmissions", null)
         return output
     }
 
@@ -2904,10 +5400,7 @@ class Module_admin_dashboard {
      *
      */
     async getSubmissionsHistograms(): Promise<SubmissionsHistograms> {
-        const [output, ofiles] = await this.root.execute(
-            'admin.dashboard.getSubmissionsHistograms',
-            null,
-        )
+        const [output, ofiles] = await this.root.execute("admin.dashboard.getSubmissionsHistograms", null)
         return output
     }
 
@@ -2919,7 +5412,7 @@ class Module_admin_dashboard {
      *
      */
     async getZombies(): Promise<Zombies> {
-        const [output, ofiles] = await this.root.execute('admin.dashboard.getZombies', null)
+        const [output, ofiles] = await this.root.execute("admin.dashboard.getZombies", null)
         return output
     }
 
@@ -2930,8 +5423,32 @@ class Module_admin_dashboard {
      * No warnings
      *
      */
-    async getUpcomingExams(): Promise<UpcomingExams> {
-        const [output, ofiles] = await this.root.execute('admin.dashboard.getUpcomingExams', null)
+    async getUpcomingExams(data: { daysBefore: number; daysAfter: number }): Promise<UpcomingExams> {
+        const [output, ofiles] = await this.root.execute("admin.dashboard.getUpcomingExams", data)
+        return output
+    }
+
+    /**
+     * Get pm2 status
+     *
+     * 🔐 Authentication: admin
+     * No warnings
+     * This endpoint retrieves the status of PM2 processes as reported by `pm2 jlist`.
+     */
+    async getPM2Status(): Promise<any> {
+        const [output, ofiles] = await this.root.execute("admin.dashboard.getPM2Status", null)
+        return output
+    }
+
+    /**
+     * Get docker status
+     *
+     * 🔐 Authentication: admin
+     * No warnings
+     * This endpoint retrieves the status of docker processes as reported by `docker ps --all`.
+     */
+    async getDockerStatus(): Promise<any> {
+        const [output, ofiles] = await this.root.execute("admin.dashboard.getDockerStatus", null)
         return output
     }
 }
@@ -2949,50 +5466,14 @@ class Module_admin_queue {
     }
 
     /**
-     * Get the last 100 submissions from the queue in descending chronological order.
+     * Get the lattest submissions from the queue in descending chronological order for a certain verdict.
      *
      * 🔐 Authentication: admin
      * No warnings
-     *
+     * The `limit` parameter tells the number of submissions to retrieve. The `verdicts` parameter is an array of verdicts to filter the submissions. If no verdicts are provided, all submissions will be retrieved.
      */
-    async getQueue(): Promise<SubmissionQueueItems> {
-        const [output, ofiles] = await this.root.execute('admin.queue.getQueue', null)
-        return output
-    }
-
-    /**
-     * Get the last 100 zombi submissions from the queue.
-     *
-     * 🔐 Authentication: admin
-     * No warnings
-     *
-     */
-    async getQueueZombies(): Promise<SubmissionQueueItems> {
-        const [output, ofiles] = await this.root.execute('admin.queue.getQueueZombies', null)
-        return output
-    }
-
-    /**
-     * Get the last 100 fatal submissions from the queue.
-     *
-     * 🔐 Authentication: admin
-     * No warnings
-     *
-     */
-    async getQueueFatals(): Promise<SubmissionQueueItems> {
-        const [output, ofiles] = await this.root.execute('admin.queue.getQueueFatals', null)
-        return output
-    }
-
-    /**
-     * Get the last 100 setter error submissions from the queue.
-     *
-     * 🔐 Authentication: admin
-     * No warnings
-     *
-     */
-    async getQueueSetterErrors(): Promise<SubmissionQueueItems> {
-        const [output, ofiles] = await this.root.execute('admin.queue.getQueueSetterErrors', null)
+    async getQueue(data: QueueQuery): Promise<SubmissionQueueItems> {
+        const [output, ofiles] = await this.root.execute("admin.queue.getQueue", data)
         return output
     }
 }
@@ -3010,26 +5491,98 @@ class Module_admin_tasks {
     }
 
     /**
-     * Purge expired access tokens
+     * Purge expired access tokens.
      *
      * 🔐 Authentication: admin
      * No warnings
      * Purge expired access tokens (call it from time to time, it does not hurt)
      */
     async purgeAuthTokens(): Promise<void> {
-        const [output, ofiles] = await this.root.execute('admin.tasks.purge-auth-tokens', null)
+        const [output, ofiles] = await this.root.execute("admin.tasks.purgeAuthTokens", null)
         return output
     }
 
     /**
-     * Clear all memoization caches
+     * Clear all memoization caches.
      *
      * 🔐 Authentication: admin
      * No warnings
      *
      */
     async clearCaches(): Promise<void> {
-        const [output, ofiles] = await this.root.execute('admin.tasks.clear-caches', null)
+        const [output, ofiles] = await this.root.execute("admin.tasks.clearCaches", null)
+        return output
+    }
+
+    /**
+     * Fatalize IE submissions.
+     *
+     * 🔐 Authentication: admin
+     * No warnings
+     *
+     */
+    async fatalizeIEs(): Promise<void> {
+        const [output, ofiles] = await this.root.execute("admin.tasks.fatalizeIEs", null)
+        return output
+    }
+
+    /**
+     * Fatalize pending submissions.
+     *
+     * 🔐 Authentication: admin
+     * No warnings
+     *
+     */
+    async fatalizePendings(): Promise<void> {
+        const [output, ofiles] = await this.root.execute("admin.tasks.fatalizePendings", null)
+        return output
+    }
+
+    /**
+     * Resubmit IE submissions.
+     *
+     * 🔐 Authentication: admin
+     * No warnings
+     *
+     */
+    async resubmitIEs(): Promise<void> {
+        const [output, ofiles] = await this.root.execute("admin.tasks.resubmitIEs", null)
+        return output
+    }
+
+    /**
+     * Resubmit pending submissions.
+     *
+     * 🔐 Authentication: admin
+     * No warnings
+     *
+     */
+    async resubmitPendings(): Promise<void> {
+        const [output, ofiles] = await this.root.execute("admin.tasks.resubmitPendings", null)
+        return output
+    }
+
+    /**
+     * Get full text search database status.
+     *
+     * 🔐 Authentication: admin
+     * No warnings
+     *
+     */
+    async getFullTextSearchDatabase(): Promise<Download> {
+        const [output, ofiles] = await this.root.execute("admin.tasks.getFullTextSearchDatabase", null)
+        return ofiles[0]
+    }
+
+    /**
+     * Update semantic search database.
+     *
+     * 🔐 Authentication: admin
+     * No warnings
+     *
+     */
+    async updateSemanticSearchDatabase(data: string, ifile: File): Promise<void> {
+        const [output, ofiles] = await this.root.execute("admin.tasks.updateSemanticSearchDatabase", data, [ifile])
         return output
     }
 }
@@ -3047,253 +5600,221 @@ class Module_admin_stats {
     }
 
     /**
-     * Get counters
+     * Get counters.
      *
      * 🔐 Authentication: admin
      * No warnings
      *
      */
     async getCounters(): Promise<Record<string, number>> {
-        const [output, ofiles] = await this.root.execute('admin.stats.getCounters', null)
+        const [output, ofiles] = await this.root.execute("admin.stats.getCounters", null)
         return output
     }
 
     /**
-     * Get distribution of verdicts
+     * Get distribution of verdicts.
      *
      * 🔐 Authentication: admin
      * No warnings
      *
      */
     async getDistributionOfVerdicts(): Promise<Record<string, number>> {
-        const [output, ofiles] = await this.root.execute(
-            'admin.stats.getDistributionOfVerdicts',
-            null,
-        )
+        const [output, ofiles] = await this.root.execute("admin.stats.getDistributionOfVerdicts", null)
         return output
     }
 
     /**
-     * Get distribution of verdicts by year
+     * Get distribution of verdicts by year.
      *
      * 🔐 Authentication: admin
      * No warnings
      *
      */
     async getDistributionOfVerdictsByYear(): Promise<Record<string, number>[]> {
-        const [output, ofiles] = await this.root.execute(
-            'admin.stats.getDistributionOfVerdictsByYear',
-            null,
-        )
+        const [output, ofiles] = await this.root.execute("admin.stats.getDistributionOfVerdictsByYear", null)
         return output
     }
 
     /**
-     * Get distribution of compilers
+     * Get distribution of compilers.
      *
      * 🔐 Authentication: admin
      * No warnings
      *
      */
     async getDistributionOfCompilers(): Promise<Record<string, number>> {
-        const [output, ofiles] = await this.root.execute(
-            'admin.stats.getDistributionOfCompilers',
-            null,
-        )
+        const [output, ofiles] = await this.root.execute("admin.stats.getDistributionOfCompilers", null)
         return output
     }
 
     /**
-     * Get distribution of proglangs
+     * Get distribution of proglangs.
      *
      * 🔐 Authentication: admin
      * No warnings
      *
      */
     async getDistributionOfProglangs(): Promise<Record<string, number>> {
-        const [output, ofiles] = await this.root.execute(
-            'admin.stats.getDistributionOfProglangs',
-            null,
-        )
+        const [output, ofiles] = await this.root.execute("admin.stats.getDistributionOfProglangs", null)
         return output
     }
 
     /**
-     * Get distribution of registered users by year
+     * Get distribution of registered users by year.
      *
      * 🔐 Authentication: admin
      * No warnings
      *
      */
     async getDistributionOfUsersByYear(): Promise<Record<string, number>> {
-        const [output, ofiles] = await this.root.execute(
-            'admin.stats.getDistributionOfUsersByYear',
-            null,
-        )
+        const [output, ofiles] = await this.root.execute("admin.stats.getDistributionOfUsersByYear", null)
         return output
     }
 
     /**
-     * Get distribution of registered users by country
+     * Get distribution of registered users by country.
      *
      * 🔐 Authentication: admin
      * No warnings
      *
      */
     async getDistributionOfUsersByCountry(): Promise<Record<string, number>> {
-        const [output, ofiles] = await this.root.execute(
-            'admin.stats.getDistributionOfUsersByCountry',
-            null,
-        )
+        const [output, ofiles] = await this.root.execute("admin.stats.getDistributionOfUsersByCountry", null)
         return output
     }
 
     /**
-     * Get distribution of registered users by submissions using a custom bucket size
+     * Get distribution of registered users by submissions using a custom bucket size.
      *
      * 🔐 Authentication: admin
      * No warnings
      *
      */
     async getDistributionOfUsersBySubmissions(data: number): Promise<Record<string, number>> {
-        const [output, ofiles] = await this.root.execute(
-            'admin.stats.getDistributionOfUsersBySubmissions',
-            data,
-        )
+        const [output, ofiles] = await this.root.execute("admin.stats.getDistributionOfUsersBySubmissions", data)
         return output
     }
 
     /**
-     * Get ranking of users
+     * Get ranking of users.
      *
      * 🔐 Authentication: admin
      * ❌ Warning: Input type is not correct
      *
      */
-    async getRankingOfUsers(data: string | number): Promise<UserRanking> {
-        const [output, ofiles] = await this.root.execute('admin.stats.getRankingOfUsers', data)
+    async getRankingOfUsers(limit: number): Promise<UserRanking> {
+        const [output, ofiles] = await this.root.execute("admin.stats.getRankingOfUsers", limit)
         return output
     }
 
     /**
-     * Get distribution of submissions by hour
+     * Get distribution of submissions by hour.
      *
      * 🔐 Authentication: admin
      * No warnings
      *
      */
     async getDistributionOfSubmissionsByHour(): Promise<Record<string, number>> {
-        const [output, ofiles] = await this.root.execute(
-            'admin.stats.getDistributionOfSubmissionsByHour',
-            null,
-        )
+        const [output, ofiles] = await this.root.execute("admin.stats.getDistributionOfSubmissionsByHour", null)
         return output
     }
 
     /**
-     * Get distribution of submissions by proglang
+     * Get distribution of submissions by proglang.
      *
      * 🔐 Authentication: admin
      * No warnings
      *
      */
     async getDistributionOfSubmissionsByProglang(): Promise<Record<string, number>> {
-        const [output, ofiles] = await this.root.execute(
-            'admin.stats.getDistributionOfSubmissionsByProglang',
-            null,
-        )
+        const [output, ofiles] = await this.root.execute("admin.stats.getDistributionOfSubmissionsByProglang", null)
         return output
     }
 
     /**
-     * Get distribution of submissions by compiler
+     * Get distribution of submissions by compiler.
      *
      * 🔐 Authentication: admin
      * No warnings
      *
      */
     async getDistributionOfSubmissionsByCompiler(): Promise<Record<string, number>> {
-        const [output, ofiles] = await this.root.execute(
-            'admin.stats.getDistributionOfSubmissionsByCompiler',
-            null,
-        )
+        const [output, ofiles] = await this.root.execute("admin.stats.getDistributionOfSubmissionsByCompiler", null)
         return output
     }
 
     /**
-     * Get distribution of submissions by weekday
+     * Get distribution of submissions by weekday.
      *
      * 🔐 Authentication: admin
      * No warnings
      *
      */
     async getDistributionOfSubmissionsByWeekday(): Promise<Record<string, number>> {
-        const [output, ofiles] = await this.root.execute(
-            'admin.stats.getDistributionOfSubmissionsByWeekday',
-            null,
-        )
+        const [output, ofiles] = await this.root.execute("admin.stats.getDistributionOfSubmissionsByWeekday", null)
         return output
     }
 
     /**
-     * Get distribution of submissions by year
+     * Get distribution of submissions by year.
      *
      * 🔐 Authentication: admin
      * No warnings
      *
      */
     async getDistributionOfSubmissionsByYear(): Promise<Record<string, number>> {
-        const [output, ofiles] = await this.root.execute(
-            'admin.stats.getDistributionOfSubmissionsByYear',
-            null,
-        )
+        const [output, ofiles] = await this.root.execute("admin.stats.getDistributionOfSubmissionsByYear", null)
         return output
     }
 
     /**
-     * Get distribution of submissions by year for a proglang
+     * Get distribution of submissions by year for a proglang.
      *
      * 🔐 Authentication: admin
      * No warnings
      *
      */
-    async getDistributionOfSubmissionsByYearForProglang(
-        proglang: string,
-    ): Promise<Record<string, number>> {
+    async getDistributionOfSubmissionsByYearForProglang(proglang: string): Promise<Record<string, number>> {
         const [output, ofiles] = await this.root.execute(
-            'admin.stats.getDistributionOfSubmissionsByYearForProglang',
+            "admin.stats.getDistributionOfSubmissionsByYearForProglang",
             proglang,
         )
         return output
     }
 
     /**
-     * Get distribution of submissions by day
+     * Get distribution of submissions by day.
      *
      * 🔐 Authentication: admin
      * No warnings
      *
      */
     async getDistributionOfSubmissionsByDay(): Promise<Record<string, number>> {
-        const [output, ofiles] = await this.root.execute(
-            'admin.stats.getDistributionOfSubmissionsByDay',
-            null,
-        )
+        const [output, ofiles] = await this.root.execute("admin.stats.getDistributionOfSubmissionsByDay", null)
         return output
     }
 
     /**
-     * Get heatmap calendar of submissions
+     * Get heatmap calendar of submissions.
      *
      * 🔐 Authentication: admin
      * No warnings
      *
      */
     async getHeatmapCalendarOfSubmissions(data: DateRange): Promise<any> {
-        const [output, ofiles] = await this.root.execute(
-            'admin.stats.getHeatmapCalendarOfSubmissions',
-            data,
-        )
+        const [output, ofiles] = await this.root.execute("admin.stats.getHeatmapCalendarOfSubmissions", data)
+        return output
+    }
+
+    /**
+     * Get distribution of domains of users' emails.
+     *
+     * 🔐 Authentication: admin
+     * No warnings
+     *
+     */
+    async getDistributionOfDomains(): Promise<Record<string, number>> {
+        const [output, ofiles] = await this.root.execute("admin.stats.getDistributionOfDomains", null)
         return output
     }
 }
@@ -3311,15 +5832,93 @@ class Module_admin_problems {
     }
 
     /**
-     * Get official solution for a problem for a proglang
+     * Get summary for a problem.
      *
      * 🔐 Authentication: admin
-     * ❌ Warning: TODO
+     * No warnings
      *
      */
-    async getProblemSolution(data: { problem_id: string; proglang: string }): Promise<string> {
-        const [output, ofiles] = await this.root.execute('admin.problems.getProblemSolution', data)
+    async getProblemSummary(problem_id: string): Promise<ProblemSummary | null> {
+        const [output, ofiles] = await this.root.execute("admin.problems.getProblemSummary", problem_id)
         return output
+    }
+
+    /**
+     * Get list of problems with summary.
+     *
+     * 🔐 Authentication: admin
+     * No warnings
+     *
+     */
+    async getProblemsWithSummary(): Promise<string[]> {
+        const [output, ofiles] = await this.root.execute("admin.problems.getProblemsWithSummary", null)
+        return output
+    }
+
+    /**
+     * Get list of problems without summary.
+     *
+     * 🔐 Authentication: admin
+     * No warnings
+     *
+     */
+    async getProblemsWithoutSummary(): Promise<string[]> {
+        const [output, ofiles] = await this.root.execute("admin.problems.getProblemsWithoutSummary", null)
+        return output
+    }
+
+    /**
+     * Get solution tags for an abstract problem.
+     *
+     * 🔐 Authentication: admin
+     * No warnings
+     *
+     */
+    async getAbstractProblemSolutionTags(data: { problem_nm: string }): Promise<SolutionTags | null> {
+        const [output, ofiles] = await this.root.execute("admin.problems.getAbstractProblemSolutionTags", data)
+        return output
+    }
+
+    /**
+     * Get list of abstract problems with solution tags.
+     *
+     * 🔐 Authentication: admin
+     * No warnings
+     *
+     */
+    async getAbstractProblemsWithSolutionTags(): Promise<string[]> {
+        const [output, ofiles] = await this.root.execute("admin.problems.getAbstractProblemsWithSolutionTags", null)
+        return output
+    }
+
+    /**
+     * Get list of abstract problems without solution tags.
+     *
+     * 🔐 Authentication: admin
+     * No warnings
+     *
+     */
+    async getAbstractProblemsWithoutSolutionTags(): Promise<string[]> {
+        const [output, ofiles] = await this.root.execute("admin.problems.getAbstractProblemsWithoutSolutionTags", null)
+        return output
+    }
+}
+
+/**
+ *
+ * Module with testing endpoints. Not meant for regular users.
+ *
+ */
+class Module_testing {
+    private readonly root: JutgeApiClient
+
+    readonly check: Module_testing_check
+    readonly playground: Module_testing_playground
+
+    constructor(root: JutgeApiClient) {
+        this.root = root
+        this.check = new Module_testing_check(root)
+        this.playground = new Module_testing_playground(root)
     }
 }
 
@@ -3328,7 +5927,7 @@ class Module_admin_problems {
  * This module is intended for internal use and contains functions to check the actor of the query. General public should not rely on it.
  *
  */
-class Module_check {
+class Module_testing_check {
     private readonly root: JutgeApiClient
 
     constructor(root: JutgeApiClient) {
@@ -3336,50 +5935,50 @@ class Module_check {
     }
 
     /**
-     * Checks that query actor is a user
+     * Checks that query actor is a user.
      *
      * 🔐 Authentication: user
      * No warnings
      *
      */
     async checkUser(): Promise<void> {
-        const [output, ofiles] = await this.root.execute('check.checkUser', null)
+        const [output, ofiles] = await this.root.execute("testing.check.checkUser", null)
         return output
     }
 
     /**
-     * Checks that query actor is an instructor
+     * Checks that query actor is an instructor.
      *
      * 🔐 Authentication: instructor
      * No warnings
      *
      */
     async checkInstructor(): Promise<void> {
-        const [output, ofiles] = await this.root.execute('check.checkInstructor', null)
+        const [output, ofiles] = await this.root.execute("testing.check.checkInstructor", null)
         return output
     }
 
     /**
-     * Checks that query actor is an admin
+     * Checks that query actor is an admin.
      *
      * 🔐 Authentication: admin
      * No warnings
      *
      */
     async checkAdmin(): Promise<void> {
-        const [output, ofiles] = await this.root.execute('check.checkAdmin', null)
+        const [output, ofiles] = await this.root.execute("testing.check.checkAdmin", null)
         return output
     }
 
     /**
-     * Throw an exception of the given type
+     * Throw an exception of the given type.
      *
-     * No authentication
+     * 🔐 Authentication: any
      * No warnings
      *
      */
     async throwError(exception: string): Promise<void> {
-        const [output, ofiles] = await this.root.execute('check.throwError', exception)
+        const [output, ofiles] = await this.root.execute("testing.check.throwError", exception)
         return output
     }
 }
@@ -3389,7 +5988,7 @@ class Module_check {
  * This module is intended for internal use. General users should not rely on it.
  *
  */
-class Module_playground {
+class Module_testing_playground {
     private readonly root: JutgeApiClient
 
     constructor(root: JutgeApiClient) {
@@ -3397,134 +5996,146 @@ class Module_playground {
     }
 
     /**
-     * Upload a file
+     * Upload a file.
      *
-     * No authentication
+     * 🔐 Authentication: any
      * No warnings
      *
      */
     async upload(data: Name, ifile: File): Promise<string> {
-        const [output, ofiles] = await this.root.execute('playground.upload', data, [ifile])
+        const [output, ofiles] = await this.root.execute("testing.playground.upload", data, [ifile])
         return output
     }
 
     /**
-     * Get negative of an image
+     * Get negative of an image.
      *
-     * No authentication
+     * 🔐 Authentication: any
      * No warnings
      *
      */
     async negate(ifile: File): Promise<Download> {
-        const [output, ofiles] = await this.root.execute('playground.negate', null, [ifile])
+        const [output, ofiles] = await this.root.execute("testing.playground.negate", null, [ifile])
         return ofiles[0]
     }
 
     /**
-     * Download a file
+     * Download a file.
      *
-     * No authentication
+     * 🔐 Authentication: any
      * No warnings
      *
      */
     async download(data: Name): Promise<Download> {
-        const [output, ofiles] = await this.root.execute('playground.download', data)
+        const [output, ofiles] = await this.root.execute("testing.playground.download", data)
         return ofiles[0]
     }
 
     /**
-     * Download a file with a string
+     * Download a file with a string.
      *
-     * No authentication
+     * 🔐 Authentication: any
      * No warnings
      *
      */
     async download2(data: Name): Promise<[string, Download]> {
-        const [output, ofiles] = await this.root.execute('playground.download2', data)
+        const [output, ofiles] = await this.root.execute("testing.playground.download2", data)
         return [output, ofiles[0]]
     }
 
     /**
-     * Ping the server to get a pong string
+     * Ping the server to get a pong string.
      *
-     * No authentication
+     * 🔐 Authentication: any
      * No warnings
      *
      */
     async ping(): Promise<string> {
-        const [output, ofiles] = await this.root.execute('playground.ping', null)
+        const [output, ofiles] = await this.root.execute("testing.playground.ping", null)
         return output
     }
 
     /**
-     * Returns the given string in uppercase
+     * Returns the given string in uppercase.
      *
-     * No authentication
+     * 🔐 Authentication: any
      * No warnings
      *
      */
     async toUpperCase(s: string): Promise<string> {
-        const [output, ofiles] = await this.root.execute('playground.toUpperCase', s)
+        const [output, ofiles] = await this.root.execute("testing.playground.toUpperCase", s)
         return output
     }
 
     /**
-     * Returns the sum of two integers
+     * Returns the sum of two integers.
      *
-     * No authentication
+     * 🔐 Authentication: any
      * No warnings
      *
      */
     async add2i(data: TwoInts): Promise<number> {
-        const [output, ofiles] = await this.root.execute('playground.add2i', data)
+        const [output, ofiles] = await this.root.execute("testing.playground.add2i", data)
         return output
     }
 
     /**
-     * Returns the sum of two floats
+     * Returns the sum of two floats.
      *
-     * No authentication
+     * 🔐 Authentication: any
      * No warnings
      *
      */
     async add2f(data: TwoFloats): Promise<number> {
-        const [output, ofiles] = await this.root.execute('playground.add2f', data)
+        const [output, ofiles] = await this.root.execute("testing.playground.add2f", data)
         return output
     }
 
     /**
-     * increment two numbers
+     * increment two numbers.
      *
-     * No authentication
+     * 🔐 Authentication: any
      * No warnings
      *
      */
     async inc(data: TwoInts): Promise<TwoInts> {
-        const [output, ofiles] = await this.root.execute('playground.inc', data)
+        const [output, ofiles] = await this.root.execute("testing.playground.inc", data)
         return output
     }
 
     /**
-     * Returns the sum of three integers
+     * Returns the sum of three integers.
      *
-     * No authentication
+     * 🔐 Authentication: any
      * No warnings
      *
      */
     async add3i(data: { a: number; b: number; c: number }): Promise<number> {
-        const [output, ofiles] = await this.root.execute('playground.add3i', data)
+        const [output, ofiles] = await this.root.execute("testing.playground.add3i", data)
         return output
     }
 
     /**
-     * Returns a type with defaults
+     * Returns a type with defaults.
      *
-     * No authentication
+     * 🔐 Authentication: any
      * No warnings
      *
      */
     async something(data: SomeType): Promise<SomeType> {
-        const [output, ofiles] = await this.root.execute('playground.something', data)
+        const [output, ofiles] = await this.root.execute("testing.playground.something", data)
+        return output
+    }
+
+    /**
+     * Get a webstream with clok data.
+     *
+     * 🔐 Authentication: any
+     * No warnings
+     *
+     */
+    async clock(): Promise<WebStream> {
+        const [output, ofiles] = await this.root.execute("testing.playground.clock", null)
         return output
     }
 }
