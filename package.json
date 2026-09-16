@@ -47,7 +47,7 @@
         "@radix-ui/react-toggle": "^1.1.18",
         "@radix-ui/react-toggle-group": "^1.1.19",
         "@radix-ui/react-tooltip": "^1.2.16",
-        "@shikijs/rehype": "^3.23.0",
+        "@shikijs/rehype": "^4.4.3",
         "@tailwindcss/postcss": "^4.3.3",
         "@tailwindcss/typography": "^0.5.20",
         "@types/bun": "^1.4.2",
