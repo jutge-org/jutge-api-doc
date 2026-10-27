@@ -88,7 +88,7 @@ function FaqElement({ question, answer, index }: FaqItem) {
                 "transition-all duration-200 ease-in-out",
                 isOpen
                     ? "bg-linear-to-br from-white via-gray-50/50 to-white dark:from-white/5 dark:via-white/2 dark:to-white/5"
-                    : "hover:bg-gray-50/50 dark:hover:bg-white/[0.02]",
+                    : "hover:bg-gray-50/50 dark:hover:bg-white/2",
             )}
         >
             <button

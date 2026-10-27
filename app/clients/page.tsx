@@ -37,7 +37,7 @@ export default async function Page() {
 
             {Object.entries(clients).map(([id, { Component }]) => (
                 <div key={id} className="relative border-t border-muted-foreground pb-12">
-                    <div id={id} className="relative -top-[calc(var(--topbar-height)_+_2em)]" />
+                    <div id={id} className="relative -top-[calc(var(--topbar-height)+2em)]" />
                     <Link
                         href="/clients#top"
                         className={cn(
