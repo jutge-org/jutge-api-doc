@@ -36,7 +36,7 @@ export default function EndpointWrapper({ id, actor, domains, children }: Props)
                 hash === `#${id}` && "border-[0.2em] border-primary md:outline md:outline-primary md:border-none",
             )}
         >
-            <div id={id} className="absolute -top-[5em] md:-top-[15em] left-0"></div>
+            <div id={id} className="absolute top-[-5em] md:top-[-15em] left-0"></div>
             {children}
         </div>
     )

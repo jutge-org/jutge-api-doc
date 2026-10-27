@@ -10,21 +10,21 @@ type EndpointProps = {
 }
 export default function Endpoint({ endpoint, spath, models }: EndpointProps) {
     return (
-        <EndpointWrapper id={`${spath}.${endpoint.name}`} actor={endpoint.actor} domains={endpoint.domains}>
-            <h2 className="mt-1.5 m-0 leading-snug">
-                <div className="flex flex-row gap-2 items-start">
-                    <code className="flex flex-wrap items-baseline mt-0.5 leading-tight">
-                        <span className="text-[0.95rem] text-muted-foreground">{spath}.</span>
-                        <div className="flex flex-row items-start">
-                            <span className="text-[1.05rem] font-semibold">
-                                <span className="break-all">{endpoint.name}</span>
-                            </span>
-                            <div className="relative top-0">
-                                <ActorIcon actor={endpoint.actor} domains={endpoint.domains} />
-                            </div>
-                        </div>
-                    </code>
-                </div>
+        <EndpointWrapper
+            id={`${spath}.${endpoint.name}`}
+            actor={endpoint.actor}
+            domains={endpoint.domains}
+        >
+            <h2 className="mt-1.5 m-0 leading-snug flex flex-row gap-2 items-start">
+                <code className="flex flex-wrap items-baseline mt-0.5 leading-tight">
+                    <span className="text-[0.95rem] text-muted-foreground">{spath}.</span>
+                    <div className="flex flex-row items-start">
+                        <span className="text-[1.05rem] font-semibold">
+                            <span className="break-all">{endpoint.name}</span>
+                        </span>
+                    </div>
+                </code>
+                <ActorIcon actor={endpoint.actor} domains={endpoint.domains} />
             </h2>
             <div className="pt-0.5 font-normal text-sm">{endpoint.summary}</div>
             {endpoint.description && (
