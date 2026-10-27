@@ -5,7 +5,7 @@ services:
           context: .
           dockerfile: Dockerfile
         network_mode: host
-        container_name: "jutge-api-doc"
+        container_name: "api-doc"
         restart: always
         environment:
           JUTGE_API_CLIENTS_DIR: "/app/jutge-api-clients"
