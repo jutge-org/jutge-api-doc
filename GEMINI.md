@@ -19,10 +19,10 @@ This repository contains two main parts:
 
 ### Main Documentation Site (Root)
 
-- **Install dependencies:** `npm install` (or `bun install`)
-- **Development server:** `npm run dev` (Runs on `localhost:3000`)
-- **Build for production:** `npm run build`
-- **Linting:** `npm run lint`
+- **Install dependencies:** `bun install`
+- **Development server:** `bun run dev` (Runs on `localhost:3000`)
+- **Build for production:** `bun run build`
+- **Linting:** `bun run lint`
 
 ### API Client Generator (`/jutge-api-clients`)
 
