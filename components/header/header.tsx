@@ -22,6 +22,7 @@ export const clients: { title: string; id: string; description: string }[] = [
     { title: "Python", id: "python", description: "Python client" },
     { title: "TypeScript", id: "typescript", description: "TypeScript client" },
     { title: "JavaScript", id: "javascript", description: "JavaScript client" },
+    { title: "Java", id: "java", description: "Java client" },
     { title: "PHP", id: "php", description: "PHP client" },
     { title: "C++", id: "cpp", description: "C++ client" },
 ]
