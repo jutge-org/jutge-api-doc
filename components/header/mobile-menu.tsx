@@ -57,7 +57,7 @@ export default function MobileMenu({ className }: { className?: string }) {
                                 variant="secondary"
                                 key={client.id}
                                 className="h-16"
-                                onClick={go(`/clients/${client.id}`)}
+                                onClick={go(`/clients#${client.id}`)}
                             >
                                 {client.title}
                             </Button>
